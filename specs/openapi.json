@@ -43015,7 +43015,7 @@
                         "example": "example.com"
                       },
                       "cdnEnabled": {
-                        "description": "Whether the domain has the Vercel Edge Network enabled or not.",
+                        "description": "Whether the domain has the Vercel CDN enabled or not.",
                         "type": "boolean",
                         "example": true
                       },
@@ -43163,6 +43163,9 @@
           },
           "401": {
             "description": "The request is not authorized."
+          },
+          "402": {
+            "description": ""
           },
           "403": {
             "description": "You do not have permission to access this resource."
@@ -51327,14 +51330,14 @@
                     },
                     "createdBy": {
                       "type": "string",
-                      "description": "The ID of the user who created the Edge Config, optional because it is not always set."
+                      "description": "The ID of the user who created the Global Config, optional because it is not always set."
                     },
                     "ownerId": {
                       "type": "string"
                     },
                     "slug": {
                       "type": "string",
-                      "description": "Name for the Edge Config Names are not unique. Must start with an alphabetic character and can contain only alphanumeric characters and underscores)."
+                      "description": "Name for the Global Config Names are not unique. Must start with an alphabetic character and can contain only alphanumeric characters and underscores)."
                     },
                     "updatedAt": {
                       "type": "number"
@@ -51405,14 +51408,14 @@
                         "startedAt"
                       ],
                       "type": "object",
-                      "description": "Keeps track of the current state of the Edge Config while it gets transferred."
+                      "description": "Keeps track of the current state of the Global Config while it gets transferred."
                     },
                     "schema": {
                       "type": "object"
                     },
                     "syncedToDynamoAt": {
                       "type": "number",
-                      "description": "Timestamp of when the Edge Config was synced to DynamoDB initially. It is only set when syncing the entire Edge Config, not when updating."
+                      "description": "Timestamp of when the Global Config was synced to DynamoDB initially. It is only set when syncing the entire Global Config, not when updating."
                     },
                     "sizeInBytes": {
                       "type": "number"
@@ -51498,14 +51501,14 @@
                     },
                     "createdBy": {
                       "type": "string",
-                      "description": "The ID of the user who created the Edge Config, optional because it is not always set."
+                      "description": "The ID of the user who created the Global Config, optional because it is not always set."
                     },
                     "ownerId": {
                       "type": "string"
                     },
                     "slug": {
                       "type": "string",
-                      "description": "Name for the Edge Config Names are not unique. Must start with an alphabetic character and can contain only alphanumeric characters and underscores)."
+                      "description": "Name for the Global Config Names are not unique. Must start with an alphabetic character and can contain only alphanumeric characters and underscores)."
                     },
                     "updatedAt": {
                       "type": "number"
@@ -51576,14 +51579,14 @@
                         "startedAt"
                       ],
                       "type": "object",
-                      "description": "Keeps track of the current state of the Edge Config while it gets transferred."
+                      "description": "Keeps track of the current state of the Global Config while it gets transferred."
                     },
                     "schema": {
                       "type": "object"
                     },
                     "syncedToDynamoAt": {
                       "type": "number",
-                      "description": "Timestamp of when the Edge Config was synced to DynamoDB initially. It is only set when syncing the entire Edge Config, not when updating."
+                      "description": "Timestamp of when the Global Config was synced to DynamoDB initially. It is only set when syncing the entire Global Config, not when updating."
                     },
                     "sizeInBytes": {
                       "type": "number"
@@ -51603,7 +51606,7 @@
                     "updatedAt"
                   ],
                   "type": "object",
-                  "description": "An Edge Config"
+                  "description": "A Global Config"
                 }
               }
             }
@@ -51697,14 +51700,14 @@
                     },
                     "createdBy": {
                       "type": "string",
-                      "description": "The ID of the user who created the Edge Config, optional because it is not always set."
+                      "description": "The ID of the user who created the Global Config, optional because it is not always set."
                     },
                     "ownerId": {
                       "type": "string"
                     },
                     "slug": {
                       "type": "string",
-                      "description": "Name for the Edge Config Names are not unique. Must start with an alphabetic character and can contain only alphanumeric characters and underscores)."
+                      "description": "Name for the Global Config Names are not unique. Must start with an alphabetic character and can contain only alphanumeric characters and underscores)."
                     },
                     "updatedAt": {
                       "type": "number"
@@ -51775,14 +51778,14 @@
                         "startedAt"
                       ],
                       "type": "object",
-                      "description": "Keeps track of the current state of the Edge Config while it gets transferred."
+                      "description": "Keeps track of the current state of the Global Config while it gets transferred."
                     },
                     "schema": {
                       "type": "object"
                     },
                     "syncedToDynamoAt": {
                       "type": "number",
-                      "description": "Timestamp of when the Edge Config was synced to DynamoDB initially. It is only set when syncing the entire Edge Config, not when updating."
+                      "description": "Timestamp of when the Global Config was synced to DynamoDB initially. It is only set when syncing the entire Global Config, not when updating."
                     },
                     "sizeInBytes": {
                       "type": "number"
@@ -51879,14 +51882,14 @@
                     },
                     "createdBy": {
                       "type": "string",
-                      "description": "The ID of the user who created the Edge Config, optional because it is not always set."
+                      "description": "The ID of the user who created the Global Config, optional because it is not always set."
                     },
                     "ownerId": {
                       "type": "string"
                     },
                     "slug": {
                       "type": "string",
-                      "description": "Name for the Edge Config Names are not unique. Must start with an alphabetic character and can contain only alphanumeric characters and underscores)."
+                      "description": "Name for the Global Config Names are not unique. Must start with an alphabetic character and can contain only alphanumeric characters and underscores)."
                     },
                     "updatedAt": {
                       "type": "number"
@@ -51957,14 +51960,14 @@
                         "startedAt"
                       ],
                       "type": "object",
-                      "description": "Keeps track of the current state of the Edge Config while it gets transferred."
+                      "description": "Keeps track of the current state of the Global Config while it gets transferred."
                     },
                     "schema": {
                       "type": "object"
                     },
                     "syncedToDynamoAt": {
                       "type": "number",
-                      "description": "Timestamp of when the Edge Config was synced to DynamoDB initially. It is only set when syncing the entire Edge Config, not when updating."
+                      "description": "Timestamp of when the Global Config was synced to DynamoDB initially. It is only set when syncing the entire Global Config, not when updating."
                     },
                     "sizeInBytes": {
                       "type": "number"
@@ -51984,7 +51987,7 @@
                     "updatedAt"
                   ],
                   "type": "object",
-                  "description": "An Edge Config"
+                  "description": "A Global Config"
                 }
               }
             }
@@ -53105,7 +53108,7 @@
                           "properties": {
                             "slug": {
                               "type": "string",
-                              "description": "Name for the Edge Config Names are not unique. Must start with an alphabetic character and can contain only alphanumeric characters and underscores)."
+                              "description": "Name for the Global Config Names are not unique. Must start with an alphabetic character and can contain only alphanumeric characters and underscores)."
                             },
                             "updatedAt": {
                               "type": "number"
@@ -53197,7 +53200,7 @@
                         "metadata"
                       ],
                       "type": "object",
-                      "description": "The object the API responds with when requesting an Edge Config backup"
+                      "description": "The object the API responds with when requesting a Global Config backup"
                     },
                     {
                       "properties": {
@@ -53236,7 +53239,7 @@
                           "properties": {
                             "slug": {
                               "type": "string",
-                              "description": "Name for the Edge Config Names are not unique. Must start with an alphabetic character and can contain only alphanumeric characters and underscores)."
+                              "description": "Name for the Global Config Names are not unique. Must start with an alphabetic character and can contain only alphanumeric characters and underscores)."
                             },
                             "updatedAt": {
                               "type": "number"
@@ -60377,7 +60380,7 @@
                               },
                               "labels": {
                                 "type": "array",
-                                "maxItems": 128,
+                                "maxItems": 256,
                                 "items": {
                                   "type": "object",
                                   "additionalProperties": false,
@@ -74760,7 +74763,7 @@
     },
     "/v1/kms/issuers/{issuerId}": {
       "get": {
-        "description": "Retrieve a single KMS issuer by its ID.",
+        "description": "Retrieve a single KMS issuer by its ID. Accepts either a team bearer token (existing path) or an OIDC token authorized by one of the issuer's policies (e.g. a connex-grant token). The OIDC path returns the issuer without policies, since a policy token only proves signing access, not management access.",
         "operationId": "getKmsIssuer",
         "security": [
           {
@@ -108680,19 +108683,19 @@
           },
           {
             "name": "edgeConfigId",
-            "description": "Filter results by connected Edge Config ID",
+            "description": "Filter results by connected Global Config ID",
             "in": "query",
             "schema": {
-              "description": "Filter results by connected Edge Config ID",
+              "description": "Filter results by connected Global Config ID",
               "type": "string"
             }
           },
           {
             "name": "edgeConfigTokenId",
-            "description": "Filter results by connected Edge Config Token ID",
+            "description": "Filter results by connected Global Config Token ID",
             "in": "query",
             "schema": {
-              "description": "Filter results by connected Edge Config Token ID",
+              "description": "Filter results by connected Global Config Token ID",
               "type": "string"
             }
           },
@@ -165561,6 +165564,17 @@
             }
           },
           {
+            "name": "deleteOrphanSnapshots",
+            "description": "When true, snapshots of the deleted sandbox that are not referenced by any other sandbox are also deleted asynchronously. Defaults to false.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "description": "When true, snapshots of the deleted sandbox that are not referenced by any other sandbox are also deleted asynchronously. Defaults to false."
+            }
+          },
+          {
             "description": "The Team identifier to perform the request on behalf of.",
             "in": "query",
             "name": "teamId",
@@ -178312,7 +178326,7 @@
                     "additionalProperties": false
                   },
                   {
-                    "description": "Add a named condition",
+                    "description": "Reorder a ruleset",
                     "type": "object",
                     "properties": {
                       "action": {
@@ -178325,6 +178339,31 @@
                         "type": "string"
                       },
                       "value": {
+                        "nullable": true
+                      }
+                    },
+                    "required": [
+                      "action",
+                      "id",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "description": "Add a named condition",
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "rules.priority"
+                        ]
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "object",
                         "properties": {
                           "name": {
                             "type": "string",
@@ -178465,8 +178504,7 @@
                           "active",
                           "conditionGroup"
                         ],
-                        "additionalProperties": false,
-                        "nullable": true
+                        "additionalProperties": false
                       }
                     },
                     "required": [
@@ -178482,7 +178520,7 @@
                       "action": {
                         "type": "string",
                         "enum": [
-                          "rules.priority"
+                          "crs.update"
                         ]
                       },
                       "id": {
@@ -178647,14 +178685,14 @@
                       "action": {
                         "type": "string",
                         "enum": [
-                          "crs.update"
+                          "crs.disable"
                         ]
                       },
                       "id": {
-                        "type": "string"
+                        "nullable": true
                       },
                       "value": {
-                        "type": "string"
+                        "nullable": true
                       }
                     },
                     "required": [
@@ -178670,7 +178708,7 @@
                       "action": {
                         "type": "string",
                         "enum": [
-                          "crs.disable"
+                          "ip.insert"
                         ]
                       },
                       "id": {
@@ -178678,6 +178716,7 @@
                         "nullable": true
                       },
                       "value": {
+                        "type": "object",
                         "properties": {
                           "action": {
                             "type": "string",
@@ -178692,8 +178731,7 @@
                         "required": [
                           "action"
                         ],
-                        "additionalProperties": false,
-                        "nullable": true
+                        "additionalProperties": false
                       }
                     },
                     "required": [
@@ -178710,12 +178748,12 @@
                       "action": {
                         "type": "string",
                         "enum": [
-                          "ip.insert"
+                          "ip.update"
                         ]
                       },
                       "id": {
-                        "maxLength": 180,
-                        "nullable": true
+                        "type": "string",
+                        "maxLength": 180
                       },
                       "value": {
                         "type": "string"
@@ -178734,14 +178772,14 @@
                       "action": {
                         "type": "string",
                         "enum": [
-                          "ip.update"
+                          "ip.remove"
                         ]
                       },
                       "id": {
                         "type": "string"
                       },
                       "value": {
-                        "type": "boolean"
+                        "nullable": true
                       }
                     },
                     "required": [
@@ -178757,13 +178795,14 @@
                       "action": {
                         "type": "string",
                         "enum": [
-                          "ip.remove"
+                          "managedRules.update"
                         ]
                       },
                       "id": {
                         "type": "string"
                       },
                       "value": {
+                        "type": "object",
                         "properties": {
                           "name": {
                             "type": "string",
@@ -179029,8 +179068,7 @@
                           "conditionGroup",
                           "action"
                         ],
-                        "additionalProperties": false,
-                        "nullable": true
+                        "additionalProperties": false
                       }
                     },
                     "required": [
@@ -179044,10 +179082,7 @@
                     "type": "object",
                     "properties": {
                       "action": {
-                        "type": "string",
-                        "enum": [
-                          "managedRules.update"
-                        ]
+                        "type": "string"
                       },
                       "id": {
                         "type": "string"
@@ -210948,6 +210983,8 @@
               "user-emu-account-archived",
               "user-emu-account-deleted",
               "user-emu-account-recovered",
+              "user-emu-account-update-opted-in",
+              "user-emu-account-update-opted-out",
               "user-emu-recovery-email-sent",
               "user-emu-recovery-initiated",
               "user-emu-toggled",
@@ -231954,6 +231991,34 @@
               },
               {
                 "properties": {
+                  "teamName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "teamName"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "teamId": {
+                    "type": "string"
+                  },
+                  "teamName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "teamId",
+                  "teamName"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "actorId": {
                     "type": "string"
                   },
@@ -234710,6 +234775,8 @@
               "user-emu-account-archived",
               "user-emu-account-deleted",
               "user-emu-account-recovered",
+              "user-emu-account-update-opted-in",
+              "user-emu-account-update-opted-out",
               "user-emu-recovery-email-sent",
               "user-emu-recovery-initiated",
               "user-emu-toggled",
@@ -235424,6 +235491,8 @@
                 "user-emu-account-archived",
                 "user-emu-account-deleted",
                 "user-emu-account-recovered",
+                "user-emu-account-update-opted-in",
+                "user-emu-account-update-opted-out",
                 "user-emu-recovery-email-sent",
                 "user-emu-recovery-initiated",
                 "user-emu-toggled",
@@ -236790,7 +236859,7 @@
           },
           "tokenValue": {
             "type": "string",
-            "description": "Cleartext value of the Edge Config token, when the project has an Edge Config connection."
+            "description": "Cleartext value of the Global Config token, when the project has a Global Config connection."
           }
         },
         "required": [
