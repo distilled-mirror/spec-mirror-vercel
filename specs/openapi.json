@@ -45,6 +45,8 @@
                           "AiGatewayBudgetManager",
                           "AiGatewayCredits",
                           "AiGatewaySettings",
+                          "AiGatewayTranscriptsManager",
+                          "AiGatewayTranscriptsViewer",
                           "ConnectorManager",
                           "CreateProject",
                           "EnvVariableManager",
@@ -81067,6 +81069,18 @@
                                 },
                                 "type": "array"
                               },
+                              "aiGatewayTranscripts": {
+                                "items": {
+                                  "$ref": "#/components/schemas/ACLAction"
+                                },
+                                "type": "array"
+                              },
+                              "aiGatewayTranscriptsSettings": {
+                                "items": {
+                                  "$ref": "#/components/schemas/ACLAction"
+                                },
+                                "type": "array"
+                              },
                               "aiGatewayUsage": {
                                 "items": {
                                   "$ref": "#/components/schemas/ACLAction"
@@ -105282,6 +105296,18 @@
                                     },
                                     "type": "array"
                                   },
+                                  "aiGatewayTranscripts": {
+                                    "items": {
+                                      "$ref": "#/components/schemas/ACLAction"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "aiGatewayTranscriptsSettings": {
+                                    "items": {
+                                      "$ref": "#/components/schemas/ACLAction"
+                                    },
+                                    "type": "array"
+                                  },
                                   "aiGatewayUsage": {
                                     "items": {
                                       "$ref": "#/components/schemas/ACLAction"
@@ -113484,6 +113510,18 @@
                           "type": "array"
                         },
                         "aiGatewaySettings": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
+                        "aiGatewayTranscripts": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
+                        "aiGatewayTranscriptsSettings": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -121921,6 +121959,18 @@
                           },
                           "type": "array"
                         },
+                        "aiGatewayTranscripts": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
+                        "aiGatewayTranscriptsSettings": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
                         "aiGatewayUsage": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -129641,6 +129691,18 @@
                           "type": "array"
                         },
                         "aiGatewaySettings": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
+                        "aiGatewayTranscripts": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
+                        "aiGatewayTranscriptsSettings": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -138668,6 +138730,18 @@
                           "type": "array"
                         },
                         "aiGatewaySettings": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
+                        "aiGatewayTranscripts": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
+                        "aiGatewayTranscriptsSettings": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -159170,6 +159244,18 @@
                           },
                           "type": "array"
                         },
+                        "aiGatewayTranscripts": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
+                        "aiGatewayTranscriptsSettings": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
                         "aiGatewayUsage": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -171768,6 +171854,7 @@
                                                   "server_action",
                                                   "shared_condition",
                                                   "target_path",
+                                                  "traffic_source",
                                                   "trusted_source",
                                                   "user_agent"
                                                 ]
@@ -172029,6 +172116,7 @@
                                                   "server_action",
                                                   "shared_condition",
                                                   "target_path",
+                                                  "traffic_source",
                                                   "trusted_source",
                                                   "user_agent"
                                                 ]
@@ -172335,6 +172423,7 @@
                                                   "server_action",
                                                   "shared_condition",
                                                   "target_path",
+                                                  "traffic_source",
                                                   "trusted_source",
                                                   "user_agent"
                                                 ]
@@ -172703,6 +172792,7 @@
                                               "server_action",
                                               "shared_condition",
                                               "target_path",
+                                              "traffic_source",
                                               "trusted_source",
                                               "user_agent"
                                             ]
@@ -173345,6 +173435,7 @@
                                                   "server_action",
                                                   "shared_condition",
                                                   "target_path",
+                                                  "traffic_source",
                                                   "trusted_source",
                                                   "user_agent"
                                                 ]
@@ -173606,6 +173697,7 @@
                                                   "server_action",
                                                   "shared_condition",
                                                   "target_path",
+                                                  "traffic_source",
                                                   "trusted_source",
                                                   "user_agent"
                                                 ]
@@ -173912,6 +174004,7 @@
                                                   "server_action",
                                                   "shared_condition",
                                                   "target_path",
+                                                  "traffic_source",
                                                   "trusted_source",
                                                   "user_agent"
                                                 ]
@@ -174280,6 +174373,7 @@
                                               "server_action",
                                               "shared_condition",
                                               "target_path",
+                                              "traffic_source",
                                               "trusted_source",
                                               "user_agent"
                                             ]
@@ -174922,6 +175016,7 @@
                                                     "server_action",
                                                     "shared_condition",
                                                     "target_path",
+                                                    "traffic_source",
                                                     "trusted_source",
                                                     "user_agent"
                                                   ]
@@ -175183,6 +175278,7 @@
                                                     "server_action",
                                                     "shared_condition",
                                                     "target_path",
+                                                    "traffic_source",
                                                     "trusted_source",
                                                     "user_agent"
                                                   ]
@@ -175489,6 +175585,7 @@
                                                     "server_action",
                                                     "shared_condition",
                                                     "target_path",
+                                                    "traffic_source",
                                                     "trusted_source",
                                                     "user_agent"
                                                   ]
@@ -175857,6 +175954,7 @@
                                                 "server_action",
                                                 "shared_condition",
                                                 "target_path",
+                                                "traffic_source",
                                                 "trusted_source",
                                                 "user_agent"
                                               ]
@@ -176560,6 +176658,7 @@
                                                   "server_action",
                                                   "shared_condition",
                                                   "target_path",
+                                                  "traffic_source",
                                                   "trusted_source",
                                                   "user_agent"
                                                 ]
@@ -176821,6 +176920,7 @@
                                                   "server_action",
                                                   "shared_condition",
                                                   "target_path",
+                                                  "traffic_source",
                                                   "trusted_source",
                                                   "user_agent"
                                                 ]
@@ -177127,6 +177227,7 @@
                                                   "server_action",
                                                   "shared_condition",
                                                   "target_path",
+                                                  "traffic_source",
                                                   "trusted_source",
                                                   "user_agent"
                                                 ]
@@ -177495,6 +177596,7 @@
                                               "server_action",
                                               "shared_condition",
                                               "target_path",
+                                              "traffic_source",
                                               "trusted_source",
                                               "user_agent"
                                             ]
@@ -178152,6 +178254,7 @@
                                         "bot_status",
                                         "bot_protection",
                                         "shared_condition",
+                                        "traffic_source",
                                         "ruleset"
                                       ],
                                       "description": "[Parameter](https://vercel.com/docs/security/vercel-waf/rule-configuration#parameters) from the incoming traffic."
@@ -178428,6 +178531,7 @@
                                             "bot_status",
                                             "bot_protection",
                                             "shared_condition",
+                                            "traffic_source",
                                             "ruleset"
                                           ]
                                         },
@@ -178773,6 +178877,7 @@
                                           "bot_status",
                                           "bot_protection",
                                           "shared_condition",
+                                          "traffic_source",
                                           "ruleset"
                                         ]
                                       },
@@ -178960,6 +179065,7 @@
                                           "bot_status",
                                           "bot_protection",
                                           "shared_condition",
+                                          "traffic_source",
                                           "ruleset"
                                         ]
                                       },
@@ -179195,6 +179301,7 @@
                                           "bot_status",
                                           "bot_protection",
                                           "shared_condition",
+                                          "traffic_source",
                                           "ruleset"
                                         ]
                                       },
@@ -179359,6 +179466,7 @@
                                           "bot_status",
                                           "bot_protection",
                                           "shared_condition",
+                                          "traffic_source",
                                           "ruleset"
                                         ]
                                       },
@@ -179634,6 +179742,7 @@
                                           "bot_status",
                                           "bot_protection",
                                           "shared_condition",
+                                          "traffic_source",
                                           "ruleset"
                                         ]
                                       },
@@ -179920,6 +180029,7 @@
                                           "bot_status",
                                           "bot_protection",
                                           "shared_condition",
+                                          "traffic_source",
                                           "ruleset"
                                         ]
                                       },
@@ -180905,6 +181015,7 @@
                                               "server_action",
                                               "shared_condition",
                                               "target_path",
+                                              "traffic_source",
                                               "trusted_source",
                                               "user_agent"
                                             ]
@@ -181166,6 +181277,7 @@
                                               "server_action",
                                               "shared_condition",
                                               "target_path",
+                                              "traffic_source",
                                               "trusted_source",
                                               "user_agent"
                                             ]
@@ -181472,6 +181584,7 @@
                                               "server_action",
                                               "shared_condition",
                                               "target_path",
+                                              "traffic_source",
                                               "trusted_source",
                                               "user_agent"
                                             ]
@@ -181840,6 +181953,7 @@
                                           "server_action",
                                           "shared_condition",
                                           "target_path",
+                                          "traffic_source",
                                           "trusted_source",
                                           "user_agent"
                                         ]
@@ -182606,6 +182720,7 @@
                                               "server_action",
                                               "shared_condition",
                                               "target_path",
+                                              "traffic_source",
                                               "trusted_source",
                                               "user_agent"
                                             ]
@@ -182867,6 +182982,7 @@
                                               "server_action",
                                               "shared_condition",
                                               "target_path",
+                                              "traffic_source",
                                               "trusted_source",
                                               "user_agent"
                                             ]
@@ -183173,6 +183289,7 @@
                                               "server_action",
                                               "shared_condition",
                                               "target_path",
+                                              "traffic_source",
                                               "trusted_source",
                                               "user_agent"
                                             ]
@@ -183541,6 +183658,7 @@
                                           "server_action",
                                           "shared_condition",
                                           "target_path",
+                                          "traffic_source",
                                           "trusted_source",
                                           "user_agent"
                                         ]
@@ -190585,6 +190703,8 @@
                                 "AiGatewayBudgetManager",
                                 "AiGatewayCredits",
                                 "AiGatewaySettings",
+                                "AiGatewayTranscriptsManager",
+                                "AiGatewayTranscriptsViewer",
                                 "ConnectorManager",
                                 "CreateProject",
                                 "EnvVariableManager",
@@ -191658,6 +191778,8 @@
                         "AiGatewayCredits",
                         "AiGatewayApiKeyOwnedBySelf",
                         "AiGatewayBudgetManager",
+                        "AiGatewayTranscriptsManager",
+                        "AiGatewayTranscriptsViewer",
                         "V0Builder",
                         "V0Chatter",
                         "V0Viewer"
@@ -221624,6 +221746,8 @@
                                   "AiGatewayBudgetManager",
                                   "AiGatewayCredits",
                                   "AiGatewaySettings",
+                                  "AiGatewayTranscriptsManager",
+                                  "AiGatewayTranscriptsViewer",
                                   "ConnectorManager",
                                   "CreateProject",
                                   "EnvVariableManager",
@@ -232300,6 +232424,8 @@
                         "AiGatewayBudgetManager",
                         "AiGatewayCredits",
                         "AiGatewaySettings",
+                        "AiGatewayTranscriptsManager",
+                        "AiGatewayTranscriptsViewer",
                         "ConnectorManager",
                         "CreateProject",
                         "EnvVariableManager",
@@ -232325,6 +232451,8 @@
                         "AiGatewayBudgetManager",
                         "AiGatewayCredits",
                         "AiGatewaySettings",
+                        "AiGatewayTranscriptsManager",
+                        "AiGatewayTranscriptsViewer",
                         "ConnectorManager",
                         "CreateProject",
                         "EnvVariableManager",
@@ -238890,6 +239018,8 @@
                 "AiGatewayBudgetManager",
                 "AiGatewayCredits",
                 "AiGatewaySettings",
+                "AiGatewayTranscriptsManager",
+                "AiGatewayTranscriptsViewer",
                 "ConnectorManager",
                 "CreateProject",
                 "EnvVariableManager",
@@ -239161,6 +239291,8 @@
                     "AiGatewayBudgetManager",
                     "AiGatewayCredits",
                     "AiGatewaySettings",
+                    "AiGatewayTranscriptsManager",
+                    "AiGatewayTranscriptsViewer",
                     "ConnectorManager",
                     "CreateProject",
                     "EnvVariableManager",
@@ -239948,6 +240080,8 @@
                     "AiGatewayBudgetManager",
                     "AiGatewayCredits",
                     "AiGatewaySettings",
+                    "AiGatewayTranscriptsManager",
+                    "AiGatewayTranscriptsViewer",
                     "ConnectorManager",
                     "CreateProject",
                     "EnvVariableManager",
@@ -240301,6 +240435,8 @@
                     "AiGatewayBudgetManager",
                     "AiGatewayCredits",
                     "AiGatewaySettings",
+                    "AiGatewayTranscriptsManager",
+                    "AiGatewayTranscriptsViewer",
                     "ConnectorManager",
                     "CreateProject",
                     "EnvVariableManager",
