@@ -69753,6 +69753,10 @@
                               "marketplace"
                             ],
                             "description": "Defines the installation type. - 'external' integrations are installed via the existing integrations flow - 'marketplace' integrations are natively installed: - when accepting the TOS of a partner during the store creation process - if undefined, assume 'external'"
+                          },
+                          "acceptedPoliciesInheritedFromInstallationId": {
+                            "type": "string",
+                            "description": "Historical parent installation from which acceptedPolicies were inherited. This is immutable provenance, not current authorization or relationship truth."
                           }
                         },
                         "type": "object",
@@ -69978,6 +69982,10 @@
                               "marketplace"
                             ],
                             "description": "Defines the installation type. - 'external' integrations are installed via the existing integrations flow - 'marketplace' integrations are natively installed: - when accepting the TOS of a partner during the store creation process - if undefined, assume 'external'"
+                          },
+                          "acceptedPoliciesInheritedFromInstallationId": {
+                            "type": "string",
+                            "description": "Historical parent installation from which acceptedPolicies were inherited. This is immutable provenance, not current authorization or relationship truth."
                           }
                         },
                         "required": [
@@ -70454,6 +70462,10 @@
                             "marketplace"
                           ],
                           "description": "Defines the installation type. - 'external' integrations are installed via the existing integrations flow - 'marketplace' integrations are natively installed: - when accepting the TOS of a partner during the store creation process - if undefined, assume 'external'"
+                        },
+                        "acceptedPoliciesInheritedFromInstallationId": {
+                          "type": "string",
+                          "description": "Historical parent installation from which acceptedPolicies were inherited. This is immutable provenance, not current authorization or relationship truth."
                         }
                       },
                       "required": [
@@ -70620,6 +70632,10 @@
                             "marketplace"
                           ],
                           "description": "Defines the installation type. - 'external' integrations are installed via the existing integrations flow - 'marketplace' integrations are natively installed: - when accepting the TOS of a partner during the store creation process - if undefined, assume 'external'"
+                        },
+                        "acceptedPoliciesInheritedFromInstallationId": {
+                          "type": "string",
+                          "description": "Historical parent installation from which acceptedPolicies were inherited. This is immutable provenance, not current authorization or relationship truth."
                         }
                       },
                       "required": [
@@ -70784,6 +70800,10 @@
                             "marketplace"
                           ],
                           "description": "Defines the installation type. - 'external' integrations are installed via the existing integrations flow - 'marketplace' integrations are natively installed: - when accepting the TOS of a partner during the store creation process - if undefined, assume 'external'"
+                        },
+                        "acceptedPoliciesInheritedFromInstallationId": {
+                          "type": "string",
+                          "description": "Historical parent installation from which acceptedPolicies were inherited. This is immutable provenance, not current authorization or relationship truth."
                         }
                       },
                       "type": "object",
@@ -165359,19 +165379,12 @@
         ]
       }
     },
-    "/v2/sandboxes": {
+    "/sandboxes": {
       "get": {
-        "description": "Retrieves a paginated list of named sandboxes belonging to a specific project. Results can be sorted by creation time or name, and optionally filtered by name prefix or status.",
-        "operationId": "listSandboxes",
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
-        "summary": "List sandboxes",
-        "tags": [
-          "sandboxes"
-        ],
+        "description": "",
+        "operationId": "getSandboxes",
+        "security": [],
+        "tags": [],
         "responses": {
           "200": {
             "description": "",
@@ -165542,27 +165555,11 @@
                 }
               ]
             }
-          },
-          {
-            "description": "The Team identifier to perform the request on behalf of.",
-            "in": "query",
-            "name": "teamId",
-            "schema": {
-              "type": "string",
-              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
-            }
-          },
-          {
-            "description": "The Team slug to perform the request on behalf of.",
-            "in": "query",
-            "name": "slug",
-            "schema": {
-              "type": "string",
-              "example": "my-team-url-slug"
-            }
           }
         ]
-      },
+      }
+    },
+    "/v2/sandboxes": {
       "post": {
         "description": "Creates a named sandbox environment. Named sandboxes have a unique name within a project and support automatic snapshotting on shutdown.",
         "operationId": "createSandboxesV2",
@@ -186382,6 +186379,9 @@
           "401": {
             "description": "The request is not authorized."
           },
+          "402": {
+            "description": ""
+          },
           "403": {
             "description": "You do not have permission to access this resource."
           },
@@ -186652,6 +186652,9 @@
           "401": {
             "description": "The request is not authorized."
           },
+          "402": {
+            "description": ""
+          },
           "403": {
             "description": "You do not have permission to access this resource."
           },
@@ -186781,6 +186784,9 @@
           },
           "401": {
             "description": "The request is not authorized."
+          },
+          "402": {
+            "description": ""
           },
           "403": {
             "description": "You do not have permission to access this resource."
@@ -194749,6 +194755,21 @@
                       "enabled"
                     ]
                   },
+                  "strictConnectors": {
+                    "type": "object",
+                    "description": "When enabled, creating and managing connectors requires Owner role.",
+                    "additionalProperties": false,
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "example": true,
+                        "description": "Enable or disable requiring Owner role to manage connectors."
+                      }
+                    },
+                    "required": [
+                      "enabled"
+                    ]
+                  },
                   "nsnbConfig": {
                     "anyOf": [
                       {
@@ -200653,6 +200674,9 @@
           "403": {
             "description": "You do not have permission to access this resource."
           },
+          "404": {
+            "description": ""
+          },
           "410": {
             "description": ""
           }
@@ -202472,6 +202496,9 @@
           "403": {
             "description": "You do not have permission to access this resource."
           },
+          "404": {
+            "description": ""
+          },
           "410": {
             "description": ""
           }
@@ -203595,6 +203622,9 @@
           "403": {
             "description": "You do not have permission to access this resource."
           },
+          "404": {
+            "description": ""
+          },
           "410": {
             "description": ""
           }
@@ -204652,6 +204682,9 @@
           },
           "403": {
             "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
           },
           "410": {
             "description": ""
@@ -215974,6 +216007,8 @@
               "shared-env-variable-create",
               "shared-env-variable-delete",
               "shared-env-variable-read",
+              "shared-env-variable-repo-link",
+              "shared-env-variable-repo-unlink",
               "shared-env-variable-update",
               "show-ip-addresses",
               "signup",
@@ -216004,6 +216039,7 @@
               "storage-update-project-connection",
               "storage-upgrade-project-connection-to-oidc",
               "storage-view-secret",
+              "strict-connectors",
               "strict-deployment-protection-settings",
               "strict-password-protection-settings",
               "strict-shareable-links",
@@ -219838,6 +219874,9 @@
                     "type": "string"
                   },
                   "projectId": {
+                    "type": "string"
+                  },
+                  "projectName": {
                     "type": "string"
                   },
                   "installationId": {
@@ -224112,6 +224151,46 @@
               },
               {
                 "properties": {
+                  "envId": {
+                    "type": "string"
+                  },
+                  "envKey": {
+                    "type": "string"
+                  },
+                  "provider": {
+                    "type": "string"
+                  },
+                  "organizationId": {
+                    "type": "string"
+                  },
+                  "repository": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "development",
+                        "preview",
+                        "production"
+                      ]
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "envId",
+                  "envKey",
+                  "organizationId",
+                  "provider",
+                  "repository",
+                  "target"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "oldEnvVar": {
                     "properties": {
                       "created": {
@@ -224713,6 +224792,9 @@
               {
                 "properties": {
                   "projectId": {
+                    "type": "string"
+                  },
+                  "projectName": {
                     "type": "string"
                   },
                   "previousOwnerId": {
@@ -225547,6 +225629,9 @@
                           },
                           "security": {
                             "properties": {
+                              "rateLimit": {
+                                "type": "number"
+                              },
                               "customRules": {
                                 "type": "number"
                               },
@@ -225554,9 +225639,6 @@
                                 "type": "number"
                               },
                               "ipBypass": {
-                                "type": "number"
-                              },
-                              "rateLimit": {
                                 "type": "number"
                               }
                             },
@@ -230907,6 +230989,9 @@
               },
               {
                 "properties": {
+                  "projectName": {
+                    "type": "string"
+                  },
                   "endpoint": {
                     "properties": {
                       "id": {
@@ -230949,6 +231034,9 @@
               },
               {
                 "properties": {
+                  "projectName": {
+                    "type": "string"
+                  },
                   "privateLinkEndpoint": {
                     "properties": {
                       "id": {
@@ -230977,6 +231065,9 @@
               },
               {
                 "properties": {
+                  "projectName": {
+                    "type": "string"
+                  },
                   "prev": {
                     "properties": {
                       "id": {
@@ -231053,6 +231144,9 @@
               },
               {
                 "properties": {
+                  "projectName": {
+                    "type": "string"
+                  },
                   "privateLinkEndpoint": {
                     "properties": {
                       "id": {
@@ -238697,6 +238791,9 @@
                   "projectId": {
                     "type": "string"
                   },
+                  "projectName": {
+                    "type": "string"
+                  },
                   "runId": {
                     "type": "string"
                   }
@@ -239342,6 +239439,10 @@
                     "description": "Present when `scope` is `'team'` or `'project'`."
                   },
                   "projectId": {
+                    "type": "string",
+                    "description": "Present when `scope` is `'project'`."
+                  },
+                  "projectName": {
                     "type": "string",
                     "description": "Present when `scope` is `'project'`."
                   },
@@ -240229,6 +240330,8 @@
               "shared-env-variable-create",
               "shared-env-variable-delete",
               "shared-env-variable-read",
+              "shared-env-variable-repo-link",
+              "shared-env-variable-repo-unlink",
               "shared-env-variable-update",
               "show-ip-addresses",
               "signup",
@@ -240259,6 +240362,7 @@
               "storage-update-project-connection",
               "storage-upgrade-project-connection-to-oidc",
               "storage-view-secret",
+              "strict-connectors",
               "strict-deployment-protection-settings",
               "strict-password-protection-settings",
               "strict-shareable-links",
@@ -240947,6 +241051,8 @@
                 "shared-env-variable-create",
                 "shared-env-variable-delete",
                 "shared-env-variable-read",
+                "shared-env-variable-repo-link",
+                "shared-env-variable-repo-unlink",
                 "shared-env-variable-update",
                 "show-ip-addresses",
                 "signup",
@@ -240977,6 +241083,7 @@
                 "storage-update-project-connection",
                 "storage-upgrade-project-connection-to-oidc",
                 "storage-view-secret",
+                "strict-connectors",
                 "strict-deployment-protection-settings",
                 "strict-password-protection-settings",
                 "strict-shareable-links",
@@ -243158,6 +243265,11 @@
       },
       "Drive": {
         "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique drive ID.",
+            "example": "drive_abc123"
+          },
           "name": {
             "type": "string",
             "description": "The unique drive name within the project.",
@@ -243201,6 +243313,7 @@
         },
         "required": [
           "createdAt",
+          "id",
           "maxSizeBytes",
           "name",
           "projectId",
@@ -244155,6 +244268,26 @@
             ],
             "type": "object",
             "description": "When enabled, adding, changing, or removing project password protection requires Owner role."
+          },
+          "strictConnectors": {
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "enum": [
+                  false,
+                  true
+                ]
+              },
+              "updatedAt": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "enabled",
+              "updatedAt"
+            ],
+            "type": "object",
+            "description": "When enabled, creating and managing connectors requires Owner role or the ConnectorManager permission."
           },
           "nsnbConfig": {
             "properties": {
@@ -245479,6 +245612,10 @@
               },
               "security": {
                 "properties": {
+                  "rateLimit": {
+                    "type": "number",
+                    "description": "An object containing infomation related to the amount of platform resources may be allocated to the User account."
+                  },
                   "customRules": {
                     "type": "number",
                     "description": "An object containing infomation related to the amount of platform resources may be allocated to the User account."
@@ -245488,10 +245625,6 @@
                     "description": "An object containing infomation related to the amount of platform resources may be allocated to the User account."
                   },
                   "ipBypass": {
-                    "type": "number",
-                    "description": "An object containing infomation related to the amount of platform resources may be allocated to the User account."
-                  },
-                  "rateLimit": {
                     "type": "number",
                     "description": "An object containing infomation related to the amount of platform resources may be allocated to the User account."
                   }
