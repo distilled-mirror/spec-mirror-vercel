@@ -2027,6 +2027,30 @@
             }
           },
           {
+            "name": "updatedBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "actingIp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "actingUserAgent",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "The Team identifier to perform the request on behalf of.",
             "in": "query",
             "name": "teamId",
@@ -2337,6 +2361,30 @@
             "name": "vmcSlug",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "updatedBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "actingIp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "actingUserAgent",
+            "in": "query",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -76222,7 +76270,7 @@
                   },
                   "algorithm": {
                     "type": "string",
-                    "description": "The signing algorithm to use for the issuer.",
+                    "description": "The signing algorithm to use for the issuer. EdDSA is not accepted for new issuers.",
                     "enum": [
                       "RS256",
                       "RS384",
@@ -76232,8 +76280,7 @@
                       "PS512",
                       "ES256",
                       "ES384",
-                      "ES512",
-                      "EdDSA"
+                      "ES512"
                     ],
                     "default": "RS512"
                   },
@@ -81933,6 +81980,79 @@
                                     "type": "string",
                                     "enum": [
                                       "vercel"
+                                    ]
+                                  },
+                                  "createdAt": {
+                                    "type": "number"
+                                  },
+                                  "deployHooks": {
+                                    "items": {
+                                      "properties": {
+                                        "createdAt": {
+                                          "type": "number"
+                                        },
+                                        "id": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        },
+                                        "ref": {
+                                          "type": "string"
+                                        },
+                                        "url": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "id",
+                                        "name",
+                                        "ref",
+                                        "url"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "gitCredentialId": {
+                                    "type": "string"
+                                  },
+                                  "updatedAt": {
+                                    "type": "number"
+                                  },
+                                  "sourceless": {
+                                    "type": "boolean",
+                                    "enum": [
+                                      false,
+                                      true
+                                    ]
+                                  },
+                                  "productionBranch": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "deployHooks",
+                                  "gitCredentialId",
+                                  "org",
+                                  "productionBranch",
+                                  "repo",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              {
+                                "properties": {
+                                  "org": {
+                                    "type": "string"
+                                  },
+                                  "repo": {
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "v0"
                                     ]
                                   },
                                   "createdAt": {
@@ -96156,6 +96276,79 @@
                               },
                               {
                                 "properties": {
+                                  "org": {
+                                    "type": "string"
+                                  },
+                                  "repo": {
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "v0"
+                                    ]
+                                  },
+                                  "createdAt": {
+                                    "type": "number"
+                                  },
+                                  "deployHooks": {
+                                    "items": {
+                                      "properties": {
+                                        "createdAt": {
+                                          "type": "number"
+                                        },
+                                        "id": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        },
+                                        "ref": {
+                                          "type": "string"
+                                        },
+                                        "url": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "id",
+                                        "name",
+                                        "ref",
+                                        "url"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "gitCredentialId": {
+                                    "type": "string"
+                                  },
+                                  "updatedAt": {
+                                    "type": "number"
+                                  },
+                                  "sourceless": {
+                                    "type": "boolean",
+                                    "enum": [
+                                      false,
+                                      true
+                                    ]
+                                  },
+                                  "productionBranch": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "deployHooks",
+                                  "gitCredentialId",
+                                  "org",
+                                  "productionBranch",
+                                  "repo",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              {
+                                "properties": {
                                   "owner": {
                                     "type": "string",
                                     "description": "Owner (namespace) slug, e.g. `acme`."
@@ -100827,6 +101020,79 @@
                                         "type": "string",
                                         "enum": [
                                           "vercel"
+                                        ]
+                                      },
+                                      "createdAt": {
+                                        "type": "number"
+                                      },
+                                      "deployHooks": {
+                                        "items": {
+                                          "properties": {
+                                            "createdAt": {
+                                              "type": "number"
+                                            },
+                                            "id": {
+                                              "type": "string"
+                                            },
+                                            "name": {
+                                              "type": "string"
+                                            },
+                                            "ref": {
+                                              "type": "string"
+                                            },
+                                            "url": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "id",
+                                            "name",
+                                            "ref",
+                                            "url"
+                                          ],
+                                          "type": "object"
+                                        },
+                                        "type": "array"
+                                      },
+                                      "gitCredentialId": {
+                                        "type": "string"
+                                      },
+                                      "updatedAt": {
+                                        "type": "number"
+                                      },
+                                      "sourceless": {
+                                        "type": "boolean",
+                                        "enum": [
+                                          false,
+                                          true
+                                        ]
+                                      },
+                                      "productionBranch": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "deployHooks",
+                                      "gitCredentialId",
+                                      "org",
+                                      "productionBranch",
+                                      "repo",
+                                      "type"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "properties": {
+                                      "org": {
+                                        "type": "string"
+                                      },
+                                      "repo": {
+                                        "type": "string"
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "enum": [
+                                          "v0"
                                         ]
                                       },
                                       "createdAt": {
@@ -106182,6 +106448,79 @@
                                         "type": "string",
                                         "enum": [
                                           "vercel"
+                                        ]
+                                      },
+                                      "createdAt": {
+                                        "type": "number"
+                                      },
+                                      "deployHooks": {
+                                        "items": {
+                                          "properties": {
+                                            "createdAt": {
+                                              "type": "number"
+                                            },
+                                            "id": {
+                                              "type": "string"
+                                            },
+                                            "name": {
+                                              "type": "string"
+                                            },
+                                            "ref": {
+                                              "type": "string"
+                                            },
+                                            "url": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "id",
+                                            "name",
+                                            "ref",
+                                            "url"
+                                          ],
+                                          "type": "object"
+                                        },
+                                        "type": "array"
+                                      },
+                                      "gitCredentialId": {
+                                        "type": "string"
+                                      },
+                                      "updatedAt": {
+                                        "type": "number"
+                                      },
+                                      "sourceless": {
+                                        "type": "boolean",
+                                        "enum": [
+                                          false,
+                                          true
+                                        ]
+                                      },
+                                      "productionBranch": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "deployHooks",
+                                      "gitCredentialId",
+                                      "org",
+                                      "productionBranch",
+                                      "repo",
+                                      "type"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "properties": {
+                                      "org": {
+                                        "type": "string"
+                                      },
+                                      "repo": {
+                                        "type": "string"
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "enum": [
+                                          "v0"
                                         ]
                                       },
                                       "createdAt": {
@@ -114409,6 +114748,79 @@
                               "type": "string",
                               "enum": [
                                 "vercel"
+                              ]
+                            },
+                            "createdAt": {
+                              "type": "number"
+                            },
+                            "deployHooks": {
+                              "items": {
+                                "properties": {
+                                  "createdAt": {
+                                    "type": "number"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "ref": {
+                                    "type": "string"
+                                  },
+                                  "url": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name",
+                                  "ref",
+                                  "url"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "gitCredentialId": {
+                              "type": "string"
+                            },
+                            "updatedAt": {
+                              "type": "number"
+                            },
+                            "sourceless": {
+                              "type": "boolean",
+                              "enum": [
+                                false,
+                                true
+                              ]
+                            },
+                            "productionBranch": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "deployHooks",
+                            "gitCredentialId",
+                            "org",
+                            "productionBranch",
+                            "repo",
+                            "type"
+                          ],
+                          "type": "object"
+                        },
+                        {
+                          "properties": {
+                            "org": {
+                              "type": "string"
+                            },
+                            "repo": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "v0"
                               ]
                             },
                             "createdAt": {
@@ -122925,6 +123337,79 @@
                         },
                         {
                           "properties": {
+                            "org": {
+                              "type": "string"
+                            },
+                            "repo": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "v0"
+                              ]
+                            },
+                            "createdAt": {
+                              "type": "number"
+                            },
+                            "deployHooks": {
+                              "items": {
+                                "properties": {
+                                  "createdAt": {
+                                    "type": "number"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "ref": {
+                                    "type": "string"
+                                  },
+                                  "url": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name",
+                                  "ref",
+                                  "url"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "gitCredentialId": {
+                              "type": "string"
+                            },
+                            "updatedAt": {
+                              "type": "number"
+                            },
+                            "sourceless": {
+                              "type": "boolean",
+                              "enum": [
+                                false,
+                                true
+                              ]
+                            },
+                            "productionBranch": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "deployHooks",
+                            "gitCredentialId",
+                            "org",
+                            "productionBranch",
+                            "repo",
+                            "type"
+                          ],
+                          "type": "object"
+                        },
+                        {
+                          "properties": {
                             "owner": {
                               "type": "string",
                               "description": "Owner (namespace) slug, e.g. `acme`."
@@ -130607,6 +131092,79 @@
                               "type": "string",
                               "enum": [
                                 "vercel"
+                              ]
+                            },
+                            "createdAt": {
+                              "type": "number"
+                            },
+                            "deployHooks": {
+                              "items": {
+                                "properties": {
+                                  "createdAt": {
+                                    "type": "number"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "ref": {
+                                    "type": "string"
+                                  },
+                                  "url": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name",
+                                  "ref",
+                                  "url"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "gitCredentialId": {
+                              "type": "string"
+                            },
+                            "updatedAt": {
+                              "type": "number"
+                            },
+                            "sourceless": {
+                              "type": "boolean",
+                              "enum": [
+                                false,
+                                true
+                              ]
+                            },
+                            "productionBranch": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "deployHooks",
+                            "gitCredentialId",
+                            "org",
+                            "productionBranch",
+                            "repo",
+                            "type"
+                          ],
+                          "type": "object"
+                        },
+                        {
+                          "properties": {
+                            "org": {
+                              "type": "string"
+                            },
+                            "repo": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "v0"
                               ]
                             },
                             "createdAt": {
@@ -139658,6 +140216,79 @@
                               "type": "string",
                               "enum": [
                                 "vercel"
+                              ]
+                            },
+                            "createdAt": {
+                              "type": "number"
+                            },
+                            "deployHooks": {
+                              "items": {
+                                "properties": {
+                                  "createdAt": {
+                                    "type": "number"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "ref": {
+                                    "type": "string"
+                                  },
+                                  "url": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name",
+                                  "ref",
+                                  "url"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "gitCredentialId": {
+                              "type": "string"
+                            },
+                            "updatedAt": {
+                              "type": "number"
+                            },
+                            "sourceless": {
+                              "type": "boolean",
+                              "enum": [
+                                false,
+                                true
+                              ]
+                            },
+                            "productionBranch": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "deployHooks",
+                            "gitCredentialId",
+                            "org",
+                            "productionBranch",
+                            "repo",
+                            "type"
+                          ],
+                          "type": "object"
+                        },
+                        {
+                          "properties": {
+                            "org": {
+                              "type": "string"
+                            },
+                            "repo": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "v0"
                               ]
                             },
                             "createdAt": {
@@ -160176,6 +160807,79 @@
                               "type": "string",
                               "enum": [
                                 "vercel"
+                              ]
+                            },
+                            "createdAt": {
+                              "type": "number"
+                            },
+                            "deployHooks": {
+                              "items": {
+                                "properties": {
+                                  "createdAt": {
+                                    "type": "number"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "ref": {
+                                    "type": "string"
+                                  },
+                                  "url": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name",
+                                  "ref",
+                                  "url"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "gitCredentialId": {
+                              "type": "string"
+                            },
+                            "updatedAt": {
+                              "type": "number"
+                            },
+                            "sourceless": {
+                              "type": "boolean",
+                              "enum": [
+                                false,
+                                true
+                              ]
+                            },
+                            "productionBranch": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "deployHooks",
+                            "gitCredentialId",
+                            "org",
+                            "productionBranch",
+                            "repo",
+                            "type"
+                          ],
+                          "type": "object"
+                        },
+                        {
+                          "properties": {
+                            "org": {
+                              "type": "string"
+                            },
+                            "repo": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "v0"
                               ]
                             },
                             "createdAt": {
@@ -216106,6 +216810,7 @@
               "ai-gateway-byok-credential-created",
               "ai-gateway-byok-credential-deleted",
               "ai-gateway-byok-credential-updated",
+              "ai-gateway-byok-model-mappings-updated",
               "ai-gateway-credits-purchased",
               "ai-gateway-guardrails-updated",
               "ai-gateway-hipaa-compliance-toggled",
@@ -216132,6 +216837,7 @@
               "ai-gateway-transcripts-retention-updated",
               "ai-gateway-virtual-model-config-archived",
               "ai-gateway-virtual-model-config-created",
+              "ai-gateway-virtual-model-config-deleted",
               "ai-gateway-virtual-model-config-restored",
               "ai-gateway-virtual-model-config-updated",
               "ai-gateway-zero-data-retention-toggled",
@@ -216324,6 +217030,7 @@
               "flags-segment",
               "flags-settings",
               "flags-transferred",
+              "flat-rate-cdn-auto-upgrade-consent",
               "git-integration-repo-push",
               "git_account_integration_link_added",
               "global-config-backup-restored",
@@ -217853,6 +218560,55 @@
                 },
                 "required": [
                   "credential"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "credential": {
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "providerSlug": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "providerSlug"
+                    ],
+                    "type": "object"
+                  },
+                  "added": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "removed": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "changed": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "added",
+                  "changed",
+                  "credential",
+                  "removed"
                 ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
@@ -225402,6 +226158,23 @@
               },
               {
                 "properties": {
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "create",
+                      "enable",
+                      "upgrade"
+                    ]
+                  }
+                },
+                "required": [
+                  "source"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "provider": {
                     "type": "string",
                     "enum": [
@@ -232942,6 +233715,7 @@
                           "github-custom-host",
                           "github-limited",
                           "gitlab",
+                          "v0",
                           "vercel"
                         ]
                       },
@@ -232970,6 +233744,7 @@
                           "github-custom-host",
                           "github-limited",
                           "gitlab",
+                          "v0",
                           "vercel"
                         ]
                       },
@@ -233013,6 +233788,7 @@
                       "github-custom-host",
                       "github-limited",
                       "gitlab",
+                      "v0",
                       "vercel"
                     ]
                   },
@@ -240432,6 +241208,7 @@
               "ai-gateway-byok-credential-created",
               "ai-gateway-byok-credential-deleted",
               "ai-gateway-byok-credential-updated",
+              "ai-gateway-byok-model-mappings-updated",
               "ai-gateway-credits-purchased",
               "ai-gateway-guardrails-updated",
               "ai-gateway-hipaa-compliance-toggled",
@@ -240458,6 +241235,7 @@
               "ai-gateway-transcripts-retention-updated",
               "ai-gateway-virtual-model-config-archived",
               "ai-gateway-virtual-model-config-created",
+              "ai-gateway-virtual-model-config-deleted",
               "ai-gateway-virtual-model-config-restored",
               "ai-gateway-virtual-model-config-updated",
               "ai-gateway-zero-data-retention-toggled",
@@ -240650,6 +241428,7 @@
               "flags-segment",
               "flags-settings",
               "flags-transferred",
+              "flat-rate-cdn-auto-upgrade-consent",
               "git-integration-repo-push",
               "git_account_integration_link_added",
               "global-config-backup-restored",
@@ -241156,6 +241935,7 @@
                 "ai-gateway-byok-credential-created",
                 "ai-gateway-byok-credential-deleted",
                 "ai-gateway-byok-credential-updated",
+                "ai-gateway-byok-model-mappings-updated",
                 "ai-gateway-credits-purchased",
                 "ai-gateway-guardrails-updated",
                 "ai-gateway-hipaa-compliance-toggled",
@@ -241182,6 +241962,7 @@
                 "ai-gateway-transcripts-retention-updated",
                 "ai-gateway-virtual-model-config-archived",
                 "ai-gateway-virtual-model-config-created",
+                "ai-gateway-virtual-model-config-deleted",
                 "ai-gateway-virtual-model-config-restored",
                 "ai-gateway-virtual-model-config-updated",
                 "ai-gateway-zero-data-retention-toggled",
@@ -241374,6 +242155,7 @@
                 "flags-segment",
                 "flags-settings",
                 "flags-transferred",
+                "flat-rate-cdn-auto-upgrade-consent",
                 "git-integration-repo-push",
                 "git_account_integration_link_added",
                 "global-config-backup-restored",
