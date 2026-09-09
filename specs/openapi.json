@@ -167270,12 +167270,12 @@
                         },
                         "mode": {
                           "type": "string",
+                          "description": "Mount the drive as read-write, or as a read-only snapshot. One writer is permitted at a time.",
+                          "default": "read-write",
                           "enum": [
-                            "read-only",
+                            "snapshot",
                             "read-write"
-                          ],
-                          "description": "Mount the drive read-only or read-write.",
-                          "default": "read-write"
+                          ]
                         }
                       }
                     }
@@ -167360,6 +167360,11 @@
                       "sfo1",
                       "cle1"
                     ]
+                  },
+                  "networkId": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "The Connect network id for the target Secure Compute private network."
                   },
                   "name": {
                     "example": "my-sandbox",
@@ -167723,7 +167728,7 @@
                   },
                   "maxSizeBytes": {
                     "type": "integer",
-                    "description": "Maximum drive size in bytes. Defaults to 1 TiB when omitted. The maximum quota is 16 TiB. Request a quota above 16 TiB at https://vercel.com/help."
+                    "description": "Maximum drive size in bytes. Defaults to 1 TiB when omitted (1 GiB for Hobby). The maximum quota is 16 TiB. Request a quota above 16 TiB at https://vercel.com/help."
                   },
                   "region": {
                     "type": "string",
@@ -169316,15 +169321,27 @@
                         },
                         "mode": {
                           "type": "string",
+                          "description": "Mount the drive as read-write, or as a read-only snapshot. One writer is permitted at a time.",
+                          "default": "read-write",
                           "enum": [
-                            "read-only",
+                            "snapshot",
                             "read-write"
-                          ],
-                          "description": "Mount the drive read-only or read-write.",
-                          "default": "read-write"
+                          ]
                         }
                       }
                     }
+                  },
+                  "networkId": {
+                    "description": "The Connect network id for the target Secure Compute private network. Set to null to remove the sandbox from Secure Compute.",
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "string",
+                        "maxLength": 255
+                      }
+                    ]
                   },
                   "env": {
                     "type": "object",
@@ -171994,12 +172011,12 @@
                         },
                         "mode": {
                           "type": "string",
+                          "description": "Mount the drive as read-write, or as a read-only snapshot. One writer is permitted at a time.",
+                          "default": "read-write",
                           "enum": [
-                            "read-only",
+                            "snapshot",
                             "read-write"
-                          ],
-                          "description": "Mount the drive read-only or read-write.",
-                          "default": "read-write"
+                          ]
                         }
                       }
                     }
@@ -172084,6 +172101,11 @@
                       "sfo1",
                       "cle1"
                     ]
+                  },
+                  "networkId": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "The Connect network id for the target Secure Compute private network."
                   },
                   "name": {
                     "example": "my-sandbox-fork",
@@ -172828,12 +172850,12 @@
                         },
                         "mode": {
                           "type": "string",
+                          "description": "Mount the drive as read-write, or as a read-only snapshot. One writer is permitted at a time.",
+                          "default": "read-write",
                           "enum": [
-                            "read-only",
+                            "snapshot",
                             "read-write"
-                          ],
-                          "description": "Mount the drive read-only or read-write.",
-                          "default": "read-write"
+                          ]
                         }
                       }
                     }
@@ -172918,6 +172940,11 @@
                       "sfo1",
                       "cle1"
                     ]
+                  },
+                  "networkId": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "The Connect network id for the target Secure Compute private network."
                   },
                   "name": {
                     "example": "my-sandbox",
@@ -173716,12 +173743,12 @@
                         },
                         "mode": {
                           "type": "string",
+                          "description": "Mount the drive as read-write, or as a read-only snapshot. One writer is permitted at a time.",
+                          "default": "read-write",
                           "enum": [
-                            "read-only",
+                            "snapshot",
                             "read-write"
-                          ],
-                          "description": "Mount the drive read-only or read-write.",
-                          "default": "read-write"
+                          ]
                         }
                       }
                     }
@@ -173806,6 +173833,11 @@
                       "sfo1",
                       "cle1"
                     ]
+                  },
+                  "networkId": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "The Connect network id for the target Secure Compute private network."
                   },
                   "name": {
                     "example": "my-sandbox-fork",
@@ -174557,12 +174589,12 @@
                         },
                         "mode": {
                           "type": "string",
+                          "description": "Mount the drive as read-write, or as a read-only snapshot. One writer is permitted at a time.",
+                          "default": "read-write",
                           "enum": [
-                            "read-only",
+                            "snapshot",
                             "read-write"
-                          ],
-                          "description": "Mount the drive read-only or read-write.",
-                          "default": "read-write"
+                          ]
                         }
                       }
                     }
@@ -174647,6 +174679,11 @@
                       "sfo1",
                       "cle1"
                     ]
+                  },
+                  "networkId": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "The Connect network id for the target Secure Compute private network."
                   },
                   "name": {
                     "example": "my-sandbox",
@@ -197663,7 +197700,8 @@
                 ],
                 "properties": {
                   "projectId": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Project ID. Missing or empty values return HTTP 400."
                   },
                   "name": {
                     "type": "string",
@@ -197720,10 +197758,12 @@
         "parameters": [
           {
             "name": "projectId",
+            "description": "Project ID. Missing or empty values return HTTP 400.",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "Project ID. Missing or empty values return HTTP 400."
             }
           },
           {
@@ -197819,10 +197859,12 @@
         "parameters": [
           {
             "name": "projectId",
+            "description": "Project ID. Missing or empty values return HTTP 400.",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "Project ID. Missing or empty values return HTTP 400."
             }
           },
           {
@@ -197896,10 +197938,12 @@
         "parameters": [
           {
             "name": "projectId",
+            "description": "Project ID. Missing or empty values return HTTP 400.",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "Project ID. Missing or empty values return HTTP 400."
             }
           },
           {
@@ -197975,10 +198019,12 @@
         "parameters": [
           {
             "name": "projectId",
+            "description": "Project ID. Missing or empty values return HTTP 400.",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "Project ID. Missing or empty values return HTTP 400."
             }
           },
           {
@@ -198091,10 +198137,12 @@
         "parameters": [
           {
             "name": "projectId",
+            "description": "Project ID. Missing or empty values return HTTP 400.",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "Project ID. Missing or empty values return HTTP 400."
             }
           },
           {
@@ -198194,10 +198242,12 @@
         "parameters": [
           {
             "name": "projectId",
+            "description": "Project ID. Missing or empty values return HTTP 400.",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "Project ID. Missing or empty values return HTTP 400."
             }
           },
           {
@@ -198297,10 +198347,12 @@
         "parameters": [
           {
             "name": "projectId",
+            "description": "Project ID. Missing or empty values return HTTP 400.",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "Project ID. Missing or empty values return HTTP 400."
             }
           },
           {
@@ -198397,10 +198449,12 @@
         "parameters": [
           {
             "name": "projectId",
+            "description": "Project ID. Missing or empty values return HTTP 400.",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "Project ID. Missing or empty values return HTTP 400."
             }
           },
           {
@@ -198547,10 +198601,12 @@
         "parameters": [
           {
             "name": "projectId",
+            "description": "Project ID. Missing or empty values return HTTP 400.",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "Project ID. Missing or empty values return HTTP 400."
             }
           },
           {
@@ -198682,10 +198738,12 @@
         "parameters": [
           {
             "name": "projectId",
+            "description": "Project ID. Missing or empty values return HTTP 400.",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "Project ID. Missing or empty values return HTTP 400."
             }
           },
           {
@@ -198778,10 +198836,12 @@
         "parameters": [
           {
             "name": "projectId",
+            "description": "Project ID. Missing or empty values return HTTP 400.",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "Project ID. Missing or empty values return HTTP 400."
             }
           },
           {
@@ -198868,10 +198928,12 @@
         "parameters": [
           {
             "name": "projectId",
+            "description": "Project ID. Missing or empty values return HTTP 400.",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "Project ID. Missing or empty values return HTTP 400."
             }
           },
           {
@@ -219606,6 +219668,7 @@
                         "read:ai-gateway-virtual-model-configs",
                         "read:alerts",
                         "read:billing",
+                        "read:connect",
                         "read:deployment",
                         "read:domain",
                         "read:event",
@@ -219717,6 +219780,7 @@
                         "read:ai-gateway-virtual-model-configs",
                         "read:alerts",
                         "read:billing",
+                        "read:connect",
                         "read:deployment",
                         "read:domain",
                         "read:event",
@@ -219850,6 +219914,7 @@
                             "read:ai-gateway-virtual-model-configs",
                             "read:alerts",
                             "read:billing",
+                            "read:connect",
                             "read:deployment",
                             "read:domain",
                             "read:event",
@@ -219966,6 +220031,7 @@
                             "read:ai-gateway-virtual-model-configs",
                             "read:alerts",
                             "read:billing",
+                            "read:connect",
                             "read:deployment",
                             "read:domain",
                             "read:event",
@@ -220095,6 +220161,7 @@
                         "read:ai-gateway-virtual-model-configs",
                         "read:alerts",
                         "read:billing",
+                        "read:connect",
                         "read:deployment",
                         "read:domain",
                         "read:event",
@@ -226809,10 +226876,22 @@
                                 "observability-edge-requests",
                                 "observability-error-rate",
                                 "observability-function-invocations",
+                                "shortcut",
                                 "speed-insights-cls",
                                 "speed-insights-lcp",
                                 "speed-insights-res"
                               ]
+                            },
+                            "config": {
+                              "properties": {
+                                "url": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "url"
+                              ],
+                              "type": "object"
                             }
                           },
                           "required": [
@@ -232953,6 +233032,7 @@
                       "observability-function-invocations",
                       "online",
                       "res",
+                      "shortcut",
                       "speed-insights-cls",
                       "speed-insights-lcp",
                       "speed-insights-res",
@@ -237604,6 +237684,7 @@
                       "long-build-duration",
                       "oom-failure",
                       "plan-change",
+                      "project-transfer",
                       "short-build-duration",
                       "sustained-high-cpu"
                     ]
@@ -244266,6 +244347,10 @@
             "type": "object",
             "description": "Network policy configuration."
           },
+          "networkId": {
+            "type": "string",
+            "description": "The Connect network id for the target Secure Compute private network."
+          },
           "totalEgressBytes": {
             "type": "number",
             "description": "Cumulative egress bytes across all sandbox runs.",
@@ -244312,7 +244397,8 @@
                   "type": "string",
                   "enum": [
                     "read-only",
-                    "read-write"
+                    "read-write",
+                    "snapshot"
                   ]
                 }
               },
