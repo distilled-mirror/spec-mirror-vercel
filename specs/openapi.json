@@ -84126,6 +84126,12 @@
                                 },
                                 "type": "array"
                               },
+                              "automation": {
+                                "items": {
+                                  "$ref": "#/components/schemas/ACLAction"
+                                },
+                                "type": "array"
+                              },
                               "billingAddress": {
                                 "items": {
                                   "$ref": "#/components/schemas/ACLAction"
@@ -86207,8 +86213,8 @@
                           "tier": {
                             "type": "string",
                             "enum": [
-                              "advanced",
-                              "critical"
+                              "critical",
+                              "priority"
                             ]
                           },
                           "usageStatus": {
@@ -97630,8 +97636,8 @@
                                     "tierRequirement": {
                                       "type": "string",
                                       "enum": [
-                                        "advanced",
-                                        "critical"
+                                        "critical",
+                                        "priority"
                                       ]
                                     },
                                     "has": {
@@ -98284,8 +98290,8 @@
                           "tier": {
                             "type": "string",
                             "enum": [
-                              "advanced",
-                              "critical"
+                              "critical",
+                              "priority"
                             ]
                           },
                           "abuse": {
@@ -102437,8 +102443,8 @@
                                         "tierRequirement": {
                                           "type": "string",
                                           "enum": [
-                                            "advanced",
-                                            "critical"
+                                            "critical",
+                                            "priority"
                                           ]
                                         },
                                         "has": {
@@ -103091,8 +103097,8 @@
                               "tier": {
                                 "type": "string",
                                 "enum": [
-                                  "advanced",
-                                  "critical"
+                                  "critical",
+                                  "priority"
                                 ]
                               },
                               "abuse": {
@@ -108096,6 +108102,12 @@
                                     },
                                     "type": "array"
                                   },
+                                  "automation": {
+                                    "items": {
+                                      "$ref": "#/components/schemas/ACLAction"
+                                    },
+                                    "type": "array"
+                                  },
                                   "billingAddress": {
                                     "items": {
                                       "$ref": "#/components/schemas/ACLAction"
@@ -110664,8 +110676,8 @@
                               "tier": {
                                 "type": "string",
                                 "enum": [
-                                  "advanced",
-                                  "critical"
+                                  "critical",
+                                  "priority"
                                 ]
                               },
                               "usageStatus": {
@@ -116396,6 +116408,12 @@
                           },
                           "type": "array"
                         },
+                        "automation": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
                         "billingAddress": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -118964,8 +118982,8 @@
                     "tier": {
                       "type": "string",
                       "enum": [
-                        "advanced",
-                        "critical"
+                        "critical",
+                        "priority"
                       ]
                     },
                     "usageStatus": {
@@ -124922,6 +124940,12 @@
                           },
                           "type": "array"
                         },
+                        "automation": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
                         "billingAddress": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -127490,8 +127514,8 @@
                     "tier": {
                       "type": "string",
                       "enum": [
-                        "advanced",
-                        "critical"
+                        "critical",
+                        "priority"
                       ]
                     },
                     "usageStatus": {
@@ -132740,6 +132764,12 @@
                           },
                           "type": "array"
                         },
+                        "automation": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
                         "billingAddress": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -135308,8 +135338,8 @@
                     "tier": {
                       "type": "string",
                       "enum": [
-                        "advanced",
-                        "critical"
+                        "critical",
+                        "priority"
                       ]
                     },
                     "usageStatus": {
@@ -141864,6 +141894,12 @@
                           },
                           "type": "array"
                         },
+                        "automation": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
                         "billingAddress": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -144432,8 +144468,8 @@
                     "tier": {
                       "type": "string",
                       "enum": [
-                        "advanced",
-                        "critical"
+                        "critical",
+                        "priority"
                       ]
                     },
                     "usageStatus": {
@@ -162455,6 +162491,12 @@
                           },
                           "type": "array"
                         },
+                        "automation": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array"
+                        },
                         "billingAddress": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -165023,8 +165065,8 @@
                     "tier": {
                       "type": "string",
                       "enum": [
-                        "advanced",
-                        "critical"
+                        "critical",
+                        "priority"
                       ]
                     },
                     "usageStatus": {
@@ -188795,12 +188837,7 @@
                                         },
                                         "environments": {
                                           "items": {
-                                            "type": "string",
-                                            "enum": [
-                                              "development",
-                                              "preview",
-                                              "production"
-                                            ]
+                                            "type": "string"
                                           },
                                           "type": "array"
                                         }
@@ -189120,12 +189157,7 @@
                                         },
                                         "environments": {
                                           "items": {
-                                            "type": "string",
-                                            "enum": [
-                                              "development",
-                                              "preview",
-                                              "production"
-                                            ]
+                                            "type": "string"
                                           },
                                           "type": "array"
                                         }
@@ -189608,12 +189640,7 @@
                                         },
                                         "environments": {
                                           "items": {
-                                            "type": "string",
-                                            "enum": [
-                                              "development",
-                                              "preview",
-                                              "production"
-                                            ]
+                                            "type": "string"
                                           },
                                           "type": "array"
                                         }
@@ -200835,6 +200862,9 @@
                               "isPrivateModel": {
                                 "type": "string"
                               },
+                              "isStreaming": {
+                                "type": "string"
+                              },
                               "isRequestZdr": {
                                 "type": "string"
                               },
@@ -201510,6 +201540,9 @@
                               "isPrivateModel": {
                                 "type": "string"
                               },
+                              "isStreaming": {
+                                "type": "string"
+                              },
                               "isRequestZdr": {
                                 "type": "string"
                               },
@@ -201847,6 +201880,7 @@
                               "isPrefetchRequest",
                               "isPrivateModel",
                               "isRequestZdr",
+                              "isStreaming",
                               "isrAction",
                               "isrCacheRegion",
                               "keyId",
@@ -202657,6 +202691,9 @@
                               "isPrivateModel": {
                                 "type": "string"
                               },
+                              "isStreaming": {
+                                "type": "string"
+                              },
                               "isRequestZdr": {
                                 "type": "string"
                               },
@@ -203332,6 +203369,9 @@
                               "isPrivateModel": {
                                 "type": "string"
                               },
+                              "isStreaming": {
+                                "type": "string"
+                              },
                               "isRequestZdr": {
                                 "type": "string"
                               },
@@ -203669,6 +203709,7 @@
                               "isPrefetchRequest",
                               "isPrivateModel",
                               "isRequestZdr",
+                              "isStreaming",
                               "isrAction",
                               "isrCacheRegion",
                               "keyId",
@@ -204445,6 +204486,9 @@
                             "isPrivateModel": {
                               "type": "string"
                             },
+                            "isStreaming": {
+                              "type": "string"
+                            },
                             "isRequestZdr": {
                               "type": "string"
                             },
@@ -204782,6 +204826,7 @@
                             "isPrefetchRequest",
                             "isPrivateModel",
                             "isRequestZdr",
+                            "isStreaming",
                             "isrAction",
                             "isrCacheRegion",
                             "keyId",
@@ -205506,6 +205551,9 @@
                             "isPrivateModel": {
                               "type": "string"
                             },
+                            "isStreaming": {
+                              "type": "string"
+                            },
                             "isRequestZdr": {
                               "type": "string"
                             },
@@ -205843,6 +205891,7 @@
                             "isPrefetchRequest",
                             "isPrivateModel",
                             "isRequestZdr",
+                            "isStreaming",
                             "isrAction",
                             "isrCacheRegion",
                             "keyId",
@@ -212045,6 +212094,7 @@
             "type": "string",
             "enum": [
               "api-key",
+              "aws-alpha",
               "custom",
               "discord",
               "github",
@@ -212519,6 +212569,7 @@
             "type": "string",
             "enum": [
               "api-key",
+              "aws-alpha",
               "custom",
               "discord",
               "github",
@@ -213260,6 +213311,11 @@
                   "format": "uri"
                 },
                 "description": "The HTTPS resources the API key authenticates against."
+              },
+              "instructions": {
+                "type": "string",
+                "maxLength": 4000,
+                "description": "Markdown instructions shown to each user on the authorization screen, explaining how to obtain the key they should paste."
               }
             },
             "additionalProperties": false,
@@ -214631,6 +214687,18 @@
                   "additionalProperties": false
                 },
                 "description": "Existing API key values to update."
+              },
+              "instructions": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 4000
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "Markdown instructions shown to each user on the authorization screen, explaining how to obtain the key they should paste."
               }
             },
             "additionalProperties": false,
@@ -219637,6 +219705,7 @@
                         "read-write:ai-gateway-rules",
                         "read-write:ai-gateway-virtual-model-configs",
                         "read-write:alerts",
+                        "read-write:automations",
                         "read-write:billing",
                         "read-write:blob",
                         "read-write:connect",
@@ -219667,6 +219736,7 @@
                         "read:ai-gateway-rules",
                         "read:ai-gateway-virtual-model-configs",
                         "read:alerts",
+                        "read:automations",
                         "read:billing",
                         "read:connect",
                         "read:deployment",
@@ -219749,6 +219819,7 @@
                         "read-write:ai-gateway-rules",
                         "read-write:ai-gateway-virtual-model-configs",
                         "read-write:alerts",
+                        "read-write:automations",
                         "read-write:billing",
                         "read-write:blob",
                         "read-write:connect",
@@ -219779,6 +219850,7 @@
                         "read:ai-gateway-rules",
                         "read:ai-gateway-virtual-model-configs",
                         "read:alerts",
+                        "read:automations",
                         "read:billing",
                         "read:connect",
                         "read:deployment",
@@ -219883,6 +219955,7 @@
                             "read-write:ai-gateway-rules",
                             "read-write:ai-gateway-virtual-model-configs",
                             "read-write:alerts",
+                            "read-write:automations",
                             "read-write:billing",
                             "read-write:blob",
                             "read-write:connect",
@@ -219913,6 +219986,7 @@
                             "read:ai-gateway-rules",
                             "read:ai-gateway-virtual-model-configs",
                             "read:alerts",
+                            "read:automations",
                             "read:billing",
                             "read:connect",
                             "read:deployment",
@@ -220000,6 +220074,7 @@
                             "read-write:ai-gateway-rules",
                             "read-write:ai-gateway-virtual-model-configs",
                             "read-write:alerts",
+                            "read-write:automations",
                             "read-write:billing",
                             "read-write:blob",
                             "read-write:connect",
@@ -220030,6 +220105,7 @@
                             "read:ai-gateway-rules",
                             "read:ai-gateway-virtual-model-configs",
                             "read:alerts",
+                            "read:automations",
                             "read:billing",
                             "read:connect",
                             "read:deployment",
@@ -220130,6 +220206,7 @@
                         "read-write:ai-gateway-rules",
                         "read-write:ai-gateway-virtual-model-configs",
                         "read-write:alerts",
+                        "read-write:automations",
                         "read-write:billing",
                         "read-write:blob",
                         "read-write:connect",
@@ -220160,6 +220237,7 @@
                         "read:ai-gateway-rules",
                         "read:ai-gateway-virtual-model-configs",
                         "read:alerts",
+                        "read:automations",
                         "read:billing",
                         "read:connect",
                         "read:deployment",
@@ -227286,7 +227364,6 @@
                               "ENTERPRISE_UNPAID_INVOICE",
                               "EXPOSURE_CAP_EXCEEDED",
                               "FAIR_USE_LIMITS_EXCEEDED",
-                              "HOBBY_ALLOCATION_PAUSED",
                               "SUBSCRIPTION_CANCELED",
                               "SUBSCRIPTION_EXPIRED",
                               "UNPAID_INVOICE"
@@ -227335,93 +227412,6 @@
                               "wafRateLimitRequest",
                               "webAnalyticsEvent"
                             ]
-                          },
-                          "hobbyAllocationPause": {
-                            "properties": {
-                              "pausedUntil": {
-                                "type": "number",
-                                "description": "Unix ms timestamp at which the pause is eligible to end. This is the single source of truth for when the pause ends. Never re-derive it by re-checking usage — usage keeps moving while a team is paused, and the pause duration is a fixed experiment parameter."
-                              },
-                              "pausedAt": {
-                                "type": "number",
-                                "description": "Unix ms timestamp of when the pause was applied."
-                              },
-                              "triggers": {
-                                "items": {
-                                  "properties": {
-                                    "allocation": {
-                                      "type": "string",
-                                      "enum": [
-                                        "analyticsUsage",
-                                        "artifacts",
-                                        "bandwidth",
-                                        "blobDataTransfer",
-                                        "blobTotalAdvancedRequests",
-                                        "blobTotalAvgSizeInBytes",
-                                        "blobTotalGetResponseObjectSizeInBytes",
-                                        "blobTotalSimpleRequests",
-                                        "connectDataTransfer",
-                                        "dataCacheRead",
-                                        "dataCacheWrite",
-                                        "edgeConfigRead",
-                                        "edgeConfigWrite",
-                                        "edgeFunctionExecutionUnits",
-                                        "edgeMiddlewareInvocations",
-                                        "edgeRequest",
-                                        "edgeRequestAdditionalCpuDuration",
-                                        "elasticConcurrencyBuildSlots",
-                                        "fastDataTransfer",
-                                        "fastOriginTransfer",
-                                        "fluidCpuDuration",
-                                        "fluidDuration",
-                                        "functionDuration",
-                                        "functionInvocation",
-                                        "imageOptimizationCacheRead",
-                                        "imageOptimizationCacheWrite",
-                                        "imageOptimizationTransformation",
-                                        "logDrainsVolume",
-                                        "monitoringMetric",
-                                        "observabilityEvent",
-                                        "onDemandConcurrencyMinutes",
-                                        "runtimeCacheRead",
-                                        "runtimeCacheWrite",
-                                        "serverlessFunctionExecution",
-                                        "sourceImages",
-                                        "wafOwaspExcessBytes",
-                                        "wafOwaspRequests",
-                                        "wafRateLimitRequest",
-                                        "webAnalyticsEvent"
-                                      ],
-                                      "description": "Metered allocation whose included amount was fully consumed."
-                                    },
-                                    "usage": {
-                                      "type": "number",
-                                      "description": "Usage recorded for that allocation when the pause was applied."
-                                    }
-                                  },
-                                  "required": [
-                                    "allocation",
-                                    "usage"
-                                  ],
-                                  "type": "object",
-                                  "description": "Allocations that were at or over 100% when the pause was applied."
-                                },
-                                "type": "array",
-                                "description": "Allocations that were at or over 100% when the pause was applied."
-                              },
-                              "cohort": {
-                                "type": "string",
-                                "description": "Experiment cohort the owner was assigned to when the pause fired. Free-form so cohort naming stays owned by the assignment path."
-                              }
-                            },
-                            "required": [
-                              "cohort",
-                              "pausedAt",
-                              "pausedUntil",
-                              "triggers"
-                            ],
-                            "type": "object",
-                            "description": "Present only when `reason` is `HOBBY_ALLOCATION_PAUSED`. Makes the pause self-describing for support without a separate lookup."
                           }
                         },
                         "required": [
@@ -246773,7 +246763,6 @@
                   "ENTERPRISE_UNPAID_INVOICE",
                   "EXPOSURE_CAP_EXCEEDED",
                   "FAIR_USE_LIMITS_EXCEEDED",
-                  "HOBBY_ALLOCATION_PAUSED",
                   "SUBSCRIPTION_CANCELED",
                   "SUBSCRIPTION_EXPIRED",
                   "UNPAID_INVOICE"
@@ -246822,93 +246811,6 @@
                   "wafRateLimitRequest",
                   "webAnalyticsEvent"
                 ]
-              },
-              "hobbyAllocationPause": {
-                "properties": {
-                  "pausedUntil": {
-                    "type": "number",
-                    "description": "Unix ms timestamp at which the pause is eligible to end. This is the single source of truth for when the pause ends. Never re-derive it by re-checking usage — usage keeps moving while a team is paused, and the pause duration is a fixed experiment parameter."
-                  },
-                  "pausedAt": {
-                    "type": "number",
-                    "description": "Unix ms timestamp of when the pause was applied."
-                  },
-                  "triggers": {
-                    "items": {
-                      "properties": {
-                        "allocation": {
-                          "type": "string",
-                          "enum": [
-                            "analyticsUsage",
-                            "artifacts",
-                            "bandwidth",
-                            "blobDataTransfer",
-                            "blobTotalAdvancedRequests",
-                            "blobTotalAvgSizeInBytes",
-                            "blobTotalGetResponseObjectSizeInBytes",
-                            "blobTotalSimpleRequests",
-                            "connectDataTransfer",
-                            "dataCacheRead",
-                            "dataCacheWrite",
-                            "edgeConfigRead",
-                            "edgeConfigWrite",
-                            "edgeFunctionExecutionUnits",
-                            "edgeMiddlewareInvocations",
-                            "edgeRequest",
-                            "edgeRequestAdditionalCpuDuration",
-                            "elasticConcurrencyBuildSlots",
-                            "fastDataTransfer",
-                            "fastOriginTransfer",
-                            "fluidCpuDuration",
-                            "fluidDuration",
-                            "functionDuration",
-                            "functionInvocation",
-                            "imageOptimizationCacheRead",
-                            "imageOptimizationCacheWrite",
-                            "imageOptimizationTransformation",
-                            "logDrainsVolume",
-                            "monitoringMetric",
-                            "observabilityEvent",
-                            "onDemandConcurrencyMinutes",
-                            "runtimeCacheRead",
-                            "runtimeCacheWrite",
-                            "serverlessFunctionExecution",
-                            "sourceImages",
-                            "wafOwaspExcessBytes",
-                            "wafOwaspRequests",
-                            "wafRateLimitRequest",
-                            "webAnalyticsEvent"
-                          ],
-                          "description": "Metered allocation whose included amount was fully consumed."
-                        },
-                        "usage": {
-                          "type": "number",
-                          "description": "Usage recorded for that allocation when the pause was applied."
-                        }
-                      },
-                      "required": [
-                        "allocation",
-                        "usage"
-                      ],
-                      "type": "object",
-                      "description": "Allocations that were at or over 100% when the pause was applied."
-                    },
-                    "type": "array",
-                    "description": "Allocations that were at or over 100% when the pause was applied."
-                  },
-                  "cohort": {
-                    "type": "string",
-                    "description": "Experiment cohort the owner was assigned to when the pause fired. Free-form so cohort naming stays owned by the assignment path."
-                  }
-                },
-                "required": [
-                  "cohort",
-                  "pausedAt",
-                  "pausedUntil",
-                  "triggers"
-                ],
-                "type": "object",
-                "description": "Present only when `reason` is `HOBBY_ALLOCATION_PAUSED`. Makes the pause self-describing for support without a separate lookup."
               }
             },
             "required": [
