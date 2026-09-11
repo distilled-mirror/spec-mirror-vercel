@@ -56653,6 +56653,16 @@
                     "data": {
                       "items": {
                         "properties": {
+                          "securityIssues": {
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "flags-secret-needs-split",
+                                "readable-secret"
+                              ]
+                            },
+                            "type": "array"
+                          },
                           "created": {
                             "type": "string",
                             "format": "date-time",
@@ -56781,6 +56791,13 @@
                             "description": "The last editor full name or username."
                           }
                         },
+                        "required": [
+                          "created",
+                          "decrypted",
+                          "id",
+                          "key",
+                          "securityIssues"
+                        ],
                         "type": "object"
                       },
                       "type": "array"
@@ -67644,6 +67661,9 @@
                           },
                           "notification": {
                             "properties": {
+                              "title": {
+                                "type": "string"
+                              },
                               "level": {
                                 "type": "string",
                                 "enum": [
@@ -67651,9 +67671,6 @@
                                   "info",
                                   "warn"
                                 ]
-                              },
-                              "title": {
-                                "type": "string"
                               },
                               "message": {
                                 "type": "string"
@@ -67852,6 +67869,9 @@
                     },
                     "notification": {
                       "properties": {
+                        "title": {
+                          "type": "string"
+                        },
                         "level": {
                           "type": "string",
                           "enum": [
@@ -67859,9 +67879,6 @@
                             "info",
                             "warn"
                           ]
-                        },
-                        "title": {
-                          "type": "string"
                         },
                         "message": {
                           "type": "string"
@@ -68068,9 +68085,6 @@
             "description": ""
           },
           "422": {
-            "description": ""
-          },
-          "429": {
             "description": ""
           }
         },
@@ -70675,6 +70689,32 @@
                           "description": "The unique identifier of the configuration",
                           "example": "icfg_3bwCLgxL8qt5kjRLcv2Dit7F"
                         },
+                        "slug": {
+                          "type": "string",
+                          "description": "The slug of the integration the configuration is created for.",
+                          "example": "slack"
+                        },
+                        "createdAt": {
+                          "type": "number",
+                          "description": "A timestamp that tells you when the configuration was created",
+                          "example": 1558531915505
+                        },
+                        "updatedAt": {
+                          "type": "number",
+                          "description": "A timestamp that tells you when the configuration was updated.",
+                          "example": 1558531915505
+                        },
+                        "ownerId": {
+                          "type": "string",
+                          "description": "The user or team ID that owns the configuration",
+                          "example": "kr1PsOIzqEL5Xg6M4VZcZosf"
+                        },
+                        "deletedAt": {
+                          "nullable": true,
+                          "type": "number",
+                          "description": "A timestamp that tells you when the configuration was deleted.",
+                          "example": 1558531915505
+                        },
                         "integrationId": {
                           "type": "string",
                           "description": "The unique identifier of the app the configuration was created for",
@@ -70685,32 +70725,11 @@
                           "description": "The ID of the user that created the configuration.",
                           "example": "kr1PsOIzqEL5Xg6M4VZcZosf"
                         },
-                        "createdAt": {
-                          "type": "number",
-                          "description": "A timestamp that tells you when the configuration was created",
-                          "example": 1558531915505
-                        },
-                        "deletedAt": {
-                          "nullable": true,
-                          "type": "number",
-                          "description": "A timestamp that tells you when the configuration was deleted.",
-                          "example": 1558531915505
-                        },
-                        "slug": {
-                          "type": "string",
-                          "description": "The slug of the integration the configuration is created for.",
-                          "example": "slack"
-                        },
                         "teamId": {
                           "nullable": true,
                           "type": "string",
                           "description": "When the configuration was created for a team, this will show the ID of the team.",
                           "example": "team_nLlpyC6RE1qxydlFKbrxDlud"
-                        },
-                        "updatedAt": {
-                          "type": "number",
-                          "description": "A timestamp that tells you when the configuration was updated.",
-                          "example": 1558531915505
                         },
                         "scopes": {
                           "items": {
@@ -70722,11 +70741,6 @@
                             "read:project",
                             "read-write:log-drain"
                           ]
-                        },
-                        "ownerId": {
-                          "type": "string",
-                          "description": "The user or team ID that owns the configuration",
-                          "example": "kr1PsOIzqEL5Xg6M4VZcZosf"
                         },
                         "canConfigureOpenTelemetry": {
                           "type": "boolean",
@@ -71598,9 +71612,6 @@
                                         "description": {
                                           "type": "string"
                                         },
-                                        "default": {
-                                          "type": "string"
-                                        },
                                         "enum": {
                                           "items": {
                                             "type": "string"
@@ -71614,6 +71625,9 @@
                                           "type": "number"
                                         },
                                         "pattern": {
+                                          "type": "string"
+                                        },
+                                        "default": {
                                           "type": "string"
                                         },
                                         "ui:label": {
@@ -71775,13 +71789,13 @@
                                         "description": {
                                           "type": "string"
                                         },
-                                        "default": {
-                                          "type": "number"
-                                        },
                                         "exclusiveMaximum": {
                                           "type": "number"
                                         },
                                         "exclusiveMinimum": {
+                                          "type": "number"
+                                        },
+                                        "default": {
                                           "type": "number"
                                         },
                                         "ui:label": {
@@ -72102,13 +72116,13 @@
                                             "description": {
                                               "type": "string"
                                             },
-                                            "default": {
-                                              "type": "number"
-                                            },
                                             "exclusiveMaximum": {
                                               "type": "number"
                                             },
                                             "exclusiveMinimum": {
+                                              "type": "number"
+                                            },
+                                            "default": {
                                               "type": "number"
                                             }
                                           },
@@ -72132,17 +72146,17 @@
                                         "description": {
                                           "type": "string"
                                         },
-                                        "default": {
-                                          "items": {
-                                            "type": "number"
-                                          },
-                                          "type": "array"
-                                        },
                                         "maxItems": {
                                           "type": "number"
                                         },
                                         "minItems": {
                                           "type": "number"
+                                        },
+                                        "default": {
+                                          "items": {
+                                            "type": "number"
+                                          },
+                                          "type": "array"
                                         },
                                         "ui:label": {
                                           "type": "string"
@@ -72375,9 +72389,6 @@
                                         "description": {
                                           "type": "string"
                                         },
-                                        "default": {
-                                          "type": "string"
-                                        },
                                         "enum": {
                                           "items": {
                                             "type": "string"
@@ -72391,6 +72402,9 @@
                                           "type": "number"
                                         },
                                         "pattern": {
+                                          "type": "string"
+                                        },
+                                        "default": {
                                           "type": "string"
                                         },
                                         "ui:label": {
@@ -72626,9 +72640,6 @@
                                         "description": {
                                           "type": "string"
                                         },
-                                        "default": {
-                                          "type": "string"
-                                        },
                                         "enum": {
                                           "items": {
                                             "type": "string"
@@ -72642,6 +72653,9 @@
                                           "type": "number"
                                         },
                                         "pattern": {
+                                          "type": "string"
+                                        },
+                                        "default": {
                                           "type": "string"
                                         },
                                         "ui:label": {
@@ -72800,9 +72814,6 @@
                                             "description": {
                                               "type": "string"
                                             },
-                                            "default": {
-                                              "type": "string"
-                                            },
                                             "enum": {
                                               "items": {
                                                 "type": "string"
@@ -72816,6 +72827,9 @@
                                               "type": "number"
                                             },
                                             "pattern": {
+                                              "type": "string"
+                                            },
+                                            "default": {
                                               "type": "string"
                                             }
                                           },
@@ -72912,17 +72926,17 @@
                                         "description": {
                                           "type": "string"
                                         },
-                                        "default": {
-                                          "items": {
-                                            "type": "string"
-                                          },
-                                          "type": "array"
-                                        },
                                         "maxItems": {
                                           "type": "number"
                                         },
                                         "minItems": {
                                           "type": "number"
+                                        },
+                                        "default": {
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
                                         },
                                         "example": {
                                           "items": {
@@ -73243,9 +73257,6 @@
                                         "description": {
                                           "type": "string"
                                         },
-                                        "default": {
-                                          "type": "string"
-                                        },
                                         "enum": {
                                           "items": {
                                             "type": "string"
@@ -73259,6 +73270,9 @@
                                           "type": "number"
                                         },
                                         "pattern": {
+                                          "type": "string"
+                                        },
+                                        "default": {
                                           "type": "string"
                                         },
                                         "ui:label": {
@@ -73417,9 +73431,6 @@
                                             "description": {
                                               "type": "string"
                                             },
-                                            "default": {
-                                              "type": "string"
-                                            },
                                             "enum": {
                                               "items": {
                                                 "type": "string"
@@ -73433,6 +73444,9 @@
                                               "type": "number"
                                             },
                                             "pattern": {
+                                              "type": "string"
+                                            },
+                                            "default": {
                                               "type": "string"
                                             }
                                           },
@@ -73608,17 +73622,17 @@
                                         "description": {
                                           "type": "string"
                                         },
-                                        "default": {
-                                          "items": {
-                                            "type": "string"
-                                          },
-                                          "type": "array"
-                                        },
                                         "maxItems": {
                                           "type": "number"
                                         },
                                         "minItems": {
                                           "type": "number"
+                                        },
+                                        "default": {
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
                                         },
                                         "example": {
                                           "items": {
@@ -73939,9 +73953,6 @@
                                         "description": {
                                           "type": "string"
                                         },
-                                        "default": {
-                                          "type": "string"
-                                        },
                                         "enum": {
                                           "items": {
                                             "type": "string"
@@ -73955,6 +73966,9 @@
                                           "type": "number"
                                         },
                                         "pattern": {
+                                          "type": "string"
+                                        },
+                                        "default": {
                                           "type": "string"
                                         },
                                         "ui:label": {
@@ -74111,9 +74125,6 @@
                                         "description": {
                                           "type": "string"
                                         },
-                                        "default": {
-                                          "type": "string"
-                                        },
                                         "enum": {
                                           "items": {
                                             "type": "string"
@@ -74127,6 +74138,9 @@
                                           "type": "number"
                                         },
                                         "pattern": {
+                                          "type": "string"
+                                        },
+                                        "default": {
                                           "type": "string"
                                         },
                                         "ui:label": {
@@ -81976,6 +81990,9 @@
                                   "repo": {
                                     "type": "string"
                                   },
+                                  "repoId": {
+                                    "type": "string"
+                                  },
                                   "type": {
                                     "type": "string",
                                     "enum": [
@@ -82037,6 +82054,7 @@
                                   "org",
                                   "productionBranch",
                                   "repo",
+                                  "repoId",
                                   "type"
                                 ],
                                 "type": "object"
@@ -82047,6 +82065,9 @@
                                     "type": "string"
                                   },
                                   "repo": {
+                                    "type": "string"
+                                  },
+                                  "repoId": {
                                     "type": "string"
                                   },
                                   "type": {
@@ -82110,6 +82131,7 @@
                                   "org",
                                   "productionBranch",
                                   "repo",
+                                  "repoId",
                                   "type"
                                 ],
                                 "type": "object"
@@ -86213,6 +86235,7 @@
                           "tier": {
                             "type": "string",
                             "enum": [
+                              "advanced",
                               "critical",
                               "priority"
                             ]
@@ -96215,6 +96238,9 @@
                                   "repo": {
                                     "type": "string"
                                   },
+                                  "repoId": {
+                                    "type": "string"
+                                  },
                                   "type": {
                                     "type": "string",
                                     "enum": [
@@ -96276,6 +96302,7 @@
                                   "org",
                                   "productionBranch",
                                   "repo",
+                                  "repoId",
                                   "type"
                                 ],
                                 "type": "object"
@@ -96286,6 +96313,9 @@
                                     "type": "string"
                                   },
                                   "repo": {
+                                    "type": "string"
+                                  },
+                                  "repoId": {
                                     "type": "string"
                                   },
                                   "type": {
@@ -96349,6 +96379,7 @@
                                   "org",
                                   "productionBranch",
                                   "repo",
+                                  "repoId",
                                   "type"
                                 ],
                                 "type": "object"
@@ -97636,6 +97667,7 @@
                                     "tierRequirement": {
                                       "type": "string",
                                       "enum": [
+                                        "advanced",
                                         "critical",
                                         "priority"
                                       ]
@@ -98290,6 +98322,7 @@
                           "tier": {
                             "type": "string",
                             "enum": [
+                              "advanced",
                               "critical",
                               "priority"
                             ]
@@ -101022,6 +101055,9 @@
                                       "repo": {
                                         "type": "string"
                                       },
+                                      "repoId": {
+                                        "type": "string"
+                                      },
                                       "type": {
                                         "type": "string",
                                         "enum": [
@@ -101083,6 +101119,7 @@
                                       "org",
                                       "productionBranch",
                                       "repo",
+                                      "repoId",
                                       "type"
                                     ],
                                     "type": "object"
@@ -101093,6 +101130,9 @@
                                         "type": "string"
                                       },
                                       "repo": {
+                                        "type": "string"
+                                      },
+                                      "repoId": {
                                         "type": "string"
                                       },
                                       "type": {
@@ -101156,6 +101196,7 @@
                                       "org",
                                       "productionBranch",
                                       "repo",
+                                      "repoId",
                                       "type"
                                     ],
                                     "type": "object"
@@ -102443,6 +102484,7 @@
                                         "tierRequirement": {
                                           "type": "string",
                                           "enum": [
+                                            "advanced",
                                             "critical",
                                             "priority"
                                           ]
@@ -103097,6 +103139,7 @@
                               "tier": {
                                 "type": "string",
                                 "enum": [
+                                  "advanced",
                                   "critical",
                                   "priority"
                                 ]
@@ -106450,6 +106493,9 @@
                                       "repo": {
                                         "type": "string"
                                       },
+                                      "repoId": {
+                                        "type": "string"
+                                      },
                                       "type": {
                                         "type": "string",
                                         "enum": [
@@ -106511,6 +106557,7 @@
                                       "org",
                                       "productionBranch",
                                       "repo",
+                                      "repoId",
                                       "type"
                                     ],
                                     "type": "object"
@@ -106521,6 +106568,9 @@
                                         "type": "string"
                                       },
                                       "repo": {
+                                        "type": "string"
+                                      },
+                                      "repoId": {
                                         "type": "string"
                                       },
                                       "type": {
@@ -106584,6 +106634,7 @@
                                       "org",
                                       "productionBranch",
                                       "repo",
+                                      "repoId",
                                       "type"
                                     ],
                                     "type": "object"
@@ -110676,6 +110727,7 @@
                               "tier": {
                                 "type": "string",
                                 "enum": [
+                                  "advanced",
                                   "critical",
                                   "priority"
                                 ]
@@ -114756,6 +114808,9 @@
                             "repo": {
                               "type": "string"
                             },
+                            "repoId": {
+                              "type": "string"
+                            },
                             "type": {
                               "type": "string",
                               "enum": [
@@ -114817,6 +114872,7 @@
                             "org",
                             "productionBranch",
                             "repo",
+                            "repoId",
                             "type"
                           ],
                           "type": "object"
@@ -114827,6 +114883,9 @@
                               "type": "string"
                             },
                             "repo": {
+                              "type": "string"
+                            },
+                            "repoId": {
                               "type": "string"
                             },
                             "type": {
@@ -114890,6 +114949,7 @@
                             "org",
                             "productionBranch",
                             "repo",
+                            "repoId",
                             "type"
                           ],
                           "type": "object"
@@ -118982,6 +119042,7 @@
                     "tier": {
                       "type": "string",
                       "enum": [
+                        "advanced",
                         "critical",
                         "priority"
                       ]
@@ -123288,6 +123349,9 @@
                             "repo": {
                               "type": "string"
                             },
+                            "repoId": {
+                              "type": "string"
+                            },
                             "type": {
                               "type": "string",
                               "enum": [
@@ -123349,6 +123413,7 @@
                             "org",
                             "productionBranch",
                             "repo",
+                            "repoId",
                             "type"
                           ],
                           "type": "object"
@@ -123359,6 +123424,9 @@
                               "type": "string"
                             },
                             "repo": {
+                              "type": "string"
+                            },
+                            "repoId": {
                               "type": "string"
                             },
                             "type": {
@@ -123422,6 +123490,7 @@
                             "org",
                             "productionBranch",
                             "repo",
+                            "repoId",
                             "type"
                           ],
                           "type": "object"
@@ -127514,6 +127583,7 @@
                     "tier": {
                       "type": "string",
                       "enum": [
+                        "advanced",
                         "critical",
                         "priority"
                       ]
@@ -131112,6 +131182,9 @@
                             "repo": {
                               "type": "string"
                             },
+                            "repoId": {
+                              "type": "string"
+                            },
                             "type": {
                               "type": "string",
                               "enum": [
@@ -131173,6 +131246,7 @@
                             "org",
                             "productionBranch",
                             "repo",
+                            "repoId",
                             "type"
                           ],
                           "type": "object"
@@ -131183,6 +131257,9 @@
                               "type": "string"
                             },
                             "repo": {
+                              "type": "string"
+                            },
+                            "repoId": {
                               "type": "string"
                             },
                             "type": {
@@ -131246,6 +131323,7 @@
                             "org",
                             "productionBranch",
                             "repo",
+                            "repoId",
                             "type"
                           ],
                           "type": "object"
@@ -135338,6 +135416,7 @@
                     "tier": {
                       "type": "string",
                       "enum": [
+                        "advanced",
                         "critical",
                         "priority"
                       ]
@@ -140242,6 +140321,9 @@
                             "repo": {
                               "type": "string"
                             },
+                            "repoId": {
+                              "type": "string"
+                            },
                             "type": {
                               "type": "string",
                               "enum": [
@@ -140303,6 +140385,7 @@
                             "org",
                             "productionBranch",
                             "repo",
+                            "repoId",
                             "type"
                           ],
                           "type": "object"
@@ -140313,6 +140396,9 @@
                               "type": "string"
                             },
                             "repo": {
+                              "type": "string"
+                            },
+                            "repoId": {
                               "type": "string"
                             },
                             "type": {
@@ -140376,6 +140462,7 @@
                             "org",
                             "productionBranch",
                             "repo",
+                            "repoId",
                             "type"
                           ],
                           "type": "object"
@@ -144468,6 +144555,7 @@
                     "tier": {
                       "type": "string",
                       "enum": [
+                        "advanced",
                         "critical",
                         "priority"
                       ]
@@ -148415,6 +148503,56 @@
                   "oneOf": [
                     {
                       "properties": {
+                        "securityIssues": {
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "flags-secret-needs-split",
+                              "readable-secret"
+                            ]
+                          },
+                          "type": "array"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "encrypted",
+                            "plain",
+                            "secret",
+                            "sensitive",
+                            "system"
+                          ]
+                        },
+                        "value": {
+                          "type": "string"
+                        },
+                        "edgeConfigId": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "edgeConfigTokenId": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "number"
+                        },
+                        "updatedAt": {
+                          "type": "number"
+                        },
+                        "system": {
+                          "type": "boolean",
+                          "enum": [
+                            false,
+                            true
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "key": {
+                          "type": "string"
+                        },
                         "target": {
                           "oneOf": [
                             {
@@ -148442,15 +148580,16 @@
                             }
                           ]
                         },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "encrypted",
-                            "plain",
-                            "secret",
-                            "sensitive",
-                            "system"
-                          ]
+                        "gitBranch": {
+                          "type": "string"
+                        },
+                        "createdBy": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "updatedBy": {
+                          "nullable": true,
+                          "type": "string"
                         },
                         "sunsetSecretId": {
                           "type": "string",
@@ -148467,37 +148606,8 @@
                             true
                           ]
                         },
-                        "value": {
-                          "type": "string"
-                        },
-                        "vsmValue": {
-                          "type": "string"
-                        },
-                        "id": {
-                          "type": "string"
-                        },
-                        "key": {
-                          "type": "string"
-                        },
                         "configurationId": {
                           "nullable": true,
-                          "type": "string"
-                        },
-                        "createdAt": {
-                          "type": "number"
-                        },
-                        "updatedAt": {
-                          "type": "number"
-                        },
-                        "createdBy": {
-                          "nullable": true,
-                          "type": "string"
-                        },
-                        "updatedBy": {
-                          "nullable": true,
-                          "type": "string"
-                        },
-                        "gitBranch": {
                           "type": "string"
                         },
                         "visibility": {
@@ -148507,14 +148617,6 @@
                             "secret"
                           ],
                           "description": "User-facing config/secret model. When set, authoritative for new code paths when the env-var-config-secret-ui flag is enabled. Legacy rows omit this field; legacy rows omit it and callers fall back to existing `type` behavior."
-                        },
-                        "edgeConfigId": {
-                          "nullable": true,
-                          "type": "string"
-                        },
-                        "edgeConfigTokenId": {
-                          "nullable": true,
-                          "type": "string"
                         },
                         "contentHint": {
                           "nullable": true,
@@ -148868,17 +148970,11 @@
                             "type": "string"
                           },
                           "type": "array"
-                        },
-                        "system": {
-                          "type": "boolean",
-                          "enum": [
-                            false,
-                            true
-                          ]
                         }
                       },
                       "required": [
                         "key",
+                        "securityIssues",
                         "type",
                         "value"
                       ],
@@ -148889,6 +148985,56 @@
                         "envs": {
                           "items": {
                             "properties": {
+                              "securityIssues": {
+                                "items": {
+                                  "type": "string",
+                                  "enum": [
+                                    "flags-secret-needs-split",
+                                    "readable-secret"
+                                  ]
+                                },
+                                "type": "array"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "encrypted",
+                                  "plain",
+                                  "secret",
+                                  "sensitive",
+                                  "system"
+                                ]
+                              },
+                              "value": {
+                                "type": "string"
+                              },
+                              "edgeConfigId": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "edgeConfigTokenId": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "createdAt": {
+                                "type": "number"
+                              },
+                              "updatedAt": {
+                                "type": "number"
+                              },
+                              "system": {
+                                "type": "boolean",
+                                "enum": [
+                                  false,
+                                  true
+                                ]
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "key": {
+                                "type": "string"
+                              },
                               "target": {
                                 "oneOf": [
                                   {
@@ -148916,15 +149062,16 @@
                                   }
                                 ]
                               },
-                              "type": {
-                                "type": "string",
-                                "enum": [
-                                  "encrypted",
-                                  "plain",
-                                  "secret",
-                                  "sensitive",
-                                  "system"
-                                ]
+                              "gitBranch": {
+                                "type": "string"
+                              },
+                              "createdBy": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "updatedBy": {
+                                "nullable": true,
+                                "type": "string"
                               },
                               "sunsetSecretId": {
                                 "type": "string",
@@ -148941,37 +149088,8 @@
                                   true
                                 ]
                               },
-                              "value": {
-                                "type": "string"
-                              },
-                              "vsmValue": {
-                                "type": "string"
-                              },
-                              "id": {
-                                "type": "string"
-                              },
-                              "key": {
-                                "type": "string"
-                              },
                               "configurationId": {
                                 "nullable": true,
-                                "type": "string"
-                              },
-                              "createdAt": {
-                                "type": "number"
-                              },
-                              "updatedAt": {
-                                "type": "number"
-                              },
-                              "createdBy": {
-                                "nullable": true,
-                                "type": "string"
-                              },
-                              "updatedBy": {
-                                "nullable": true,
-                                "type": "string"
-                              },
-                              "gitBranch": {
                                 "type": "string"
                               },
                               "visibility": {
@@ -148981,14 +149099,6 @@
                                   "secret"
                                 ],
                                 "description": "User-facing config/secret model. When set, authoritative for new code paths when the env-var-config-secret-ui flag is enabled. Legacy rows omit this field; legacy rows omit it and callers fall back to existing `type` behavior."
-                              },
-                              "edgeConfigId": {
-                                "nullable": true,
-                                "type": "string"
-                              },
-                              "edgeConfigTokenId": {
-                                "nullable": true,
-                                "type": "string"
                               },
                               "contentHint": {
                                 "nullable": true,
@@ -149342,17 +149452,11 @@
                                   "type": "string"
                                 },
                                 "type": "array"
-                              },
-                              "system": {
-                                "type": "boolean",
-                                "enum": [
-                                  false,
-                                  true
-                                ]
                               }
                             },
                             "required": [
                               "key",
+                              "securityIssues",
                               "type",
                               "value"
                             ],
@@ -149375,6 +149479,56 @@
                         "envs": {
                           "items": {
                             "properties": {
+                              "securityIssues": {
+                                "items": {
+                                  "type": "string",
+                                  "enum": [
+                                    "flags-secret-needs-split",
+                                    "readable-secret"
+                                  ]
+                                },
+                                "type": "array"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "encrypted",
+                                  "plain",
+                                  "secret",
+                                  "sensitive",
+                                  "system"
+                                ]
+                              },
+                              "value": {
+                                "type": "string"
+                              },
+                              "edgeConfigId": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "edgeConfigTokenId": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "createdAt": {
+                                "type": "number"
+                              },
+                              "updatedAt": {
+                                "type": "number"
+                              },
+                              "system": {
+                                "type": "boolean",
+                                "enum": [
+                                  false,
+                                  true
+                                ]
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "key": {
+                                "type": "string"
+                              },
                               "target": {
                                 "oneOf": [
                                   {
@@ -149402,15 +149556,16 @@
                                   }
                                 ]
                               },
-                              "type": {
-                                "type": "string",
-                                "enum": [
-                                  "encrypted",
-                                  "plain",
-                                  "secret",
-                                  "sensitive",
-                                  "system"
-                                ]
+                              "gitBranch": {
+                                "type": "string"
+                              },
+                              "createdBy": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "updatedBy": {
+                                "nullable": true,
+                                "type": "string"
                               },
                               "sunsetSecretId": {
                                 "type": "string",
@@ -149427,37 +149582,8 @@
                                   true
                                 ]
                               },
-                              "value": {
-                                "type": "string"
-                              },
-                              "vsmValue": {
-                                "type": "string"
-                              },
-                              "id": {
-                                "type": "string"
-                              },
-                              "key": {
-                                "type": "string"
-                              },
                               "configurationId": {
                                 "nullable": true,
-                                "type": "string"
-                              },
-                              "createdAt": {
-                                "type": "number"
-                              },
-                              "updatedAt": {
-                                "type": "number"
-                              },
-                              "createdBy": {
-                                "nullable": true,
-                                "type": "string"
-                              },
-                              "updatedBy": {
-                                "nullable": true,
-                                "type": "string"
-                              },
-                              "gitBranch": {
                                 "type": "string"
                               },
                               "visibility": {
@@ -149467,14 +149593,6 @@
                                   "secret"
                                 ],
                                 "description": "User-facing config/secret model. When set, authoritative for new code paths when the env-var-config-secret-ui flag is enabled. Legacy rows omit this field; legacy rows omit it and callers fall back to existing `type` behavior."
-                              },
-                              "edgeConfigId": {
-                                "nullable": true,
-                                "type": "string"
-                              },
-                              "edgeConfigTokenId": {
-                                "nullable": true,
-                                "type": "string"
                               },
                               "contentHint": {
                                 "nullable": true,
@@ -149828,17 +149946,11 @@
                                   "type": "string"
                                 },
                                 "type": "array"
-                              },
-                              "system": {
-                                "type": "boolean",
-                                "enum": [
-                                  false,
-                                  true
-                                ]
                               }
                             },
                             "required": [
                               "key",
+                              "securityIssues",
                               "type",
                               "value"
                             ],
@@ -160839,6 +160951,9 @@
                             "repo": {
                               "type": "string"
                             },
+                            "repoId": {
+                              "type": "string"
+                            },
                             "type": {
                               "type": "string",
                               "enum": [
@@ -160900,6 +161015,7 @@
                             "org",
                             "productionBranch",
                             "repo",
+                            "repoId",
                             "type"
                           ],
                           "type": "object"
@@ -160910,6 +161026,9 @@
                               "type": "string"
                             },
                             "repo": {
+                              "type": "string"
+                            },
+                            "repoId": {
                               "type": "string"
                             },
                             "type": {
@@ -160973,6 +161092,7 @@
                             "org",
                             "productionBranch",
                             "repo",
+                            "repoId",
                             "type"
                           ],
                           "type": "object"
@@ -165065,6 +165185,7 @@
                     "tier": {
                       "type": "string",
                       "enum": [
+                        "advanced",
                         "critical",
                         "priority"
                       ]
@@ -193711,9 +193832,6 @@
           "410": {
             "description": ""
           },
-          "429": {
-            "description": ""
-          },
           "500": {
             "description": ""
           }
@@ -212198,6 +212316,14 @@
                 ],
                 "description": "Whether callers can narrow app-token grants per request."
               },
+              "supportsResources": {
+                "type": "boolean",
+                "enum": [
+                  false,
+                  true
+                ],
+                "description": "Whether callers can request resource-specific app tokens."
+              },
               "requiresReinstallation": {
                 "type": "boolean",
                 "enum": [
@@ -212249,6 +212375,14 @@
                   true
                 ],
                 "description": "Whether callers can narrow user-token grants per request."
+              },
+              "supportsResources": {
+                "type": "boolean",
+                "enum": [
+                  false,
+                  true
+                ],
+                "description": "Whether callers can request resource-specific user tokens."
               },
               "scopes": {
                 "items": {
@@ -212673,6 +212807,14 @@
                 ],
                 "description": "Whether callers can narrow app-token grants per request."
               },
+              "supportsResources": {
+                "type": "boolean",
+                "enum": [
+                  false,
+                  true
+                ],
+                "description": "Whether callers can request resource-specific app tokens."
+              },
               "requiresReinstallation": {
                 "type": "boolean",
                 "enum": [
@@ -212724,6 +212866,14 @@
                   true
                 ],
                 "description": "Whether callers can narrow user-token grants per request."
+              },
+              "supportsResources": {
+                "type": "boolean",
+                "enum": [
+                  false,
+                  true
+                ],
+                "description": "Whether callers can request resource-specific user tokens."
               },
               "scopes": {
                 "items": {
@@ -217245,6 +217395,7 @@
               "organization-team-add",
               "organization-team-create",
               "organization-team-delete",
+              "organization-team-sso-update",
               "owner-blocked",
               "owner-soft-blocked",
               "owner-soft-unblocked",
@@ -227412,6 +227563,10 @@
                               "wafRateLimitRequest",
                               "webAnalyticsEvent"
                             ]
+                          },
+                          "unpauseAt": {
+                            "type": "number",
+                            "description": "Since September 2026. Set only by `billing-usage-alerts` for usage plans with a `blockDurationMs`; its presence marks a pause that expires on its own."
                           }
                         },
                         "required": [
@@ -231291,6 +231446,42 @@
                   "billingPlan",
                   "organizationId",
                   "teamId"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "organizationId": {
+                    "type": "string"
+                  },
+                  "teamId": {
+                    "type": "string"
+                  },
+                  "teamName": {
+                    "type": "string"
+                  },
+                  "previousMode": {
+                    "type": "string",
+                    "enum": [
+                      "organization",
+                      "team"
+                    ]
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "organization",
+                      "team"
+                    ]
+                  }
+                },
+                "required": [
+                  "mode",
+                  "organizationId",
+                  "previousMode",
+                  "teamId",
+                  "teamName"
                 ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
@@ -241584,6 +241775,7 @@
               "organization-team-add",
               "organization-team-create",
               "organization-team-delete",
+              "organization-team-sso-update",
               "owner-blocked",
               "owner-soft-blocked",
               "owner-soft-unblocked",
@@ -242311,6 +242503,7 @@
                 "organization-team-add",
                 "organization-team-create",
                 "organization-team-delete",
+                "organization-team-sso-update",
                 "owner-blocked",
                 "owner-soft-blocked",
                 "owner-soft-unblocked",
@@ -246811,6 +247004,10 @@
                   "wafRateLimitRequest",
                   "webAnalyticsEvent"
                 ]
+              },
+              "unpauseAt": {
+                "type": "number",
+                "description": "Since September 2026. Set only by `billing-usage-alerts` for usage plans with a `blockDurationMs`; its presence marks a pause that expires on its own."
               }
             },
             "required": [
