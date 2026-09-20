@@ -170409,6 +170409,15 @@
                     "default": "node24",
                     "example": "node24"
                   },
+                  "architecture": {
+                    "description": "CPU architecture. Inherits a snapshot or single image manifest when omitted. Image indexes default to amd64. Must match the source. ARM64 creation requires API v3 or v4 without runtime and team access.",
+                    "type": "string",
+                    "enum": [
+                      "amd64",
+                      "arm64"
+                    ],
+                    "example": "arm64"
+                  },
                   "resources": {
                     "description": "Resources to define the VM",
                     "additionalProperties": false,
@@ -176001,6 +176010,15 @@
                       }
                     ]
                   },
+                  "architecture": {
+                    "description": "CPU architecture. Inherits a snapshot or single image manifest when omitted. Image indexes default to amd64. Must match the source. ARM64 creation requires API v3 or v4 without runtime and team access.",
+                    "type": "string",
+                    "enum": [
+                      "amd64",
+                      "arm64"
+                    ],
+                    "example": "arm64"
+                  },
                   "resources": {
                     "description": "Resources to define the VM",
                     "additionalProperties": false,
@@ -177745,6 +177763,15 @@
                         }
                       }
                     ]
+                  },
+                  "architecture": {
+                    "description": "CPU architecture. Inherits a snapshot or single image manifest when omitted. Image indexes default to amd64. Must match the source. ARM64 creation requires API v3 or v4 without runtime and team access.",
+                    "type": "string",
+                    "enum": [
+                      "amd64",
+                      "arm64"
+                    ],
+                    "example": "arm64"
                   },
                   "resources": {
                     "description": "Resources to define the VM",
@@ -214938,6 +214965,8 @@
               "type": "string",
               "enum": [
                 "implicit-caching",
+                "reasoning",
+                "tool-use",
                 "vision"
               ],
               "description": "Limit providers to those with these features."
