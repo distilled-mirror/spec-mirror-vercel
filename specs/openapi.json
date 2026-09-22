@@ -13438,6 +13438,16 @@
               }
             }
           },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectError"
+                }
+              }
+            }
+          },
           "410": {
             "description": "The requested resource is no longer available.",
             "content": {
@@ -13608,6 +13618,16 @@
           },
           "404": {
             "description": "The requested resource was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The request conflicts with the current resource state.",
             "content": {
               "application/json": {
                 "schema": {
@@ -14154,6 +14174,16 @@
               }
             }
           },
+          "409": {
+            "description": "The request conflicts with the current resource state.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectError"
+                }
+              }
+            }
+          },
           "410": {
             "description": "The requested resource is no longer available.",
             "content": {
@@ -14273,6 +14303,16 @@
           },
           "404": {
             "description": "The requested resource was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The request conflicts with the current resource state.",
             "content": {
               "application/json": {
                 "schema": {
@@ -14945,6 +14985,9 @@
           },
           "429": {
             "description": ""
+          },
+          "501": {
+            "description": ""
           }
         },
         "parameters": [
@@ -15224,6 +15267,9 @@
             "description": ""
           },
           "410": {
+            "description": ""
+          },
+          "501": {
             "description": ""
           }
         },
@@ -18730,6 +18776,57 @@
                             },
                             {
                               "properties": {
+                                "commitMetadata": {
+                                  "properties": {
+                                    "author": {
+                                      "properties": {
+                                        "date": {
+                                          "type": "string"
+                                        },
+                                        "email": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "date",
+                                        "email",
+                                        "name"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "committer": {
+                                      "properties": {
+                                        "date": {
+                                          "type": "string"
+                                        },
+                                        "email": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "date",
+                                        "email",
+                                        "name"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "message": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "author",
+                                    "committer",
+                                    "message"
+                                  ],
+                                  "type": "object"
+                                },
                                 "org": {
                                   "type": "string"
                                 },
@@ -18991,6 +19088,57 @@
                             },
                             {
                               "properties": {
+                                "commitMetadata": {
+                                  "properties": {
+                                    "author": {
+                                      "properties": {
+                                        "date": {
+                                          "type": "string"
+                                        },
+                                        "email": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "date",
+                                        "email",
+                                        "name"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "committer": {
+                                      "properties": {
+                                        "date": {
+                                          "type": "string"
+                                        },
+                                        "email": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "date",
+                                        "email",
+                                        "name"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "message": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "author",
+                                    "committer",
+                                    "message"
+                                  ],
+                                  "type": "object"
+                                },
                                 "org": {
                                   "type": "string"
                                 },
@@ -24481,6 +24629,57 @@
                             },
                             {
                               "properties": {
+                                "commitMetadata": {
+                                  "properties": {
+                                    "author": {
+                                      "properties": {
+                                        "date": {
+                                          "type": "string"
+                                        },
+                                        "email": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "date",
+                                        "email",
+                                        "name"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "committer": {
+                                      "properties": {
+                                        "date": {
+                                          "type": "string"
+                                        },
+                                        "email": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "date",
+                                        "email",
+                                        "name"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "message": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "author",
+                                    "committer",
+                                    "message"
+                                  ],
+                                  "type": "object"
+                                },
                                 "org": {
                                   "type": "string"
                                 },
@@ -24742,6 +24941,57 @@
                             },
                             {
                               "properties": {
+                                "commitMetadata": {
+                                  "properties": {
+                                    "author": {
+                                      "properties": {
+                                        "date": {
+                                          "type": "string"
+                                        },
+                                        "email": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "date",
+                                        "email",
+                                        "name"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "committer": {
+                                      "properties": {
+                                        "date": {
+                                          "type": "string"
+                                        },
+                                        "email": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "date",
+                                        "email",
+                                        "name"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "message": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "author",
+                                    "committer",
+                                    "message"
+                                  ],
+                                  "type": "object"
+                                },
                                 "org": {
                                   "type": "string"
                                 },
@@ -27053,6 +27303,57 @@
                             },
                             {
                               "properties": {
+                                "commitMetadata": {
+                                  "properties": {
+                                    "author": {
+                                      "properties": {
+                                        "date": {
+                                          "type": "string"
+                                        },
+                                        "email": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "date",
+                                        "email",
+                                        "name"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "committer": {
+                                      "properties": {
+                                        "date": {
+                                          "type": "string"
+                                        },
+                                        "email": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "date",
+                                        "email",
+                                        "name"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "message": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "author",
+                                    "committer",
+                                    "message"
+                                  ],
+                                  "type": "object"
+                                },
                                 "org": {
                                   "type": "string"
                                 },
@@ -27314,6 +27615,57 @@
                             },
                             {
                               "properties": {
+                                "commitMetadata": {
+                                  "properties": {
+                                    "author": {
+                                      "properties": {
+                                        "date": {
+                                          "type": "string"
+                                        },
+                                        "email": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "date",
+                                        "email",
+                                        "name"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "committer": {
+                                      "properties": {
+                                        "date": {
+                                          "type": "string"
+                                        },
+                                        "email": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "date",
+                                        "email",
+                                        "name"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "message": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "author",
+                                    "committer",
+                                    "message"
+                                  ],
+                                  "type": "object"
+                                },
                                 "org": {
                                   "type": "string"
                                 },
@@ -34466,6 +34818,57 @@
                         },
                         {
                           "properties": {
+                            "commitMetadata": {
+                              "properties": {
+                                "author": {
+                                  "properties": {
+                                    "date": {
+                                      "type": "string"
+                                    },
+                                    "email": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "date",
+                                    "email",
+                                    "name"
+                                  ],
+                                  "type": "object"
+                                },
+                                "committer": {
+                                  "properties": {
+                                    "date": {
+                                      "type": "string"
+                                    },
+                                    "email": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "date",
+                                    "email",
+                                    "name"
+                                  ],
+                                  "type": "object"
+                                },
+                                "message": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "author",
+                                "committer",
+                                "message"
+                              ],
+                              "type": "object"
+                            },
                             "org": {
                               "type": "string"
                             },
@@ -34727,6 +35130,57 @@
                         },
                         {
                           "properties": {
+                            "commitMetadata": {
+                              "properties": {
+                                "author": {
+                                  "properties": {
+                                    "date": {
+                                      "type": "string"
+                                    },
+                                    "email": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "date",
+                                    "email",
+                                    "name"
+                                  ],
+                                  "type": "object"
+                                },
+                                "committer": {
+                                  "properties": {
+                                    "date": {
+                                      "type": "string"
+                                    },
+                                    "email": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "date",
+                                    "email",
+                                    "name"
+                                  ],
+                                  "type": "object"
+                                },
+                                "message": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "author",
+                                "committer",
+                                "message"
+                              ],
+                              "type": "object"
+                            },
                             "org": {
                               "type": "string"
                             },
@@ -41023,6 +41477,184 @@
         ]
       }
     },
+    "/v1/registrar/domains/search": {
+      "post": {
+        "tags": [
+          "domains-registrar"
+        ],
+        "operationId": "searchDomains",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            },
+            "required": false
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "results"
+                  ],
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "required": [
+                              "domain",
+                              "available"
+                            ],
+                            "properties": {
+                              "domain": {
+                                "$ref": "#/components/schemas/DomainName"
+                              },
+                              "available": {
+                                "type": "boolean",
+                                "enum": [
+                                  false
+                                ],
+                                "description": "`false` means the domain is unavailable or its availability could not be confirmed."
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "domain",
+                              "available",
+                              "years",
+                              "price",
+                              "renewalPrice",
+                              "premium"
+                            ],
+                            "properties": {
+                              "domain": {
+                                "$ref": "#/components/schemas/DomainName"
+                              },
+                              "available": {
+                                "type": "boolean",
+                                "enum": [
+                                  true
+                                ]
+                              },
+                              "years": {
+                                "type": "number"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "renewalPrice": {
+                                "type": "number"
+                              },
+                              "premium": {
+                                "type": "boolean"
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "There was something wrong with the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "NotAuthorizedForScope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotAuthorizedForScope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "TooManyRequests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TooManyRequests"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalServerError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Start domain research here. Get registration availability and pricing for 1–200 exact domain names. Returns results in input order, with registration and renewal prices in USD for available domains. No authentication required.",
+        "summary": "Get Domain Availability and Pricing",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "domains"
+                ],
+                "properties": {
+                  "domains": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "$ref": "#/components/schemas/DomainName"
+                    },
+                    "description": "an array of at most 200 item(s)",
+                    "title": "maxItems(200)",
+                    "maxItems": 200
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
     "/v1/registrar/tlds/supported": {
       "get": {
         "tags": [
@@ -41963,184 +42595,6 @@
                     "description": "an array of at most 50 item(s)",
                     "title": "maxItems(50)",
                     "maxItems": 50
-                  }
-                },
-                "additionalProperties": false
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/v1/registrar/domains/search": {
-      "post": {
-        "tags": [
-          "domains-registrar"
-        ],
-        "operationId": "searchDomains",
-        "parameters": [
-          {
-            "name": "teamId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
-            },
-            "required": false
-          }
-        ],
-        "security": [],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "results"
-                  ],
-                  "properties": {
-                    "results": {
-                      "type": "array",
-                      "items": {
-                        "anyOf": [
-                          {
-                            "type": "object",
-                            "required": [
-                              "domain",
-                              "available"
-                            ],
-                            "properties": {
-                              "domain": {
-                                "$ref": "#/components/schemas/DomainName"
-                              },
-                              "available": {
-                                "type": "boolean",
-                                "enum": [
-                                  false
-                                ],
-                                "description": "`false` means the domain is unavailable or its availability could not be confirmed."
-                              }
-                            },
-                            "additionalProperties": false
-                          },
-                          {
-                            "type": "object",
-                            "required": [
-                              "domain",
-                              "available",
-                              "years",
-                              "price",
-                              "renewalPrice",
-                              "premium"
-                            ],
-                            "properties": {
-                              "domain": {
-                                "$ref": "#/components/schemas/DomainName"
-                              },
-                              "available": {
-                                "type": "boolean",
-                                "enum": [
-                                  true
-                                ]
-                              },
-                              "years": {
-                                "type": "number"
-                              },
-                              "price": {
-                                "type": "number"
-                              },
-                              "renewalPrice": {
-                                "type": "number"
-                              },
-                              "premium": {
-                                "type": "boolean"
-                              }
-                            },
-                            "additionalProperties": false
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "There was something wrong with the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Unauthorized"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "NotAuthorizedForScope",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotAuthorizedForScope"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "TooManyRequests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TooManyRequests"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "InternalServerError",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
-          }
-        },
-        "description": "Check registration availability for 1–200 exact domain names, such as `example.com`. Returns results in input order, with registration and renewal prices in USD for available domains. No authentication required.",
-        "summary": "Check domain availability and pricing",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "domains"
-                ],
-                "properties": {
-                  "domains": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                      "$ref": "#/components/schemas/DomainName"
-                    },
-                    "description": "an array of at most 200 item(s)",
-                    "title": "maxItems(200)",
-                    "maxItems": 200
                   }
                 },
                 "additionalProperties": false
@@ -80475,6 +80929,26 @@
                                   "reason": {
                                     "type": "string"
                                   },
+                                  "registeredShaBlock": {
+                                    "properties": {
+                                      "createdAt": {
+                                        "type": "string"
+                                      },
+                                      "createdBy": {
+                                        "type": "string"
+                                      },
+                                      "sha": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "createdAt",
+                                      "createdBy",
+                                      "sha"
+                                    ],
+                                    "type": "object",
+                                    "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
+                                  },
                                   "statusCode": {
                                     "type": "number"
                                   }
@@ -80526,6 +81000,26 @@
                                         },
                                         "reason": {
                                           "type": "string"
+                                        },
+                                        "registeredShaBlock": {
+                                          "properties": {
+                                            "createdAt": {
+                                              "type": "string"
+                                            },
+                                            "createdBy": {
+                                              "type": "string"
+                                            },
+                                            "sha": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "createdAt",
+                                            "createdBy",
+                                            "sha"
+                                          ],
+                                          "type": "object",
+                                          "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
                                         },
                                         "statusCode": {
                                           "type": "number"
@@ -95610,6 +96104,26 @@
                                   "reason": {
                                     "type": "string"
                                   },
+                                  "registeredShaBlock": {
+                                    "properties": {
+                                      "createdAt": {
+                                        "type": "string"
+                                      },
+                                      "createdBy": {
+                                        "type": "string"
+                                      },
+                                      "sha": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "createdAt",
+                                      "createdBy",
+                                      "sha"
+                                    ],
+                                    "type": "object",
+                                    "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
+                                  },
                                   "statusCode": {
                                     "type": "number"
                                   }
@@ -95661,6 +96175,26 @@
                                         },
                                         "reason": {
                                           "type": "string"
+                                        },
+                                        "registeredShaBlock": {
+                                          "properties": {
+                                            "createdAt": {
+                                              "type": "string"
+                                            },
+                                            "createdBy": {
+                                              "type": "string"
+                                            },
+                                            "sha": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "createdAt",
+                                            "createdBy",
+                                            "sha"
+                                          ],
+                                          "type": "object",
+                                          "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
                                         },
                                         "statusCode": {
                                           "type": "number"
@@ -100437,6 +100971,26 @@
                                       "reason": {
                                         "type": "string"
                                       },
+                                      "registeredShaBlock": {
+                                        "properties": {
+                                          "createdAt": {
+                                            "type": "string"
+                                          },
+                                          "createdBy": {
+                                            "type": "string"
+                                          },
+                                          "sha": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "createdAt",
+                                          "createdBy",
+                                          "sha"
+                                        ],
+                                        "type": "object",
+                                        "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
+                                      },
                                       "statusCode": {
                                         "type": "number"
                                       }
@@ -100488,6 +101042,26 @@
                                             },
                                             "reason": {
                                               "type": "string"
+                                            },
+                                            "registeredShaBlock": {
+                                              "properties": {
+                                                "createdAt": {
+                                                  "type": "string"
+                                                },
+                                                "createdBy": {
+                                                  "type": "string"
+                                                },
+                                                "sha": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "createdAt",
+                                                "createdBy",
+                                                "sha"
+                                              ],
+                                              "type": "object",
+                                              "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
                                             },
                                             "statusCode": {
                                               "type": "number"
@@ -105271,6 +105845,26 @@
                                       "reason": {
                                         "type": "string"
                                       },
+                                      "registeredShaBlock": {
+                                        "properties": {
+                                          "createdAt": {
+                                            "type": "string"
+                                          },
+                                          "createdBy": {
+                                            "type": "string"
+                                          },
+                                          "sha": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "createdAt",
+                                          "createdBy",
+                                          "sha"
+                                        ],
+                                        "type": "object",
+                                        "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
+                                      },
                                       "statusCode": {
                                         "type": "number"
                                       }
@@ -105322,6 +105916,26 @@
                                             },
                                             "reason": {
                                               "type": "string"
+                                            },
+                                            "registeredShaBlock": {
+                                              "properties": {
+                                                "createdAt": {
+                                                  "type": "string"
+                                                },
+                                                "createdBy": {
+                                                  "type": "string"
+                                                },
+                                                "sha": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "createdAt",
+                                                "createdBy",
+                                                "sha"
+                                              ],
+                                              "type": "object",
+                                              "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
                                             },
                                             "statusCode": {
                                               "type": "number"
@@ -113859,6 +114473,26 @@
                             "reason": {
                               "type": "string"
                             },
+                            "registeredShaBlock": {
+                              "properties": {
+                                "createdAt": {
+                                  "type": "string"
+                                },
+                                "createdBy": {
+                                  "type": "string"
+                                },
+                                "sha": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "createdAt",
+                                "createdBy",
+                                "sha"
+                              ],
+                              "type": "object",
+                              "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
+                            },
                             "statusCode": {
                               "type": "number"
                             }
@@ -113910,6 +114544,26 @@
                                   },
                                   "reason": {
                                     "type": "string"
+                                  },
+                                  "registeredShaBlock": {
+                                    "properties": {
+                                      "createdAt": {
+                                        "type": "string"
+                                      },
+                                      "createdBy": {
+                                        "type": "string"
+                                      },
+                                      "sha": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "createdAt",
+                                      "createdBy",
+                                      "sha"
+                                    ],
+                                    "type": "object",
+                                    "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
                                   },
                                   "statusCode": {
                                     "type": "number"
@@ -122670,6 +123324,26 @@
                             "reason": {
                               "type": "string"
                             },
+                            "registeredShaBlock": {
+                              "properties": {
+                                "createdAt": {
+                                  "type": "string"
+                                },
+                                "createdBy": {
+                                  "type": "string"
+                                },
+                                "sha": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "createdAt",
+                                "createdBy",
+                                "sha"
+                              ],
+                              "type": "object",
+                              "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
+                            },
                             "statusCode": {
                               "type": "number"
                             }
@@ -122721,6 +123395,26 @@
                                   },
                                   "reason": {
                                     "type": "string"
+                                  },
+                                  "registeredShaBlock": {
+                                    "properties": {
+                                      "createdAt": {
+                                        "type": "string"
+                                      },
+                                      "createdBy": {
+                                        "type": "string"
+                                      },
+                                      "sha": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "createdAt",
+                                      "createdBy",
+                                      "sha"
+                                    ],
+                                    "type": "object",
+                                    "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
                                   },
                                   "statusCode": {
                                     "type": "number"
@@ -130844,6 +131538,26 @@
                             "reason": {
                               "type": "string"
                             },
+                            "registeredShaBlock": {
+                              "properties": {
+                                "createdAt": {
+                                  "type": "string"
+                                },
+                                "createdBy": {
+                                  "type": "string"
+                                },
+                                "sha": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "createdAt",
+                                "createdBy",
+                                "sha"
+                              ],
+                              "type": "object",
+                              "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
+                            },
                             "statusCode": {
                               "type": "number"
                             }
@@ -130895,6 +131609,26 @@
                                   },
                                   "reason": {
                                     "type": "string"
+                                  },
+                                  "registeredShaBlock": {
+                                    "properties": {
+                                      "createdAt": {
+                                        "type": "string"
+                                      },
+                                      "createdBy": {
+                                        "type": "string"
+                                      },
+                                      "sha": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "createdAt",
+                                      "createdBy",
+                                      "sha"
+                                    ],
+                                    "type": "object",
+                                    "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
                                   },
                                   "statusCode": {
                                     "type": "number"
@@ -140279,6 +141013,26 @@
                             "reason": {
                               "type": "string"
                             },
+                            "registeredShaBlock": {
+                              "properties": {
+                                "createdAt": {
+                                  "type": "string"
+                                },
+                                "createdBy": {
+                                  "type": "string"
+                                },
+                                "sha": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "createdAt",
+                                "createdBy",
+                                "sha"
+                              ],
+                              "type": "object",
+                              "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
+                            },
                             "statusCode": {
                               "type": "number"
                             }
@@ -140330,6 +141084,26 @@
                                   },
                                   "reason": {
                                     "type": "string"
+                                  },
+                                  "registeredShaBlock": {
+                                    "properties": {
+                                      "createdAt": {
+                                        "type": "string"
+                                      },
+                                      "createdBy": {
+                                        "type": "string"
+                                      },
+                                      "sha": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "createdAt",
+                                      "createdBy",
+                                      "sha"
+                                    ],
+                                    "type": "object",
+                                    "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
                                   },
                                   "statusCode": {
                                     "type": "number"
@@ -161210,6 +161984,26 @@
                             "reason": {
                               "type": "string"
                             },
+                            "registeredShaBlock": {
+                              "properties": {
+                                "createdAt": {
+                                  "type": "string"
+                                },
+                                "createdBy": {
+                                  "type": "string"
+                                },
+                                "sha": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "createdAt",
+                                "createdBy",
+                                "sha"
+                              ],
+                              "type": "object",
+                              "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
+                            },
                             "statusCode": {
                               "type": "number"
                             }
@@ -161261,6 +162055,26 @@
                                   },
                                   "reason": {
                                     "type": "string"
+                                  },
+                                  "registeredShaBlock": {
+                                    "properties": {
+                                      "createdAt": {
+                                        "type": "string"
+                                      },
+                                      "createdBy": {
+                                        "type": "string"
+                                      },
+                                      "sha": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "createdAt",
+                                      "createdBy",
+                                      "sha"
+                                    ],
+                                    "type": "object",
+                                    "description": "Since September 2026. Set on the live `abuse.block` only, by the consumer that auto-registers this project's production git SHA in the lineage blocklist, so unblocking can disable the row this block created. Absent means this block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must therefore clear only what is named here, never the project's current SHA, or it would disable another block's row."
                                   },
                                   "statusCode": {
                                     "type": "number"
@@ -171844,6 +172658,9 @@
             "description": ""
           },
           "410": {
+            "description": ""
+          },
+          "422": {
             "description": ""
           },
           "429": {
@@ -226430,6 +227247,57 @@
                           },
                           "headInfo": {
                             "properties": {
+                              "commitMetadata": {
+                                "properties": {
+                                  "author": {
+                                    "properties": {
+                                      "date": {
+                                        "type": "string"
+                                      },
+                                      "email": {
+                                        "type": "string"
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "date",
+                                      "email",
+                                      "name"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "committer": {
+                                    "properties": {
+                                      "date": {
+                                        "type": "string"
+                                      },
+                                      "email": {
+                                        "type": "string"
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "date",
+                                      "email",
+                                      "name"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "message": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "author",
+                                  "committer",
+                                  "message"
+                                ],
+                                "type": "object"
+                              },
                               "org": {
                                 "type": "string"
                               },
@@ -229539,6 +230407,26 @@
                             },
                             "type": "array",
                             "description": "(scanner history). Since November 2021. First element is newest."
+                          },
+                          "registeredShaBlock": {
+                            "properties": {
+                              "createdAt": {
+                                "type": "string"
+                              },
+                              "createdBy": {
+                                "type": "string"
+                              },
+                              "sha": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "createdAt",
+                              "createdBy",
+                              "sha"
+                            ],
+                            "type": "object",
+                            "description": "Since September 2026. The git SHA a non-cascading hard block of this owner auto-registered in the lineage blocklist, so unblocking can disable the row that block created. Lives on the owner rather than a project block because this registration path runs only when the block did not cascade, leaving the owner's single project unblocked and with no block record to carry it. Absent means the block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must clear only what is named here."
                           },
                           "scanner": {
                             "type": "string",
