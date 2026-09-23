@@ -48219,6 +48219,13 @@
                                     "oneOf": [
                                       {
                                         "properties": {
+                                          "defaultFor": {
+                                            "type": "string",
+                                            "enum": [
+                                              "eve-tracing"
+                                            ],
+                                            "description": "Informational marker for a system-owned default drain."
+                                          },
                                           "kind": {
                                             "type": "string",
                                             "enum": [
@@ -48734,6 +48741,13 @@
                                     "oneOf": [
                                       {
                                         "properties": {
+                                          "defaultFor": {
+                                            "type": "string",
+                                            "enum": [
+                                              "eve-tracing"
+                                            ],
+                                            "description": "Informational marker for a system-owned default drain."
+                                          },
                                           "kind": {
                                             "type": "string",
                                             "enum": [
@@ -49554,6 +49568,13 @@
                           "oneOf": [
                             {
                               "properties": {
+                                "defaultFor": {
+                                  "type": "string",
+                                  "enum": [
+                                    "eve-tracing"
+                                  ],
+                                  "description": "Informational marker for a system-owned default drain."
+                                },
                                 "kind": {
                                   "type": "string",
                                   "enum": [
@@ -50066,6 +50087,13 @@
                           "oneOf": [
                             {
                               "properties": {
+                                "defaultFor": {
+                                  "type": "string",
+                                  "enum": [
+                                    "eve-tracing"
+                                  ],
+                                  "description": "Informational marker for a system-owned default drain."
+                                },
                                 "kind": {
                                   "type": "string",
                                   "enum": [
@@ -51115,6 +51143,13 @@
                                 "oneOf": [
                                   {
                                     "properties": {
+                                      "defaultFor": {
+                                        "type": "string",
+                                        "enum": [
+                                          "eve-tracing"
+                                        ],
+                                        "description": "Informational marker for a system-owned default drain."
+                                      },
                                       "kind": {
                                         "type": "string",
                                         "enum": [
@@ -51630,6 +51665,13 @@
                                 "oneOf": [
                                   {
                                     "properties": {
+                                      "defaultFor": {
+                                        "type": "string",
+                                        "enum": [
+                                          "eve-tracing"
+                                        ],
+                                        "description": "Informational marker for a system-owned default drain."
+                                      },
                                       "kind": {
                                         "type": "string",
                                         "enum": [
@@ -52353,6 +52395,13 @@
                           "oneOf": [
                             {
                               "properties": {
+                                "defaultFor": {
+                                  "type": "string",
+                                  "enum": [
+                                    "eve-tracing"
+                                  ],
+                                  "description": "Informational marker for a system-owned default drain."
+                                },
                                 "kind": {
                                   "type": "string",
                                   "enum": [
@@ -52865,6 +52914,13 @@
                           "oneOf": [
                             {
                               "properties": {
+                                "defaultFor": {
+                                  "type": "string",
+                                  "enum": [
+                                    "eve-tracing"
+                                  ],
+                                  "description": "Informational marker for a system-owned default drain."
+                                },
                                 "kind": {
                                   "type": "string",
                                   "enum": [
@@ -53510,6 +53566,13 @@
                           "oneOf": [
                             {
                               "properties": {
+                                "defaultFor": {
+                                  "type": "string",
+                                  "enum": [
+                                    "eve-tracing"
+                                  ],
+                                  "description": "Informational marker for a system-owned default drain."
+                                },
                                 "kind": {
                                   "type": "string",
                                   "enum": [
@@ -54022,6 +54085,13 @@
                           "oneOf": [
                             {
                               "properties": {
+                                "defaultFor": {
+                                  "type": "string",
+                                  "enum": [
+                                    "eve-tracing"
+                                  ],
+                                  "description": "Informational marker for a system-owned default drain."
+                                },
                                 "kind": {
                                   "type": "string",
                                   "enum": [
@@ -59627,6 +59697,9 @@
           },
           "410": {
             "description": ""
+          },
+          "503": {
+            "description": ""
           }
         },
         "parameters": [
@@ -64960,6 +65033,9 @@
             "description": "You do not have permission to access this resource."
           },
           "410": {
+            "description": ""
+          },
+          "503": {
             "description": ""
           }
         },
@@ -76490,6 +76566,13 @@
                         "oneOf": [
                           {
                             "properties": {
+                              "defaultFor": {
+                                "type": "string",
+                                "enum": [
+                                  "eve-tracing"
+                                ],
+                                "description": "Informational marker for a system-owned default drain."
+                              },
                               "kind": {
                                 "type": "string",
                                 "enum": [
@@ -76733,6 +76816,13 @@
                       "oneOf": [
                         {
                           "properties": {
+                            "defaultFor": {
+                              "type": "string",
+                              "enum": [
+                                "eve-tracing"
+                              ],
+                              "description": "Informational marker for a system-owned default drain."
+                            },
                             "kind": {
                               "type": "string",
                               "enum": [
@@ -77251,6 +77341,188 @@
                     "type": "object",
                     "description": "Optional generic metadata for the API key. The accepted shape depends on the key's `purpose` and is validated on creation; for `ai-gateway` keys this accepts `environment`.",
                     "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/kms/issuers/{issuerId}/sign/message": {
+      "post": {
+        "description": "Sign a raw message with a KMS issuer's active signing key. Authenticate the request with a Vercel OIDC token in the `Authorization: Bearer` header; the issuer's policies decide which workloads are allowed to sign. The response `signature` is standard-base64 of the raw signature over the decoded message bytes. `keyId` and `algorithm` identify the signing key in the issuer's JWKS.",
+        "operationId": "signKmsMessage",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Sign a message",
+        "tags": [
+          "kms"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "algorithm": {
+                      "type": "string",
+                      "description": "Algorithm of the signing key."
+                    },
+                    "keyId": {
+                      "type": "string",
+                      "description": "Key id of the signing key. Matches the JWKS `kid` so verifiers can select the key after rotation without trial-verifying every published key."
+                    },
+                    "signature": {
+                      "type": "string",
+                      "description": "Standard-base64 encoding of the raw signature over the decoded message bytes."
+                    }
+                  },
+                  "required": [
+                    "algorithm",
+                    "keyId",
+                    "signature"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": ""
+          },
+          "403": {
+            "description": ""
+          },
+          "404": {
+            "description": ""
+          },
+          "429": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "issuerId",
+            "description": "The ID of the issuer.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The ID of the issuer."
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "message"
+                ],
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "description": "Base64-encoded message to be signed.",
+                    "maxLength": 44000,
+                    "pattern": "^[A-Za-z0-9+/]*={0,2}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/kms/issuers/{issuerId}/sign/token": {
+      "post": {
+        "description": "Sign a JWT with a KMS issuer's active signing key. Authenticate the request with a Vercel OIDC token in the `Authorization: Bearer` header; the issuer's policies decide which workloads are allowed to sign.",
+        "operationId": "signKmsToken",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Sign a token",
+        "tags": [
+          "kms"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "token"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": ""
+          },
+          "403": {
+            "description": ""
+          },
+          "404": {
+            "description": ""
+          },
+          "429": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "issuerId",
+            "description": "The ID of the issuer.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The ID of the issuer."
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "claims": {
+                    "type": "object",
+                    "description": "The claims to include in the token.",
+                    "maxProperties": 128
+                  },
+                  "headers": {
+                    "type": "object",
+                    "description": "Additional headers to include in the token.",
+                    "maxProperties": 64
+                  },
+                  "ttl": {
+                    "type": "number",
+                    "description": "The time-to-live for the token, in seconds.",
+                    "default": 300,
+                    "nullable": true
                   }
                 }
               }
@@ -78008,188 +78280,6 @@
                     "description": "The key id to use as the imported key's JWT/JWKS `kid`. Only allowed when `importKey` is provided. Not required to be unique; the addressable key id is the server-minted `keyId` returned in the response.",
                     "maxLength": 128,
                     "pattern": "^[A-Za-z0-9._-]+$"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/kms/issuers/{issuerId}/sign/message": {
-      "post": {
-        "description": "Sign a raw message with a KMS issuer's active signing key. Authenticate the request with a Vercel OIDC token in the `Authorization: Bearer` header; the issuer's policies decide which workloads are allowed to sign. The response `signature` is standard-base64 of the raw signature over the decoded message bytes. `keyId` and `algorithm` identify the signing key in the issuer's JWKS.",
-        "operationId": "signKmsMessage",
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
-        "summary": "Sign a message",
-        "tags": [
-          "kms"
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "algorithm": {
-                      "type": "string",
-                      "description": "Algorithm of the signing key."
-                    },
-                    "keyId": {
-                      "type": "string",
-                      "description": "Key id of the signing key. Matches the JWKS `kid` so verifiers can select the key after rotation without trial-verifying every published key."
-                    },
-                    "signature": {
-                      "type": "string",
-                      "description": "Standard-base64 encoding of the raw signature over the decoded message bytes."
-                    }
-                  },
-                  "required": [
-                    "algorithm",
-                    "keyId",
-                    "signature"
-                  ],
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid."
-          },
-          "401": {
-            "description": ""
-          },
-          "403": {
-            "description": ""
-          },
-          "404": {
-            "description": ""
-          },
-          "429": {
-            "description": ""
-          }
-        },
-        "parameters": [
-          {
-            "name": "issuerId",
-            "description": "The ID of the issuer.",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The ID of the issuer."
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "message"
-                ],
-                "properties": {
-                  "message": {
-                    "type": "string",
-                    "description": "Base64-encoded message to be signed.",
-                    "maxLength": 44000,
-                    "pattern": "^[A-Za-z0-9+/]*={0,2}$"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/kms/issuers/{issuerId}/sign/token": {
-      "post": {
-        "description": "Sign a JWT with a KMS issuer's active signing key. Authenticate the request with a Vercel OIDC token in the `Authorization: Bearer` header; the issuer's policies decide which workloads are allowed to sign.",
-        "operationId": "signKmsToken",
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
-        "summary": "Sign a token",
-        "tags": [
-          "kms"
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "token": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "token"
-                  ],
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid."
-          },
-          "401": {
-            "description": ""
-          },
-          "403": {
-            "description": ""
-          },
-          "404": {
-            "description": ""
-          },
-          "429": {
-            "description": ""
-          }
-        },
-        "parameters": [
-          {
-            "name": "issuerId",
-            "description": "The ID of the issuer.",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The ID of the issuer."
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "claims": {
-                    "type": "object",
-                    "description": "The claims to include in the token.",
-                    "maxProperties": 128
-                  },
-                  "headers": {
-                    "type": "object",
-                    "description": "Additional headers to include in the token.",
-                    "maxProperties": 64
-                  },
-                  "ttl": {
-                    "type": "number",
-                    "description": "The time-to-live for the token, in seconds.",
-                    "default": 300,
-                    "nullable": true
                   }
                 }
               }
@@ -82529,6 +82619,29 @@
                                   "short-build-duration",
                                   "sustained-high-cpu"
                                 ]
+                              },
+                              "buildMachineElasticTransition": {
+                                "properties": {
+                                  "algorithmVersion": {
+                                    "type": "string"
+                                  },
+                                  "at": {
+                                    "type": "number"
+                                  },
+                                  "direction": {
+                                    "type": "string",
+                                    "enum": [
+                                      "downgrade",
+                                      "upgrade"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "algorithmVersion",
+                                  "at",
+                                  "direction"
+                                ],
+                                "type": "object"
                               },
                               "buildMachineSelection": {
                                 "type": "string",
@@ -87318,6 +87431,29 @@
                                   "short-build-duration",
                                   "sustained-high-cpu"
                                 ]
+                              },
+                              "buildMachineElasticTransition": {
+                                "properties": {
+                                  "algorithmVersion": {
+                                    "type": "string"
+                                  },
+                                  "at": {
+                                    "type": "number"
+                                  },
+                                  "direction": {
+                                    "type": "string",
+                                    "enum": [
+                                      "downgrade",
+                                      "upgrade"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "algorithmVersion",
+                                  "at",
+                                  "direction"
+                                ],
+                                "type": "object"
                               },
                               "buildMachineSelection": {
                                 "type": "string",
@@ -99244,6 +99380,29 @@
                                   "sustained-high-cpu"
                                 ]
                               },
+                              "buildMachineElasticTransition": {
+                                "properties": {
+                                  "algorithmVersion": {
+                                    "type": "string"
+                                  },
+                                  "at": {
+                                    "type": "number"
+                                  },
+                                  "direction": {
+                                    "type": "string",
+                                    "enum": [
+                                      "downgrade",
+                                      "upgrade"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "algorithmVersion",
+                                  "at",
+                                  "direction"
+                                ],
+                                "type": "object"
+                              },
                               "buildMachineSelection": {
                                 "type": "string",
                                 "enum": [
@@ -104111,6 +104270,29 @@
                                       "sustained-high-cpu"
                                     ]
                                   },
+                                  "buildMachineElasticTransition": {
+                                    "properties": {
+                                      "algorithmVersion": {
+                                        "type": "string"
+                                      },
+                                      "at": {
+                                        "type": "number"
+                                      },
+                                      "direction": {
+                                        "type": "string",
+                                        "enum": [
+                                          "downgrade",
+                                          "upgrade"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "algorithmVersion",
+                                      "at",
+                                      "direction"
+                                    ],
+                                    "type": "object"
+                                  },
                                   "buildMachineSelection": {
                                     "type": "string",
                                     "enum": [
@@ -107445,6 +107627,29 @@
                                       "short-build-duration",
                                       "sustained-high-cpu"
                                     ]
+                                  },
+                                  "buildMachineElasticTransition": {
+                                    "properties": {
+                                      "algorithmVersion": {
+                                        "type": "string"
+                                      },
+                                      "at": {
+                                        "type": "number"
+                                      },
+                                      "direction": {
+                                        "type": "string",
+                                        "enum": [
+                                          "downgrade",
+                                          "upgrade"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "algorithmVersion",
+                                      "at",
+                                      "direction"
+                                    ],
+                                    "type": "object"
                                   },
                                   "buildMachineSelection": {
                                     "type": "string",
@@ -112235,6 +112440,29 @@
                                       "sustained-high-cpu"
                                     ]
                                   },
+                                  "buildMachineElasticTransition": {
+                                    "properties": {
+                                      "algorithmVersion": {
+                                        "type": "string"
+                                      },
+                                      "at": {
+                                        "type": "number"
+                                      },
+                                      "direction": {
+                                        "type": "string",
+                                        "enum": [
+                                          "downgrade",
+                                          "upgrade"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "algorithmVersion",
+                                      "at",
+                                      "direction"
+                                    ],
+                                    "type": "object"
+                                  },
                                   "buildMachineSelection": {
                                     "type": "string",
                                     "enum": [
@@ -116073,6 +116301,29 @@
                             "short-build-duration",
                             "sustained-high-cpu"
                           ]
+                        },
+                        "buildMachineElasticTransition": {
+                          "properties": {
+                            "algorithmVersion": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "number"
+                            },
+                            "direction": {
+                              "type": "string",
+                              "enum": [
+                                "downgrade",
+                                "upgrade"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "algorithmVersion",
+                            "at",
+                            "direction"
+                          ],
+                          "type": "object"
                         },
                         "buildMachineSelection": {
                           "type": "string",
@@ -120863,6 +121114,29 @@
                             "sustained-high-cpu"
                           ]
                         },
+                        "buildMachineElasticTransition": {
+                          "properties": {
+                            "algorithmVersion": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "number"
+                            },
+                            "direction": {
+                              "type": "string",
+                              "enum": [
+                                "downgrade",
+                                "upgrade"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "algorithmVersion",
+                            "at",
+                            "direction"
+                          ],
+                          "type": "object"
+                        },
                         "buildMachineSelection": {
                           "type": "string",
                           "enum": [
@@ -123038,6 +123312,30 @@
                           "enterprise-floor"
                         ]
                       },
+                      "buildMachineElasticTransition": {
+                        "type": "object",
+                        "required": [
+                          "at",
+                          "direction",
+                          "algorithmVersion"
+                        ],
+                        "properties": {
+                          "at": {
+                            "type": "number"
+                          },
+                          "direction": {
+                            "type": "string",
+                            "enum": [
+                              "upgrade",
+                              "downgrade"
+                            ]
+                          },
+                          "algorithmVersion": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
                       "isNSNBDisabled": {
                         "type": "boolean"
                       },
@@ -124924,6 +125222,29 @@
                             "short-build-duration",
                             "sustained-high-cpu"
                           ]
+                        },
+                        "buildMachineElasticTransition": {
+                          "properties": {
+                            "algorithmVersion": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "number"
+                            },
+                            "direction": {
+                              "type": "string",
+                              "enum": [
+                                "downgrade",
+                                "upgrade"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "algorithmVersion",
+                            "at",
+                            "direction"
+                          ],
+                          "type": "object"
                         },
                         "buildMachineSelection": {
                           "type": "string",
@@ -129745,6 +130066,29 @@
                             "sustained-high-cpu"
                           ]
                         },
+                        "buildMachineElasticTransition": {
+                          "properties": {
+                            "algorithmVersion": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "number"
+                            },
+                            "direction": {
+                              "type": "string",
+                              "enum": [
+                                "downgrade",
+                                "upgrade"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "algorithmVersion",
+                            "at",
+                            "direction"
+                          ],
+                          "type": "object"
+                        },
                         "buildMachineSelection": {
                           "type": "string",
                           "enum": [
@@ -133138,6 +133482,29 @@
                             "short-build-duration",
                             "sustained-high-cpu"
                           ]
+                        },
+                        "buildMachineElasticTransition": {
+                          "properties": {
+                            "algorithmVersion": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "number"
+                            },
+                            "direction": {
+                              "type": "string",
+                              "enum": [
+                                "downgrade",
+                                "upgrade"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "algorithmVersion",
+                            "at",
+                            "direction"
+                          ],
+                          "type": "object"
                         },
                         "buildMachineSelection": {
                           "type": "string",
@@ -137919,6 +138286,29 @@
                             "sustained-high-cpu"
                           ]
                         },
+                        "buildMachineElasticTransition": {
+                          "properties": {
+                            "algorithmVersion": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "number"
+                            },
+                            "direction": {
+                              "type": "string",
+                              "enum": [
+                                "downgrade",
+                                "upgrade"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "algorithmVersion",
+                            "at",
+                            "direction"
+                          ],
+                          "type": "object"
+                        },
                         "buildMachineSelection": {
                           "type": "string",
                           "enum": [
@@ -139621,9 +140011,6 @@
           },
           "428": {
             "description": ""
-          },
-          "429": {
-            "description": ""
           }
         },
         "x-vercel-cli": {
@@ -139929,6 +140316,30 @@
                           "short-build-duration",
                           "enterprise-floor"
                         ]
+                      },
+                      "buildMachineElasticTransition": {
+                        "type": "object",
+                        "required": [
+                          "at",
+                          "direction",
+                          "algorithmVersion"
+                        ],
+                        "properties": {
+                          "at": {
+                            "type": "number"
+                          },
+                          "direction": {
+                            "type": "string",
+                            "enum": [
+                              "upgrade",
+                              "downgrade"
+                            ]
+                          },
+                          "algorithmVersion": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
                       },
                       "isNSNBDisabled": {
                         "type": "boolean"
@@ -140747,7 +141158,7 @@
                   },
                   "connectConfigurations": {
                     "type": "array",
-                    "description": "The list of connections from project environment to Secure Compute network",
+                    "description": "The list of connections from project environments to dedicated Secure Compute networks. Shared networks must be managed through the shared-connect-links endpoint.",
                     "items": {
                       "additionalProperties": false,
                       "properties": {
@@ -142613,6 +143024,29 @@
                             "short-build-duration",
                             "sustained-high-cpu"
                           ]
+                        },
+                        "buildMachineElasticTransition": {
+                          "properties": {
+                            "algorithmVersion": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "number"
+                            },
+                            "direction": {
+                              "type": "string",
+                              "enum": [
+                                "downgrade",
+                                "upgrade"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "algorithmVersion",
+                            "at",
+                            "direction"
+                          ],
+                          "type": "object"
                         },
                         "buildMachineSelection": {
                           "type": "string",
@@ -147402,6 +147836,29 @@
                             "short-build-duration",
                             "sustained-high-cpu"
                           ]
+                        },
+                        "buildMachineElasticTransition": {
+                          "properties": {
+                            "algorithmVersion": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "number"
+                            },
+                            "direction": {
+                              "type": "string",
+                              "enum": [
+                                "downgrade",
+                                "upgrade"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "algorithmVersion",
+                            "at",
+                            "direction"
+                          ],
+                          "type": "object"
                         },
                         "buildMachineSelection": {
                           "type": "string",
@@ -163585,6 +164042,29 @@
                             "sustained-high-cpu"
                           ]
                         },
+                        "buildMachineElasticTransition": {
+                          "properties": {
+                            "algorithmVersion": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "number"
+                            },
+                            "direction": {
+                              "type": "string",
+                              "enum": [
+                                "downgrade",
+                                "upgrade"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "algorithmVersion",
+                            "at",
+                            "direction"
+                          ],
+                          "type": "object"
+                        },
                         "buildMachineSelection": {
                           "type": "string",
                           "enum": [
@@ -168373,6 +168853,29 @@
                             "short-build-duration",
                             "sustained-high-cpu"
                           ]
+                        },
+                        "buildMachineElasticTransition": {
+                          "properties": {
+                            "algorithmVersion": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "number"
+                            },
+                            "direction": {
+                              "type": "string",
+                              "enum": [
+                                "downgrade",
+                                "upgrade"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "algorithmVersion",
+                            "at",
+                            "direction"
+                          ],
+                          "type": "object"
                         },
                         "buildMachineSelection": {
                           "type": "string",
@@ -204522,6 +205025,9 @@
                         {
                           "items": {
                             "properties": {
+                              "affinityOutcome": {
+                                "type": "string"
+                              },
                               "aiGatewayModelId": {
                                 "type": "string"
                               },
@@ -204628,6 +205134,9 @@
                                 "type": "string"
                               },
                               "clientJa4Digest": {
+                                "type": "string"
+                              },
+                              "clientSessionId": {
                                 "type": "string"
                               },
                               "clientUserAgent": {
@@ -205242,6 +205751,9 @@
                         {
                           "items": {
                             "properties": {
+                              "affinityOutcome": {
+                                "type": "string"
+                              },
                               "aiGatewayModelId": {
                                 "type": "string"
                               },
@@ -205348,6 +205860,9 @@
                                 "type": "string"
                               },
                               "clientJa4Digest": {
+                                "type": "string"
+                              },
+                              "clientSessionId": {
                                 "type": "string"
                               },
                               "clientUserAgent": {
@@ -205949,6 +206464,7 @@
                               }
                             },
                             "required": [
+                              "affinityOutcome",
                               "aiGatewayModelId",
                               "aiModel",
                               "aiModelType",
@@ -205985,6 +206501,7 @@
                               "clientIp",
                               "clientIpCountry",
                               "clientJa4Digest",
+                              "clientSessionId",
                               "clientUserAgent",
                               "codingAgent",
                               "commitSha",
@@ -206450,6 +206967,9 @@
                         {
                           "items": {
                             "properties": {
+                              "affinityOutcome": {
+                                "type": "string"
+                              },
                               "aiGatewayModelId": {
                                 "type": "string"
                               },
@@ -206556,6 +207076,9 @@
                                 "type": "string"
                               },
                               "clientJa4Digest": {
+                                "type": "string"
+                              },
+                              "clientSessionId": {
                                 "type": "string"
                               },
                               "clientUserAgent": {
@@ -207170,6 +207693,9 @@
                         {
                           "items": {
                             "properties": {
+                              "affinityOutcome": {
+                                "type": "string"
+                              },
                               "aiGatewayModelId": {
                                 "type": "string"
                               },
@@ -207276,6 +207802,9 @@
                                 "type": "string"
                               },
                               "clientJa4Digest": {
+                                "type": "string"
+                              },
+                              "clientSessionId": {
                                 "type": "string"
                               },
                               "clientUserAgent": {
@@ -207877,6 +208406,7 @@
                               }
                             },
                             "required": [
+                              "affinityOutcome",
                               "aiGatewayModelId",
                               "aiModel",
                               "aiModelType",
@@ -207913,6 +208443,7 @@
                               "clientIp",
                               "clientIpCountry",
                               "clientJa4Digest",
+                              "clientSessionId",
                               "clientUserAgent",
                               "codingAgent",
                               "commitSha",
@@ -208381,6 +208912,9 @@
                       "oneOf": [
                         {
                           "properties": {
+                            "affinityOutcome": {
+                              "type": "string"
+                            },
                             "aiGatewayModelId": {
                               "type": "string"
                             },
@@ -208487,6 +209021,9 @@
                               "type": "string"
                             },
                             "clientJa4Digest": {
+                              "type": "string"
+                            },
+                            "clientSessionId": {
                               "type": "string"
                             },
                             "clientUserAgent": {
@@ -209088,6 +209625,7 @@
                             }
                           },
                           "required": [
+                            "affinityOutcome",
                             "aiGatewayModelId",
                             "aiModel",
                             "aiModelType",
@@ -209124,6 +209662,7 @@
                             "clientIp",
                             "clientIpCountry",
                             "clientJa4Digest",
+                            "clientSessionId",
                             "clientUserAgent",
                             "codingAgent",
                             "commitSha",
@@ -209505,6 +210044,9 @@
                       "oneOf": [
                         {
                           "properties": {
+                            "affinityOutcome": {
+                              "type": "string"
+                            },
                             "aiGatewayModelId": {
                               "type": "string"
                             },
@@ -209611,6 +210153,9 @@
                               "type": "string"
                             },
                             "clientJa4Digest": {
+                              "type": "string"
+                            },
+                            "clientSessionId": {
                               "type": "string"
                             },
                             "clientUserAgent": {
@@ -210212,6 +210757,7 @@
                             }
                           },
                           "required": [
+                            "affinityOutcome",
                             "aiGatewayModelId",
                             "aiModel",
                             "aiModelType",
@@ -210248,6 +210794,7 @@
                             "clientIp",
                             "clientIpCountry",
                             "clientJa4Digest",
+                            "clientSessionId",
                             "clientUserAgent",
                             "codingAgent",
                             "commitSha",
@@ -234454,6 +235001,22 @@
               },
               {
                 "properties": {
+                  "invoiceCollection": {
+                    "type": "boolean",
+                    "enum": [
+                      false,
+                      true
+                    ]
+                  }
+                },
+                "required": [
+                  "invoiceCollection"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "periods": {
                     "items": {
                       "properties": {
@@ -246010,6 +246573,8 @@
               "login-connection-linked",
               "login-connection-unlinked",
               "manual-deployment-promotion-created",
+              "marketplace-auto-card-collection-updated",
+              "marketplace-billing-collection-updated",
               "marketplace-flex-commit-opt-in",
               "marketplace-integration-allowlist-updated",
               "microfrontend-group-added",
@@ -246918,6 +247483,8 @@
               "login-connection-linked",
               "login-connection-unlinked",
               "manual-deployment-promotion-created",
+              "marketplace-auto-card-collection-updated",
+              "marketplace-billing-collection-updated",
               "marketplace-flex-commit-opt-in",
               "marketplace-integration-allowlist-updated",
               "microfrontend-group-added",
@@ -247614,6 +248181,8 @@
                 "login-connection-linked",
                 "login-connection-unlinked",
                 "manual-deployment-promotion-created",
+                "marketplace-auto-card-collection-updated",
+                "marketplace-billing-collection-updated",
                 "marketplace-flex-commit-opt-in",
                 "marketplace-integration-allowlist-updated",
                 "microfrontend-group-added",
