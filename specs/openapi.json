@@ -16911,6 +16911,9 @@
           "403": {
             "description": "You do not have permission to access this resource."
           },
+          "404": {
+            "description": ""
+          },
           "410": {
             "description": ""
           }
@@ -17006,6 +17009,76 @@
                             "secrets"
                           ],
                           "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string"
+                            },
+                            "claimRules": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "claims"
+                                ],
+                                "properties": {
+                                  "when": {
+                                    "type": "object",
+                                    "properties": {
+                                      "role": {
+                                        "type": "array",
+                                        "minItems": 1,
+                                        "maxItems": 32,
+                                        "items": {
+                                          "type": "string",
+                                          "maxLength": 32
+                                        },
+                                        "description": "Applies only when the token is minted for one of these roles."
+                                      },
+                                      "environment": {
+                                        "type": "array",
+                                        "minItems": 1,
+                                        "maxItems": 32,
+                                        "items": {
+                                          "type": "string"
+                                        },
+                                        "description": "Applies only when the token is minted for one of these environments: `production`, `preview`, `development`, or a custom environment slug. A custom environment also matches `preview`."
+                                      }
+                                    },
+                                    "additionalProperties": false
+                                  },
+                                  "claims": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                      "nullable": true,
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        }
+                                      ]
+                                    },
+                                    "description": "Claims to set (string, number, or boolean), shallow-merged over earlier rules and over the default claims. `null` removes a claim. Reserved claims cannot be set; `aud` and `sub` can be overridden with a string but not removed."
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
+                              "description": "Ordered rules resolved at mint time. Later rules win and shallow-merge over earlier ones."
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "claimRules"
+                          ],
+                          "additionalProperties": false,
+                          "description": "Claim rules applied after the resource’s own rules when this deployment mints a resource token. Reserved claims cannot be set."
                         }
                       ]
                     }
@@ -19572,6 +19645,9 @@
                               "type": "string"
                             },
                             "custom_environment_id": {
+                              "type": "string"
+                            },
+                            "deployment_id": {
                               "type": "string"
                             },
                             "environment": {
@@ -25183,6 +25259,9 @@
                             "custom_environment_id": {
                               "type": "string"
                             },
+                            "deployment_id": {
+                              "type": "string"
+                            },
                             "environment": {
                               "type": "string"
                             },
@@ -28099,6 +28178,9 @@
                               "type": "string"
                             },
                             "custom_environment_id": {
+                              "type": "string"
+                            },
+                            "deployment_id": {
                               "type": "string"
                             },
                             "environment": {
@@ -35614,6 +35696,9 @@
                           "type": "string"
                         },
                         "custom_environment_id": {
+                          "type": "string"
+                        },
+                        "deployment_id": {
                           "type": "string"
                         },
                         "environment": {
@@ -57891,6 +57976,66 @@
                             "type": "string",
                             "description": "The last editor full name or username."
                           },
+                          "lastEditedByPrincipal": {
+                            "oneOf": [
+                              {
+                                "properties": {
+                                  "avatar": {
+                                    "type": "string"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "nullable": true,
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "user"
+                                    ]
+                                  },
+                                  "username": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "type",
+                                  "username"
+                                ],
+                                "type": "object",
+                                "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                              },
+                              {
+                                "properties": {
+                                  "avatar": {
+                                    "type": "string"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "app"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name",
+                                  "type"
+                                ],
+                                "type": "object",
+                                "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                              }
+                            ]
+                          },
                           "ownerId": {
                             "nullable": true,
                             "type": "string",
@@ -58287,6 +58432,66 @@
                             "type": "string",
                             "description": "The last editor full name or username."
                           },
+                          "lastEditedByPrincipal": {
+                            "oneOf": [
+                              {
+                                "properties": {
+                                  "avatar": {
+                                    "type": "string"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "nullable": true,
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "user"
+                                    ]
+                                  },
+                                  "username": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "type",
+                                  "username"
+                                ],
+                                "type": "object",
+                                "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                              },
+                              {
+                                "properties": {
+                                  "avatar": {
+                                    "type": "string"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "app"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name",
+                                  "type"
+                                ],
+                                "type": "object",
+                                "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                              }
+                            ]
+                          },
                           "ownerId": {
                             "nullable": true,
                             "type": "string",
@@ -58676,6 +58881,66 @@
                           "lastEditedByDisplayName": {
                             "type": "string",
                             "description": "The last editor full name or username."
+                          },
+                          "lastEditedByPrincipal": {
+                            "oneOf": [
+                              {
+                                "properties": {
+                                  "avatar": {
+                                    "type": "string"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "nullable": true,
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "user"
+                                    ]
+                                  },
+                                  "username": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "type",
+                                  "username"
+                                ],
+                                "type": "object",
+                                "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                              },
+                              {
+                                "properties": {
+                                  "avatar": {
+                                    "type": "string"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "app"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name",
+                                  "type"
+                                ],
+                                "type": "object",
+                                "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                              }
+                            ]
                           },
                           "ownerId": {
                             "nullable": true,
@@ -59195,6 +59460,66 @@
                     "lastEditedByDisplayName": {
                       "type": "string",
                       "description": "The last editor full name or username."
+                    },
+                    "lastEditedByPrincipal": {
+                      "oneOf": [
+                        {
+                          "properties": {
+                            "avatar": {
+                              "type": "string"
+                            },
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "user"
+                              ]
+                            },
+                            "username": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "type",
+                            "username"
+                          ],
+                          "type": "object",
+                          "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                        },
+                        {
+                          "properties": {
+                            "avatar": {
+                              "type": "string"
+                            },
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "app"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "type"
+                          ],
+                          "type": "object",
+                          "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                        }
+                      ]
                     },
                     "ownerId": {
                       "nullable": true,
@@ -68181,6 +68506,12 @@
                 },
                 {
                   "type": "number"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
                 }
               ]
             }
@@ -69501,6 +69832,70 @@
                       "type": "string",
                       "description": "The ID of the billing plan the resource is subscribed to, if applicable"
                     },
+                    "customClaims": {
+                      "properties": {
+                        "claimRules": {
+                          "items": {
+                            "properties": {
+                              "claims": {
+                                "additionalProperties": {
+                                  "nullable": true,
+                                  "oneOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "boolean",
+                                      "enum": [
+                                        false,
+                                        true
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "type": "object"
+                              },
+                              "when": {
+                                "properties": {
+                                  "environment": {
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "role": {
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  }
+                                },
+                                "type": "object"
+                              }
+                            },
+                            "required": [
+                              "claims"
+                            ],
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "defaultRole": {
+                          "type": "string"
+                        },
+                        "roles": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object",
+                      "description": "The roles and claim rules Vercel resolves into the resource tokens it mints for this resource"
+                    },
                     "id": {
                       "type": "string",
                       "description": "The ID provided by the 3rd party provider for the given resource"
@@ -69994,6 +70389,83 @@
                       },
                       "additionalProperties": false
                     }
+                  },
+                  "customClaims": {
+                    "type": "object",
+                    "properties": {
+                      "roles": {
+                        "type": "array",
+                        "maxItems": 32,
+                        "items": {
+                          "type": "string",
+                          "maxLength": 32
+                        },
+                        "description": "Roles a deployment may request when minting a token. The selected role becomes the `sub` claim."
+                      },
+                      "defaultRole": {
+                        "type": "string",
+                        "maxLength": 32,
+                        "description": "Role used when the deployment does not request one. Required when `roles` is set."
+                      },
+                      "claimRules": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "claims"
+                          ],
+                          "properties": {
+                            "when": {
+                              "type": "object",
+                              "properties": {
+                                "role": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "maxItems": 32,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 32
+                                  },
+                                  "description": "Applies only when the token is minted for one of these roles."
+                                },
+                                "environment": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "maxItems": 32,
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "description": "Applies only when the token is minted for one of these environments: `production`, `preview`, `development`, or a custom environment slug. A custom environment also matches `preview`."
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "claims": {
+                              "type": "object",
+                              "additionalProperties": {
+                                "nullable": true,
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "boolean"
+                                  }
+                                ]
+                              },
+                              "description": "Claims to set (string, number, or boolean), shallow-merged over earlier rules and over the default claims. `null` removes a claim. Reserved claims cannot be set; `aud` and `sub` can be overridden with a string but not removed."
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "description": "Ordered rules resolved at mint time. Later rules win and shallow-merge over earlier ones."
+                      }
+                    },
+                    "additionalProperties": false,
+                    "description": "Custom claims embedded in the resource tokens Vercel mints for this resource."
                   }
                 },
                 "additionalProperties": false
@@ -70313,6 +70785,83 @@
                         "additionalProperties": false
                       }
                     ]
+                  },
+                  "customClaims": {
+                    "type": "object",
+                    "properties": {
+                      "roles": {
+                        "type": "array",
+                        "maxItems": 32,
+                        "items": {
+                          "type": "string",
+                          "maxLength": 32
+                        },
+                        "description": "Roles a deployment may request when minting a token. The selected role becomes the `sub` claim."
+                      },
+                      "defaultRole": {
+                        "type": "string",
+                        "maxLength": 32,
+                        "description": "Role used when the deployment does not request one. Required when `roles` is set."
+                      },
+                      "claimRules": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "claims"
+                          ],
+                          "properties": {
+                            "when": {
+                              "type": "object",
+                              "properties": {
+                                "role": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "maxItems": 32,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 32
+                                  },
+                                  "description": "Applies only when the token is minted for one of these roles."
+                                },
+                                "environment": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "maxItems": 32,
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "description": "Applies only when the token is minted for one of these environments: `production`, `preview`, `development`, or a custom environment slug. A custom environment also matches `preview`."
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "claims": {
+                              "type": "object",
+                              "additionalProperties": {
+                                "nullable": true,
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "boolean"
+                                  }
+                                ]
+                              },
+                              "description": "Claims to set (string, number, or boolean), shallow-merged over earlier rules and over the default claims. `null` removes a claim. Reserved claims cannot be set; `aud` and `sub` can be overridden with a string but not removed."
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "description": "Ordered rules resolved at mint time. Later rules win and shallow-merge over earlier ones."
+                      }
+                    },
+                    "additionalProperties": false,
+                    "description": "Custom claims embedded in the resource tokens Vercel mints for this resource."
                   }
                 },
                 "additionalProperties": false
@@ -81789,6 +82338,9 @@
                                         "custom_environment_id": {
                                           "type": "string"
                                         },
+                                        "deployment_id": {
+                                          "type": "string"
+                                        },
                                         "environment": {
                                           "type": "string"
                                         },
@@ -84244,6 +84796,9 @@
                                       "type": "string"
                                     },
                                     "custom_environment_id": {
+                                      "type": "string"
+                                    },
+                                    "deployment_id": {
                                       "type": "string"
                                     },
                                     "environment": {
@@ -88560,6 +89115,9 @@
                                       "type": "string"
                                     },
                                     "custom_environment_id": {
+                                      "type": "string"
+                                    },
+                                    "deployment_id": {
                                       "type": "string"
                                     },
                                     "environment": {
@@ -97010,6 +97568,9 @@
                                         "custom_environment_id": {
                                           "type": "string"
                                         },
+                                        "deployment_id": {
+                                          "type": "string"
+                                        },
                                         "environment": {
                                           "type": "string"
                                         },
@@ -98476,6 +99037,9 @@
                                       "type": "string"
                                     },
                                     "custom_environment_id": {
+                                      "type": "string"
+                                    },
+                                    "deployment_id": {
                                       "type": "string"
                                     },
                                     "environment": {
@@ -100642,6 +101206,9 @@
                                     "custom_environment_id": {
                                       "type": "string"
                                     },
+                                    "deployment_id": {
+                                      "type": "string"
+                                    },
                                     "environment": {
                                       "type": "string"
                                     },
@@ -101898,6 +102465,9 @@
                                               "type": "string"
                                             },
                                             "custom_environment_id": {
+                                              "type": "string"
+                                            },
+                                            "deployment_id": {
                                               "type": "string"
                                             },
                                             "environment": {
@@ -103366,6 +103936,9 @@
                                           "type": "string"
                                         },
                                         "custom_environment_id": {
+                                          "type": "string"
+                                        },
+                                        "deployment_id": {
                                           "type": "string"
                                         },
                                         "environment": {
@@ -105532,6 +106105,9 @@
                                         "custom_environment_id": {
                                           "type": "string"
                                         },
+                                        "deployment_id": {
+                                          "type": "string"
+                                        },
                                         "environment": {
                                           "type": "string"
                                         },
@@ -106795,6 +107371,9 @@
                                               "type": "string"
                                             },
                                             "custom_environment_id": {
+                                              "type": "string"
+                                            },
+                                            "deployment_id": {
                                               "type": "string"
                                             },
                                             "environment": {
@@ -109252,6 +109831,9 @@
                                           "type": "string"
                                         },
                                         "custom_environment_id": {
+                                          "type": "string"
+                                        },
+                                        "deployment_id": {
                                           "type": "string"
                                         },
                                         "environment": {
@@ -113559,6 +114141,9 @@
                                         "custom_environment_id": {
                                           "type": "string"
                                         },
+                                        "deployment_id": {
+                                          "type": "string"
+                                        },
                                         "environment": {
                                           "type": "string"
                                         },
@@ -115469,6 +116054,9 @@
                                     "type": "string"
                                   },
                                   "custom_environment_id": {
+                                    "type": "string"
+                                  },
+                                  "deployment_id": {
                                     "type": "string"
                                   },
                                   "environment": {
@@ -117926,6 +118514,9 @@
                                 "type": "string"
                               },
                               "custom_environment_id": {
+                                "type": "string"
+                              },
+                              "deployment_id": {
                                 "type": "string"
                               },
                               "environment": {
@@ -122233,6 +122824,9 @@
                               "custom_environment_id": {
                                 "type": "string"
                               },
+                              "deployment_id": {
+                                "type": "string"
+                              },
                               "environment": {
                                 "type": "string"
                               },
@@ -124390,6 +124984,9 @@
                                     "type": "string"
                                   },
                                   "custom_environment_id": {
+                                    "type": "string"
+                                  },
+                                  "deployment_id": {
                                     "type": "string"
                                   },
                                   "environment": {
@@ -126880,6 +127477,9 @@
                               "custom_environment_id": {
                                 "type": "string"
                               },
+                              "deployment_id": {
+                                "type": "string"
+                              },
                               "environment": {
                                 "type": "string"
                               },
@@ -131185,6 +131785,9 @@
                               "custom_environment_id": {
                                 "type": "string"
                               },
+                              "deployment_id": {
+                                "type": "string"
+                              },
                               "environment": {
                                 "type": "string"
                               },
@@ -132650,6 +133253,9 @@
                                     "type": "string"
                                   },
                                   "custom_environment_id": {
+                                    "type": "string"
+                                  },
+                                  "deployment_id": {
                                     "type": "string"
                                   },
                                   "environment": {
@@ -135100,6 +135706,9 @@
                               "custom_environment_id": {
                                 "type": "string"
                               },
+                              "deployment_id": {
+                                "type": "string"
+                              },
                               "environment": {
                                 "type": "string"
                               },
@@ -139403,6 +140012,9 @@
                                 "type": "string"
                               },
                               "custom_environment_id": {
+                                "type": "string"
+                              },
+                              "deployment_id": {
                                 "type": "string"
                               },
                               "environment": {
@@ -142194,6 +142806,9 @@
                                   "custom_environment_id": {
                                     "type": "string"
                                   },
+                                  "deployment_id": {
+                                    "type": "string"
+                                  },
                                   "environment": {
                                     "type": "string"
                                   },
@@ -144649,6 +145264,9 @@
                                 "type": "string"
                               },
                               "custom_environment_id": {
+                                "type": "string"
+                              },
+                              "deployment_id": {
                                 "type": "string"
                               },
                               "environment": {
@@ -148954,6 +149572,9 @@
                                 "type": "string"
                               },
                               "custom_environment_id": {
+                                "type": "string"
+                              },
+                              "deployment_id": {
                                 "type": "string"
                               },
                               "environment": {
@@ -163211,6 +163832,9 @@
                                   "custom_environment_id": {
                                     "type": "string"
                                   },
+                                  "deployment_id": {
+                                    "type": "string"
+                                  },
                                   "environment": {
                                     "type": "string"
                                   },
@@ -165666,6 +166290,9 @@
                                 "type": "string"
                               },
                               "custom_environment_id": {
+                                "type": "string"
+                              },
+                              "deployment_id": {
                                 "type": "string"
                               },
                               "environment": {
@@ -169973,6 +170600,9 @@
                               "custom_environment_id": {
                                 "type": "string"
                               },
+                              "deployment_id": {
+                                "type": "string"
+                              },
                               "environment": {
                                 "type": "string"
                               },
@@ -172075,7 +172705,7 @@
     },
     "/v2/sandboxes/drives": {
       "get": {
-        "description": "Retrieves a paginated list of drives belonging to a specific project. Drives are in private beta. Register your interest to get access: https://vercel.com/changelog/drives-for-vercel-sandbox-in-private-beta",
+        "description": "Retrieves a paginated list of drives belonging to a specific project.",
         "operationId": "listDrives",
         "security": [
           {
@@ -172244,7 +172874,7 @@
     },
     "/v2/sandboxes/drives/{name}": {
       "post": {
-        "description": "Gets an existing drive by project and name, or creates it when it does not exist. Drives are in private beta. Register your interest to get access: https://vercel.com/changelog/drives-for-vercel-sandbox-in-private-beta",
+        "description": "Gets an existing drive by project and name, or creates it when it does not exist.",
         "operationId": "getOrCreateDrive",
         "security": [
           {
@@ -172400,7 +173030,7 @@
         }
       },
       "delete": {
-        "description": "Deletes a drive by project and name. Attached drives cannot be deleted. Stop or replace the session currently using the drive before retrying deletion. Drives are in private beta. Register your interest to get access: https://vercel.com/changelog/drives-for-vercel-sandbox-in-private-beta",
+        "description": "Deletes a drive by project and name. Attached drives cannot be deleted. Stop or replace the session currently using the drive before retrying deletion.",
         "operationId": "deleteDrive",
         "security": [
           {
@@ -201009,9 +201639,6 @@
           "404": {
             "description": ""
           },
-          "409": {
-            "description": ""
-          },
           "410": {
             "description": ""
           }
@@ -203207,6 +203834,7 @@
                             "nullable": true,
                             "type": "string",
                             "enum": [
+                              "errored",
                               "preparing",
                               "ready",
                               "unoptimized",
@@ -219017,7 +219645,7 @@
           "triggerData": {
             "type": "object",
             "additionalProperties": true,
-            "description": "Trigger-specific credentials (e.g. webhook signing secret). Validated and encrypted against the trigger type definition."
+            "description": "Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults."
           },
           "triggerDestination": {
             "description": "Initial trigger destination. Requires triggers to be enabled and a projectId here or at the top level. Connector responses expose the resulting set as triggerDestinations. Replace the complete set with PATCH /v1/connect/connectors/{connector}/trigger-destinations.",
@@ -220267,6 +220895,11 @@
           "triggers": {
             "description": "Whether the triggers are enabled for this connector.",
             "type": "boolean"
+          },
+          "triggerData": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults."
           },
           "events": {
             "type": "array",
@@ -225706,6 +226339,164 @@
               },
               {
                 "properties": {
+                  "oldPasswordProtection": {
+                    "nullable": true,
+                    "properties": {
+                      "deploymentType": {
+                        "type": "string",
+                        "enum": [
+                          "all",
+                          "all_except_custom_domains",
+                          "preview",
+                          "prod_deployment_urls_and_all_previews"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "deploymentType"
+                    ],
+                    "type": "object"
+                  },
+                  "passwordChanged": {
+                    "type": "boolean",
+                    "enum": [
+                      false,
+                      true
+                    ]
+                  },
+                  "passwordProtection": {
+                    "nullable": true,
+                    "properties": {
+                      "deploymentType": {
+                        "type": "string",
+                        "enum": [
+                          "all",
+                          "all_except_custom_domains",
+                          "preview",
+                          "prod_deployment_urls_and_all_previews"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "deploymentType"
+                    ],
+                    "type": "object"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "enum": [
+                      "team"
+                    ]
+                  }
+                },
+                "required": [
+                  "oldPasswordProtection",
+                  "passwordProtection",
+                  "scope"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "oldSsoProtection": {
+                    "nullable": true,
+                    "properties": {
+                      "april2026SecurityIncidentMigrationAppliedFrom": {
+                        "nullable": true,
+                        "type": "string",
+                        "enum": [
+                          "all",
+                          "all_except_custom_domains",
+                          "preview",
+                          "prod_deployment_urls_and_all_previews",
+                          null
+                        ]
+                      },
+                      "cve55182MigrationAppliedFrom": {
+                        "nullable": true,
+                        "type": "string",
+                        "enum": [
+                          "all",
+                          "all_except_custom_domains",
+                          "preview",
+                          "prod_deployment_urls_and_all_previews",
+                          null
+                        ]
+                      },
+                      "deploymentType": {
+                        "type": "string",
+                        "enum": [
+                          "all",
+                          "all_except_custom_domains",
+                          "preview",
+                          "prod_deployment_urls_and_all_previews"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "deploymentType"
+                    ],
+                    "type": "object"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "enum": [
+                      "organization",
+                      "team"
+                    ]
+                  },
+                  "ssoProtection": {
+                    "nullable": true,
+                    "properties": {
+                      "april2026SecurityIncidentMigrationAppliedFrom": {
+                        "nullable": true,
+                        "type": "string",
+                        "enum": [
+                          "all",
+                          "all_except_custom_domains",
+                          "preview",
+                          "prod_deployment_urls_and_all_previews",
+                          null
+                        ]
+                      },
+                      "cve55182MigrationAppliedFrom": {
+                        "nullable": true,
+                        "type": "string",
+                        "enum": [
+                          "all",
+                          "all_except_custom_domains",
+                          "preview",
+                          "prod_deployment_urls_and_all_previews",
+                          null
+                        ]
+                      },
+                      "deploymentType": {
+                        "type": "string",
+                        "enum": [
+                          "all",
+                          "all_except_custom_domains",
+                          "preview",
+                          "prod_deployment_urls_and_all_previews"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "deploymentType"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "oldSsoProtection",
+                  "scope",
+                  "ssoProtection"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "hookName": {
                     "type": "string"
                   },
@@ -229928,6 +230719,66 @@
                     "type": "string",
                     "description": "The last editor full name or username."
                   },
+                  "lastEditedByPrincipal": {
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "avatar": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "user"
+                            ]
+                          },
+                          "username": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "type",
+                          "username"
+                        ],
+                        "type": "object",
+                        "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                      },
+                      {
+                        "properties": {
+                          "avatar": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "app"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "type"
+                        ],
+                        "type": "object",
+                        "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                      }
+                    ]
+                  },
                   "ownerId": {
                     "nullable": true,
                     "type": "string",
@@ -230112,6 +230963,66 @@
                         "type": "string",
                         "description": "The last editor full name or username."
                       },
+                      "lastEditedByPrincipal": {
+                        "oneOf": [
+                          {
+                            "properties": {
+                              "avatar": {
+                                "type": "string"
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "user"
+                                ]
+                              },
+                              "username": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "type",
+                              "username"
+                            ],
+                            "type": "object",
+                            "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                          },
+                          {
+                            "properties": {
+                              "avatar": {
+                                "type": "string"
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "app"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name",
+                              "type"
+                            ],
+                            "type": "object",
+                            "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                          }
+                        ]
+                      },
                       "ownerId": {
                         "nullable": true,
                         "type": "string",
@@ -230243,6 +231154,66 @@
                       "lastEditedByDisplayName": {
                         "type": "string",
                         "description": "The last editor full name or username."
+                      },
+                      "lastEditedByPrincipal": {
+                        "oneOf": [
+                          {
+                            "properties": {
+                              "avatar": {
+                                "type": "string"
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "user"
+                                ]
+                              },
+                              "username": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "type",
+                              "username"
+                            ],
+                            "type": "object",
+                            "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                          },
+                          {
+                            "properties": {
+                              "avatar": {
+                                "type": "string"
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "app"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name",
+                              "type"
+                            ],
+                            "type": "object",
+                            "description": "The principal that last edited this env var, when the editor id resolves to a known user or app. Lets clients render the right avatar instead of assuming every editor is a user."
+                          }
+                        ]
                       },
                       "ownerId": {
                         "nullable": true,
@@ -235773,9 +236744,11 @@
                       "directory_sync_updated",
                       "domain_deleted",
                       "domain_verified",
+                      "organization_deleted",
                       "saml_updated",
                       "team_attached",
                       "team_participation_updated",
+                      "team_removed",
                       "toggle"
                     ]
                   },
@@ -240212,12 +241185,6 @@
                   "projectName": {
                     "type": "string"
                   },
-                  "scope": {
-                    "type": "string",
-                    "enum": [
-                      "organization"
-                    ]
-                  },
                   "ssoProtection": {
                     "nullable": true,
                     "oneOf": [
@@ -241408,124 +242375,13 @@
                       "budgetItem"
                     ],
                     "type": "object"
-                  }
-                },
-                "required": [
-                  "budget"
-                ],
-                "type": "object",
-                "description": "The payload of the event, if requested."
-              },
-              {
-                "properties": {
-                  "budget": {
-                    "properties": {
-                      "createdAt": {
-                        "type": "number",
-                        "description": "Date time when budget is created"
-                      },
-                      "fixedBudget": {
-                        "type": "number",
-                        "description": "Budget amount (USD / dollars)"
-                      },
-                      "id": {
-                        "type": "string",
-                        "description": "Sort key that needs to be unique per teamId"
-                      },
-                      "isActive": {
-                        "type": "boolean",
-                        "enum": [
-                          false,
-                          true
-                        ],
-                        "description": "Is the budget currently active for a customer"
-                      },
-                      "notifiedAt": {
-                        "items": {
-                          "type": "number"
-                        },
-                        "type": "array",
-                        "description": "Array of 50, 75, 100 to keep track of notifications sent out"
-                      },
-                      "pauseProjects": {
-                        "type": "boolean",
-                        "enum": [
-                          false,
-                          true
-                        ],
-                        "description": "Should all projects be paused if budget is exceeded"
-                      },
-                      "previousSpend": {
-                        "items": {
-                          "type": "number"
-                        },
-                        "type": "array",
-                        "description": "Array of the last 3 months of spend data"
-                      },
-                      "pricingPlan": {
-                        "type": "string",
-                        "enum": [
-                          "flex",
-                          "legacy",
-                          "platform",
-                          "plus",
-                          "unbundled"
-                        ],
-                        "description": "The acive pricing plan the team is billed with"
-                      },
-                      "scope": {
-                        "type": "string",
-                        "enum": [
-                          "organization",
-                          "project",
-                          "team"
-                        ],
-                        "description": "Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team)."
-                      },
-                      "scopeId": {
-                        "type": "string",
-                        "description": "Project id when `scope` is `project`."
-                      },
-                      "teamId": {
-                        "type": "string",
-                        "description": "Partition key"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "fixed"
-                        ],
-                        "description": "The budget type"
-                      },
-                      "updatedAt": {
-                        "type": "number",
-                        "description": "Date time when budget is updated last"
-                      },
-                      "webhookId": {
-                        "type": "string",
-                        "description": "Webhook id that corresponds to a webhook in Cosmos webhook collection"
-                      },
-                      "webhookNotified": {
-                        "type": "boolean",
-                        "enum": [
-                          false,
-                          true
-                        ],
-                        "description": "Keep track if the webhook has been called for the month"
-                      }
-                    },
-                    "required": [
-                      "createdAt",
-                      "fixedBudget",
-                      "id",
-                      "isActive",
-                      "notifiedAt",
-                      "previousSpend",
-                      "teamId",
-                      "type"
-                    ],
-                    "type": "object",
-                    "description": "Represents a budget for tracking and notifying teams on their spending."
+                  },
+                  "projectId": {
+                    "type": "string",
+                    "description": "Stored for project budgets. Same value as `budget.scopeId`."
+                  },
+                  "projectName": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -241645,7 +242501,139 @@
                     "type": "object",
                     "description": "Represents a budget for tracking and notifying teams on their spending."
                   },
+                  "projectId": {
+                    "type": "string",
+                    "description": "Stored for project budgets. Same value as `budget.scopeId`."
+                  },
+                  "projectName": {
+                    "type": "string"
+                  },
                   "webhookUrl": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "budget"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "budget": {
+                    "properties": {
+                      "createdAt": {
+                        "type": "number",
+                        "description": "Date time when budget is created"
+                      },
+                      "fixedBudget": {
+                        "type": "number",
+                        "description": "Budget amount (USD / dollars)"
+                      },
+                      "id": {
+                        "type": "string",
+                        "description": "Sort key that needs to be unique per teamId"
+                      },
+                      "isActive": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ],
+                        "description": "Is the budget currently active for a customer"
+                      },
+                      "notifiedAt": {
+                        "items": {
+                          "type": "number"
+                        },
+                        "type": "array",
+                        "description": "Array of 50, 75, 100 to keep track of notifications sent out"
+                      },
+                      "pauseProjects": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ],
+                        "description": "Should all projects be paused if budget is exceeded"
+                      },
+                      "previousSpend": {
+                        "items": {
+                          "type": "number"
+                        },
+                        "type": "array",
+                        "description": "Array of the last 3 months of spend data"
+                      },
+                      "pricingPlan": {
+                        "type": "string",
+                        "enum": [
+                          "flex",
+                          "legacy",
+                          "platform",
+                          "plus",
+                          "unbundled"
+                        ],
+                        "description": "The acive pricing plan the team is billed with"
+                      },
+                      "scope": {
+                        "type": "string",
+                        "enum": [
+                          "organization",
+                          "project",
+                          "team"
+                        ],
+                        "description": "Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team)."
+                      },
+                      "scopeId": {
+                        "type": "string",
+                        "description": "Project id when `scope` is `project`."
+                      },
+                      "teamId": {
+                        "type": "string",
+                        "description": "Partition key"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "fixed"
+                        ],
+                        "description": "The budget type"
+                      },
+                      "updatedAt": {
+                        "type": "number",
+                        "description": "Date time when budget is updated last"
+                      },
+                      "webhookId": {
+                        "type": "string",
+                        "description": "Webhook id that corresponds to a webhook in Cosmos webhook collection"
+                      },
+                      "webhookNotified": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ],
+                        "description": "Keep track if the webhook has been called for the month"
+                      }
+                    },
+                    "required": [
+                      "createdAt",
+                      "fixedBudget",
+                      "id",
+                      "isActive",
+                      "notifiedAt",
+                      "previousSpend",
+                      "teamId",
+                      "type"
+                    ],
+                    "type": "object",
+                    "description": "Represents a budget for tracking and notifying teams on their spending."
+                  },
+                  "projectId": {
+                    "type": "string",
+                    "description": "Stored for project budgets. Same value as `budget.scopeId`."
+                  },
+                  "projectName": {
                     "type": "string"
                   }
                 },
@@ -241878,6 +242866,14 @@
                   "prevWebhookUrl": {
                     "type": "string"
                   },
+                  "projectId": {
+                    "type": "string",
+                    "description": "Stored for project budgets. Same value as `budget.scopeId`."
+                  },
+                  "projectName": {
+                    "type": "string",
+                    "description": "Injected at read time from `payload.projectId`."
+                  },
                   "webhookUrl": {
                     "type": "string"
                   }
@@ -241890,6 +242886,12 @@
               },
               {
                 "properties": {
+                  "projectId": {
+                    "type": "string"
+                  },
+                  "projectName": {
+                    "type": "string"
+                  },
                   "webhookUrl": {
                     "type": "string"
                   }
@@ -246413,6 +247415,8 @@
               "custom-suffix-enable",
               "custom-suffix-pending",
               "custom-suffix-ready",
+              "default-password-protection",
+              "default-sso-protection",
               "deploy-hook-created",
               "deploy-hook-deduped",
               "deploy-hook-deleted",
@@ -247323,6 +248327,8 @@
               "custom-suffix-enable",
               "custom-suffix-pending",
               "custom-suffix-ready",
+              "default-password-protection",
+              "default-sso-protection",
               "deploy-hook-created",
               "deploy-hook-deduped",
               "deploy-hook-deleted",
@@ -248021,6 +249027,8 @@
                 "custom-suffix-enable",
                 "custom-suffix-pending",
                 "custom-suffix-ready",
+                "default-password-protection",
+                "default-sso-protection",
                 "deploy-hook-created",
                 "deploy-hook-deduped",
                 "deploy-hook-deleted",
@@ -253616,6 +254624,7 @@
             "nullable": true,
             "type": "string",
             "enum": [
+              "errored",
               "preparing",
               "ready",
               "unoptimized",
@@ -253743,6 +254752,7 @@
             "nullable": true,
             "type": "string",
             "enum": [
+              "errored",
               "preparing",
               "ready",
               "unoptimized",
@@ -254098,6 +255108,7 @@
             "nullable": true,
             "type": "string",
             "enum": [
+              "errored",
               "preparing",
               "ready",
               "unoptimized",
