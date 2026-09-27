@@ -218793,6 +218793,7 @@
               "enum": [
                 "implicit-caching",
                 "reasoning",
+                "structured-output",
                 "tool-use",
                 "vision"
               ],
@@ -218876,9 +218877,9 @@
                 },
                 {
                   "properties": {
-                    "capability": {
+                    "intelligence": {
                       "type": "number",
-                      "description": "Highest task level the member handles, in [0, 1]. Read by the capability selector."
+                      "description": "Highest task level the member handles, in [0, 1]. Read by the intelligence selector."
                     },
                     "slug": {
                       "type": "string"
@@ -224732,6 +224733,42 @@
                   "policyId",
                   "projectId",
                   "projectName"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "boardId": {
+                    "type": "string"
+                  },
+                  "operationId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "boardId",
+                  "operationId"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "boardId": {
+                    "type": "string"
+                  },
+                  "operationId": {
+                    "type": "string"
+                  },
+                  "spaceId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "boardId",
+                  "operationId",
+                  "spaceId"
                 ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
@@ -249425,6 +249462,10 @@
               "marketplace-billing-collection-updated",
               "marketplace-flex-commit-opt-in",
               "marketplace-integration-allowlist-updated",
+              "messageboard-created",
+              "messageboard-private-created",
+              "messageboard-private-space-created",
+              "messageboard-space-created",
               "microfrontend-group-added",
               "microfrontend-group-deleted",
               "microfrontend-group-updated",
@@ -250338,6 +250379,10 @@
               "marketplace-billing-collection-updated",
               "marketplace-flex-commit-opt-in",
               "marketplace-integration-allowlist-updated",
+              "messageboard-created",
+              "messageboard-private-created",
+              "messageboard-private-space-created",
+              "messageboard-space-created",
               "microfrontend-group-added",
               "microfrontend-group-deleted",
               "microfrontend-group-updated",
@@ -251039,6 +251084,10 @@
                 "marketplace-billing-collection-updated",
                 "marketplace-flex-commit-opt-in",
                 "marketplace-integration-allowlist-updated",
+                "messageboard-created",
+                "messageboard-private-created",
+                "messageboard-private-space-created",
+                "messageboard-space-created",
                 "microfrontend-group-added",
                 "microfrontend-group-deleted",
                 "microfrontend-group-updated",
