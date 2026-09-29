@@ -4835,6 +4835,10 @@
                                           "type": "array",
                                           "description": "Resources that were changed as part of this intent. Tracks all logical changes including the primary change and any side effects."
                                         },
+                                        "customerTimezone": {
+                                          "type": "string",
+                                          "description": "The Orb customer's timezone when the intent was created. Omitted for legacy intents."
+                                        },
                                         "effectiveBehavior": {
                                           "type": "string",
                                           "enum": [
@@ -4869,6 +4873,24 @@
                                         "productId": {
                                           "type": "string",
                                           "description": "The product ID associated with this intent."
+                                        },
+                                        "referenceBillingPeriod": {
+                                          "properties": {
+                                            "endDate": {
+                                              "type": "string",
+                                              "description": "The exclusive end of the reference billing period."
+                                            },
+                                            "startDate": {
+                                              "type": "string",
+                                              "description": "The inclusive start of the reference billing period."
+                                            }
+                                          },
+                                          "required": [
+                                            "endDate",
+                                            "startDate"
+                                          ],
+                                          "type": "object",
+                                          "description": "The canonical reference-product billing period at intent creation. Omitted for historical intents."
                                         }
                                       },
                                       "required": [
@@ -4972,6 +4994,10 @@
                                           "type": "array",
                                           "description": "Resources that were changed as part of this intent. Tracks all logical changes including the primary change and any side effects."
                                         },
+                                        "customerTimezone": {
+                                          "type": "string",
+                                          "description": "The Orb customer's timezone when the intent was created. Omitted for legacy intents."
+                                        },
                                         "effectiveBehavior": {
                                           "type": "string",
                                           "enum": [
@@ -5006,6 +5032,24 @@
                                         "productId": {
                                           "type": "string",
                                           "description": "The product ID associated with this intent."
+                                        },
+                                        "referenceBillingPeriod": {
+                                          "properties": {
+                                            "endDate": {
+                                              "type": "string",
+                                              "description": "The exclusive end of the reference billing period."
+                                            },
+                                            "startDate": {
+                                              "type": "string",
+                                              "description": "The inclusive start of the reference billing period."
+                                            }
+                                          },
+                                          "required": [
+                                            "endDate",
+                                            "startDate"
+                                          ],
+                                          "type": "object",
+                                          "description": "The canonical reference-product billing period at intent creation. Omitted for historical intents."
                                         }
                                       },
                                       "required": [
@@ -5109,6 +5153,10 @@
                                           "type": "array",
                                           "description": "Resources that were changed as part of this intent. Tracks all logical changes including the primary change and any side effects."
                                         },
+                                        "customerTimezone": {
+                                          "type": "string",
+                                          "description": "The Orb customer's timezone when the intent was created. Omitted for legacy intents."
+                                        },
                                         "effectiveBehavior": {
                                           "type": "string",
                                           "enum": [
@@ -5143,6 +5191,24 @@
                                         "productId": {
                                           "type": "string",
                                           "description": "The product ID associated with this intent."
+                                        },
+                                        "referenceBillingPeriod": {
+                                          "properties": {
+                                            "endDate": {
+                                              "type": "string",
+                                              "description": "The exclusive end of the reference billing period."
+                                            },
+                                            "startDate": {
+                                              "type": "string",
+                                              "description": "The inclusive start of the reference billing period."
+                                            }
+                                          },
+                                          "required": [
+                                            "endDate",
+                                            "startDate"
+                                          ],
+                                          "type": "object",
+                                          "description": "The canonical reference-product billing period at intent creation. Omitted for historical intents."
                                         }
                                       },
                                       "required": [
@@ -5254,6 +5320,10 @@
                                           "type": "array",
                                           "description": "Resources that were changed as part of this intent. Tracks all logical changes including the primary change and any side effects."
                                         },
+                                        "customerTimezone": {
+                                          "type": "string",
+                                          "description": "The Orb customer's timezone when the intent was created. Omitted for legacy intents."
+                                        },
                                         "effectiveBehavior": {
                                           "type": "string",
                                           "enum": [
@@ -5288,6 +5358,24 @@
                                         "productId": {
                                           "type": "string",
                                           "description": "The product ID associated with this intent."
+                                        },
+                                        "referenceBillingPeriod": {
+                                          "properties": {
+                                            "endDate": {
+                                              "type": "string",
+                                              "description": "The exclusive end of the reference billing period."
+                                            },
+                                            "startDate": {
+                                              "type": "string",
+                                              "description": "The inclusive start of the reference billing period."
+                                            }
+                                          },
+                                          "required": [
+                                            "endDate",
+                                            "startDate"
+                                          ],
+                                          "type": "object",
+                                          "description": "The canonical reference-product billing period at intent creation. Omitted for historical intents."
                                         }
                                       },
                                       "required": [
@@ -14997,9 +15085,6 @@
           "429": {
             "description": ""
           },
-          "501": {
-            "description": ""
-          },
           "504": {
             "description": ""
           }
@@ -15283,7 +15368,7 @@
           "410": {
             "description": ""
           },
-          "501": {
+          "422": {
             "description": ""
           }
         },
@@ -21250,6 +21335,49 @@
                                           "rust": {
                                             "type": "string"
                                           },
+                                          "scheduleFunction": {
+                                            "properties": {
+                                              "entrypoints": {
+                                                "type": "array",
+                                                "items": {
+                                                  "properties": {
+                                                    "entrypoint": {
+                                                      "type": "string",
+                                                      "description": "Runtime-specific entrypoint locator from `vercel.json`."
+                                                    },
+                                                    "scheduleNames": {
+                                                      "items": {
+                                                        "type": "string"
+                                                      },
+                                                      "type": "array",
+                                                      "description": "Names of the schedules that dispatch to this entrypoint, in config order."
+                                                    },
+                                                    "sourceFile": {
+                                                      "type": "string",
+                                                      "description": "Project-relative source file that contains the entrypoint."
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "entrypoint",
+                                                    "scheduleNames",
+                                                    "sourceFile"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                "minItems": 1
+                                              },
+                                              "outputPath": {
+                                                "type": "string",
+                                                "description": "Function output path every schedule in this build targets."
+                                              }
+                                            },
+                                            "required": [
+                                              "entrypoints",
+                                              "outputPath"
+                                            ],
+                                            "type": "object",
+                                            "description": "Set when this build produces a function for schedule entrypoints."
+                                          },
                                           "serviceName": {
                                             "type": "string",
                                             "description": "Owning service name; scopes per-function config such as the v2beta consumer."
@@ -21823,6 +21951,49 @@
                                           },
                                           "rust": {
                                             "type": "string"
+                                          },
+                                          "scheduleFunction": {
+                                            "properties": {
+                                              "entrypoints": {
+                                                "type": "array",
+                                                "items": {
+                                                  "properties": {
+                                                    "entrypoint": {
+                                                      "type": "string",
+                                                      "description": "Runtime-specific entrypoint locator from `vercel.json`."
+                                                    },
+                                                    "scheduleNames": {
+                                                      "items": {
+                                                        "type": "string"
+                                                      },
+                                                      "type": "array",
+                                                      "description": "Names of the schedules that dispatch to this entrypoint, in config order."
+                                                    },
+                                                    "sourceFile": {
+                                                      "type": "string",
+                                                      "description": "Project-relative source file that contains the entrypoint."
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "entrypoint",
+                                                    "scheduleNames",
+                                                    "sourceFile"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                "minItems": 1
+                                              },
+                                              "outputPath": {
+                                                "type": "string",
+                                                "description": "Function output path every schedule in this build targets."
+                                              }
+                                            },
+                                            "required": [
+                                              "entrypoints",
+                                              "outputPath"
+                                            ],
+                                            "type": "object",
+                                            "description": "Set when this build produces a function for schedule entrypoints."
                                           },
                                           "serviceName": {
                                             "type": "string",
@@ -29798,6 +29969,49 @@
                                           "rust": {
                                             "type": "string"
                                           },
+                                          "scheduleFunction": {
+                                            "properties": {
+                                              "entrypoints": {
+                                                "type": "array",
+                                                "items": {
+                                                  "properties": {
+                                                    "entrypoint": {
+                                                      "type": "string",
+                                                      "description": "Runtime-specific entrypoint locator from `vercel.json`."
+                                                    },
+                                                    "scheduleNames": {
+                                                      "items": {
+                                                        "type": "string"
+                                                      },
+                                                      "type": "array",
+                                                      "description": "Names of the schedules that dispatch to this entrypoint, in config order."
+                                                    },
+                                                    "sourceFile": {
+                                                      "type": "string",
+                                                      "description": "Project-relative source file that contains the entrypoint."
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "entrypoint",
+                                                    "scheduleNames",
+                                                    "sourceFile"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                "minItems": 1
+                                              },
+                                              "outputPath": {
+                                                "type": "string",
+                                                "description": "Function output path every schedule in this build targets."
+                                              }
+                                            },
+                                            "required": [
+                                              "entrypoints",
+                                              "outputPath"
+                                            ],
+                                            "type": "object",
+                                            "description": "Set when this build produces a function for schedule entrypoints."
+                                          },
                                           "serviceName": {
                                             "type": "string",
                                             "description": "Owning service name; scopes per-function config such as the v2beta consumer."
@@ -30371,6 +30585,49 @@
                                           },
                                           "rust": {
                                             "type": "string"
+                                          },
+                                          "scheduleFunction": {
+                                            "properties": {
+                                              "entrypoints": {
+                                                "type": "array",
+                                                "items": {
+                                                  "properties": {
+                                                    "entrypoint": {
+                                                      "type": "string",
+                                                      "description": "Runtime-specific entrypoint locator from `vercel.json`."
+                                                    },
+                                                    "scheduleNames": {
+                                                      "items": {
+                                                        "type": "string"
+                                                      },
+                                                      "type": "array",
+                                                      "description": "Names of the schedules that dispatch to this entrypoint, in config order."
+                                                    },
+                                                    "sourceFile": {
+                                                      "type": "string",
+                                                      "description": "Project-relative source file that contains the entrypoint."
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "entrypoint",
+                                                    "scheduleNames",
+                                                    "sourceFile"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                "minItems": 1
+                                              },
+                                              "outputPath": {
+                                                "type": "string",
+                                                "description": "Function output path every schedule in this build targets."
+                                              }
+                                            },
+                                            "required": [
+                                              "entrypoints",
+                                              "outputPath"
+                                            ],
+                                            "type": "object",
+                                            "description": "Set when this build produces a function for schedule entrypoints."
                                           },
                                           "serviceName": {
                                             "type": "string",
@@ -37330,6 +37587,49 @@
                                       "rust": {
                                         "type": "string"
                                       },
+                                      "scheduleFunction": {
+                                        "properties": {
+                                          "entrypoints": {
+                                            "type": "array",
+                                            "items": {
+                                              "properties": {
+                                                "entrypoint": {
+                                                  "type": "string",
+                                                  "description": "Runtime-specific entrypoint locator from `vercel.json`."
+                                                },
+                                                "scheduleNames": {
+                                                  "items": {
+                                                    "type": "string"
+                                                  },
+                                                  "type": "array",
+                                                  "description": "Names of the schedules that dispatch to this entrypoint, in config order."
+                                                },
+                                                "sourceFile": {
+                                                  "type": "string",
+                                                  "description": "Project-relative source file that contains the entrypoint."
+                                                }
+                                              },
+                                              "required": [
+                                                "entrypoint",
+                                                "scheduleNames",
+                                                "sourceFile"
+                                              ],
+                                              "type": "object"
+                                            },
+                                            "minItems": 1
+                                          },
+                                          "outputPath": {
+                                            "type": "string",
+                                            "description": "Function output path every schedule in this build targets."
+                                          }
+                                        },
+                                        "required": [
+                                          "entrypoints",
+                                          "outputPath"
+                                        ],
+                                        "type": "object",
+                                        "description": "Set when this build produces a function for schedule entrypoints."
+                                      },
                                       "serviceName": {
                                         "type": "string",
                                         "description": "Owning service name; scopes per-function config such as the v2beta consumer."
@@ -37903,6 +38203,49 @@
                                       },
                                       "rust": {
                                         "type": "string"
+                                      },
+                                      "scheduleFunction": {
+                                        "properties": {
+                                          "entrypoints": {
+                                            "type": "array",
+                                            "items": {
+                                              "properties": {
+                                                "entrypoint": {
+                                                  "type": "string",
+                                                  "description": "Runtime-specific entrypoint locator from `vercel.json`."
+                                                },
+                                                "scheduleNames": {
+                                                  "items": {
+                                                    "type": "string"
+                                                  },
+                                                  "type": "array",
+                                                  "description": "Names of the schedules that dispatch to this entrypoint, in config order."
+                                                },
+                                                "sourceFile": {
+                                                  "type": "string",
+                                                  "description": "Project-relative source file that contains the entrypoint."
+                                                }
+                                              },
+                                              "required": [
+                                                "entrypoint",
+                                                "scheduleNames",
+                                                "sourceFile"
+                                              ],
+                                              "type": "object"
+                                            },
+                                            "minItems": 1
+                                          },
+                                          "outputPath": {
+                                            "type": "string",
+                                            "description": "Function output path every schedule in this build targets."
+                                          }
+                                        },
+                                        "required": [
+                                          "entrypoints",
+                                          "outputPath"
+                                        ],
+                                        "type": "object",
+                                        "description": "Set when this build produces a function for schedule entrypoints."
                                       },
                                       "serviceName": {
                                         "type": "string",
@@ -81669,6 +82012,10 @@
                                   },
                                   "statusCode": {
                                     "type": "number"
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -81741,6 +82088,10 @@
                                         },
                                         "statusCode": {
                                           "type": "number"
+                                        },
+                                        "threadId": {
+                                          "type": "string",
+                                          "description": "Plain thread ID, recorded separately from `caseId`."
                                         }
                                       },
                                       "required": [
@@ -81784,6 +82135,10 @@
                                             false,
                                             true
                                           ]
+                                        },
+                                        "threadId": {
+                                          "type": "string",
+                                          "description": "Plain thread ID, recorded separately from `caseId`."
                                         }
                                       },
                                       "required": [
@@ -81942,6 +82297,10 @@
                                               "type": "object"
                                             }
                                           ]
+                                        },
+                                        "threadId": {
+                                          "type": "string",
+                                          "description": "Plain thread ID, recorded separately from `caseId`."
                                         }
                                       },
                                       "required": [
@@ -82102,6 +82461,10 @@
                                         },
                                         "statusCode": {
                                           "type": "number"
+                                        },
+                                        "threadId": {
+                                          "type": "string",
+                                          "description": "Plain thread ID, recorded separately from `caseId`."
                                         }
                                       },
                                       "required": [
@@ -82178,6 +82541,10 @@
                                     },
                                     "reason": {
                                       "type": "string"
+                                    },
+                                    "threadId": {
+                                      "type": "string",
+                                      "description": "Plain thread ID, recorded separately from `caseId`."
                                     }
                                   },
                                   "required": [
@@ -96920,6 +97287,10 @@
                                   },
                                   "statusCode": {
                                     "type": "number"
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -96992,6 +97363,10 @@
                                         },
                                         "statusCode": {
                                           "type": "number"
+                                        },
+                                        "threadId": {
+                                          "type": "string",
+                                          "description": "Plain thread ID, recorded separately from `caseId`."
                                         }
                                       },
                                       "required": [
@@ -97035,6 +97410,10 @@
                                             false,
                                             true
                                           ]
+                                        },
+                                        "threadId": {
+                                          "type": "string",
+                                          "description": "Plain thread ID, recorded separately from `caseId`."
                                         }
                                       },
                                       "required": [
@@ -97193,6 +97572,10 @@
                                               "type": "object"
                                             }
                                           ]
+                                        },
+                                        "threadId": {
+                                          "type": "string",
+                                          "description": "Plain thread ID, recorded separately from `caseId`."
                                         }
                                       },
                                       "required": [
@@ -97353,6 +97736,10 @@
                                         },
                                         "statusCode": {
                                           "type": "number"
+                                        },
+                                        "threadId": {
+                                          "type": "string",
+                                          "description": "Plain thread ID, recorded separately from `caseId`."
                                         }
                                       },
                                       "required": [
@@ -97429,6 +97816,10 @@
                                     },
                                     "reason": {
                                       "type": "string"
+                                    },
+                                    "threadId": {
+                                      "type": "string",
+                                      "description": "Plain thread ID, recorded separately from `caseId`."
                                     }
                                   },
                                   "required": [
@@ -101819,6 +102210,10 @@
                                       },
                                       "statusCode": {
                                         "type": "number"
+                                      },
+                                      "threadId": {
+                                        "type": "string",
+                                        "description": "Plain thread ID, recorded separately from `caseId`."
                                       }
                                     },
                                     "required": [
@@ -101891,6 +102286,10 @@
                                             },
                                             "statusCode": {
                                               "type": "number"
+                                            },
+                                            "threadId": {
+                                              "type": "string",
+                                              "description": "Plain thread ID, recorded separately from `caseId`."
                                             }
                                           },
                                           "required": [
@@ -101934,6 +102333,10 @@
                                                 false,
                                                 true
                                               ]
+                                            },
+                                            "threadId": {
+                                              "type": "string",
+                                              "description": "Plain thread ID, recorded separately from `caseId`."
                                             }
                                           },
                                           "required": [
@@ -102092,6 +102495,10 @@
                                                   "type": "object"
                                                 }
                                               ]
+                                            },
+                                            "threadId": {
+                                              "type": "string",
+                                              "description": "Plain thread ID, recorded separately from `caseId`."
                                             }
                                           },
                                           "required": [
@@ -102252,6 +102659,10 @@
                                             },
                                             "statusCode": {
                                               "type": "number"
+                                            },
+                                            "threadId": {
+                                              "type": "string",
+                                              "description": "Plain thread ID, recorded separately from `caseId`."
                                             }
                                           },
                                           "required": [
@@ -102328,6 +102739,10 @@
                                         },
                                         "reason": {
                                           "type": "string"
+                                        },
+                                        "threadId": {
+                                          "type": "string",
+                                          "description": "Plain thread ID, recorded separately from `caseId`."
                                         }
                                       },
                                       "required": [
@@ -106725,6 +107140,10 @@
                                       },
                                       "statusCode": {
                                         "type": "number"
+                                      },
+                                      "threadId": {
+                                        "type": "string",
+                                        "description": "Plain thread ID, recorded separately from `caseId`."
                                       }
                                     },
                                     "required": [
@@ -106797,6 +107216,10 @@
                                             },
                                             "statusCode": {
                                               "type": "number"
+                                            },
+                                            "threadId": {
+                                              "type": "string",
+                                              "description": "Plain thread ID, recorded separately from `caseId`."
                                             }
                                           },
                                           "required": [
@@ -106840,6 +107263,10 @@
                                                 false,
                                                 true
                                               ]
+                                            },
+                                            "threadId": {
+                                              "type": "string",
+                                              "description": "Plain thread ID, recorded separately from `caseId`."
                                             }
                                           },
                                           "required": [
@@ -106998,6 +107425,10 @@
                                                   "type": "object"
                                                 }
                                               ]
+                                            },
+                                            "threadId": {
+                                              "type": "string",
+                                              "description": "Plain thread ID, recorded separately from `caseId`."
                                             }
                                           },
                                           "required": [
@@ -107158,6 +107589,10 @@
                                             },
                                             "statusCode": {
                                               "type": "number"
+                                            },
+                                            "threadId": {
+                                              "type": "string",
+                                              "description": "Plain thread ID, recorded separately from `caseId`."
                                             }
                                           },
                                           "required": [
@@ -107234,6 +107669,10 @@
                                         },
                                         "reason": {
                                           "type": "string"
+                                        },
+                                        "threadId": {
+                                          "type": "string",
+                                          "description": "Plain thread ID, recorded separately from `caseId`."
                                         }
                                       },
                                       "required": [
@@ -115401,6 +115840,10 @@
                             },
                             "statusCode": {
                               "type": "number"
+                            },
+                            "threadId": {
+                              "type": "string",
+                              "description": "Plain thread ID, recorded separately from `caseId`."
                             }
                           },
                           "required": [
@@ -115473,6 +115916,10 @@
                                   },
                                   "statusCode": {
                                     "type": "number"
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -115516,6 +115963,10 @@
                                       false,
                                       true
                                     ]
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -115674,6 +116125,10 @@
                                         "type": "object"
                                       }
                                     ]
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -115834,6 +116289,10 @@
                                   },
                                   "statusCode": {
                                     "type": "number"
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -115910,6 +116369,10 @@
                               },
                               "reason": {
                                 "type": "string"
+                              },
+                              "threadId": {
+                                "type": "string",
+                                "description": "Plain thread ID, recorded separately from `caseId`."
                               }
                             },
                             "required": [
@@ -124352,6 +124815,10 @@
                             },
                             "statusCode": {
                               "type": "number"
+                            },
+                            "threadId": {
+                              "type": "string",
+                              "description": "Plain thread ID, recorded separately from `caseId`."
                             }
                           },
                           "required": [
@@ -124424,6 +124891,10 @@
                                   },
                                   "statusCode": {
                                     "type": "number"
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -124467,6 +124938,10 @@
                                       false,
                                       true
                                     ]
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -124625,6 +125100,10 @@
                                         "type": "object"
                                       }
                                     ]
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -124785,6 +125264,10 @@
                                   },
                                   "statusCode": {
                                     "type": "number"
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -124861,6 +125344,10 @@
                               },
                               "reason": {
                                 "type": "string"
+                              },
+                              "threadId": {
+                                "type": "string",
+                                "description": "Plain thread ID, recorded separately from `caseId`."
                               }
                             },
                             "required": [
@@ -132642,6 +133129,10 @@
                             },
                             "statusCode": {
                               "type": "number"
+                            },
+                            "threadId": {
+                              "type": "string",
+                              "description": "Plain thread ID, recorded separately from `caseId`."
                             }
                           },
                           "required": [
@@ -132714,6 +133205,10 @@
                                   },
                                   "statusCode": {
                                     "type": "number"
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -132757,6 +133252,10 @@
                                       false,
                                       true
                                     ]
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -132915,6 +133414,10 @@
                                         "type": "object"
                                       }
                                     ]
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -133075,6 +133578,10 @@
                                   },
                                   "statusCode": {
                                     "type": "number"
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -133151,6 +133658,10 @@
                               },
                               "reason": {
                                 "type": "string"
+                              },
+                              "threadId": {
+                                "type": "string",
+                                "description": "Plain thread ID, recorded separately from `caseId`."
                               }
                             },
                             "required": [
@@ -142214,6 +142725,10 @@
                             },
                             "statusCode": {
                               "type": "number"
+                            },
+                            "threadId": {
+                              "type": "string",
+                              "description": "Plain thread ID, recorded separately from `caseId`."
                             }
                           },
                           "required": [
@@ -142286,6 +142801,10 @@
                                   },
                                   "statusCode": {
                                     "type": "number"
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -142329,6 +142848,10 @@
                                       false,
                                       true
                                     ]
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -142487,6 +143010,10 @@
                                         "type": "object"
                                       }
                                     ]
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -142647,6 +143174,10 @@
                                   },
                                   "statusCode": {
                                     "type": "number"
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -142723,6 +143254,10 @@
                               },
                               "reason": {
                                 "type": "string"
+                              },
+                              "threadId": {
+                                "type": "string",
+                                "description": "Plain thread ID, recorded separately from `caseId`."
                               }
                             },
                             "required": [
@@ -163261,6 +163796,10 @@
                             },
                             "statusCode": {
                               "type": "number"
+                            },
+                            "threadId": {
+                              "type": "string",
+                              "description": "Plain thread ID, recorded separately from `caseId`."
                             }
                           },
                           "required": [
@@ -163333,6 +163872,10 @@
                                   },
                                   "statusCode": {
                                     "type": "number"
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -163376,6 +163919,10 @@
                                       false,
                                       true
                                     ]
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -163534,6 +164081,10 @@
                                         "type": "object"
                                       }
                                     ]
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -163694,6 +164245,10 @@
                                   },
                                   "statusCode": {
                                     "type": "number"
+                                  },
+                                  "threadId": {
+                                    "type": "string",
+                                    "description": "Plain thread ID, recorded separately from `caseId`."
                                   }
                                 },
                                 "required": [
@@ -163770,6 +164325,10 @@
                               },
                               "reason": {
                                 "type": "string"
+                              },
+                              "threadId": {
+                                "type": "string",
+                                "description": "Plain thread ID, recorded separately from `caseId`."
                               }
                             },
                             "required": [
@@ -201278,6 +201837,14 @@
                           "1d",
                           "unlimited"
                         ]
+                      },
+                      "keepCurrentRetention": {
+                        "description": "When true, opts the team out of the upcoming deployment-storage retention reduce (Medium/High cohorts). Does not change expiration settings.",
+                        "type": "boolean"
+                      },
+                      "acknowledgeStorageBilling": {
+                        "description": "Required when increasing any retention setting for a High cohort team after retention reduce and before metering. Confirms team-wide storage billing.",
+                        "type": "boolean"
                       }
                     },
                     "type": "object",
@@ -204992,6 +205559,9 @@
           "404": {
             "description": ""
           },
+          "408": {
+            "description": ""
+          },
           "410": {
             "description": ""
           },
@@ -205086,6 +205656,9 @@
             "description": "You do not have permission to access this resource."
           },
           "404": {
+            "description": ""
+          },
+          "408": {
             "description": ""
           },
           "410": {
@@ -218636,10 +219209,10 @@
               }
             },
             "required": [
-              "confidenceBelow",
-              "question"
+              "confidenceBelow"
             ],
-            "type": "object"
+            "type": "object",
+            "description": "Without a question, checks every Choice and Score question."
           },
           {
             "properties": {
@@ -218656,10 +219229,10 @@
               }
             },
             "required": [
-              "probabilityBetween",
-              "question"
+              "probabilityBetween"
             ],
-            "type": "object"
+            "type": "object",
+            "description": "Without a question, checks every Boolean question."
           },
           {
             "properties": {
@@ -233754,6 +234327,10 @@
                                 },
                                 "statusCode": {
                                   "type": "number"
+                                },
+                                "threadId": {
+                                  "type": "string",
+                                  "description": "Plain thread ID, recorded separately from `caseId`."
                                 }
                               },
                               "required": [
@@ -239893,6 +240470,42 @@
                     "type": "string"
                   }
                 },
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "previousTeamSuffix": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "projectCount": {
+                    "type": "number"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "actorId": {
+                    "type": "string",
+                    "description": "Okta user id."
+                  },
+                  "actorName": {
+                    "type": "string"
+                  },
+                  "actorType": {
+                    "type": "string",
+                    "enum": [
+                      "admin"
+                    ]
+                  }
+                },
+                "required": [
+                  "actorId",
+                  "actorType",
+                  "previousTeamSuffix",
+                  "projectCount",
+                  "reason"
+                ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
               },
@@ -249161,6 +249774,7 @@
               "access-group-user-removed",
               "admin-agentic-provisioning-account-unlinked",
               "admin-plan-updated",
+              "admin-preview-deployment-suffix-clear",
               "admin-secondary-email-added",
               "admin-secondary-email-removed",
               "admin-team-name-update",
@@ -249739,6 +250353,8 @@
               "team-default-passport-updated",
               "team-delete",
               "team-deployment-policy-updated",
+              "team-deployment-storage-high-retention-opt-in",
+              "team-deployment-storage-retention-opt-out",
               "team-domain-verification-created",
               "team-domain-verification-deleted",
               "team-domain-verification-verified",
@@ -250078,6 +250694,7 @@
               "access-group-user-removed",
               "admin-agentic-provisioning-account-unlinked",
               "admin-plan-updated",
+              "admin-preview-deployment-suffix-clear",
               "admin-secondary-email-added",
               "admin-secondary-email-removed",
               "admin-team-name-update",
@@ -250656,6 +251273,8 @@
               "team-default-passport-updated",
               "team-delete",
               "team-deployment-policy-updated",
+              "team-deployment-storage-high-retention-opt-in",
+              "team-deployment-storage-retention-opt-out",
               "team-domain-verification-created",
               "team-domain-verification-deleted",
               "team-domain-verification-verified",
@@ -250783,6 +251402,7 @@
                 "access-group-user-removed",
                 "admin-agentic-provisioning-account-unlinked",
                 "admin-plan-updated",
+                "admin-preview-deployment-suffix-clear",
                 "admin-secondary-email-added",
                 "admin-secondary-email-removed",
                 "admin-team-name-update",
@@ -251361,6 +251981,8 @@
                 "team-default-passport-updated",
                 "team-delete",
                 "team-deployment-policy-updated",
+                "team-deployment-storage-high-retention-opt-in",
+                "team-deployment-storage-retention-opt-out",
                 "team-domain-verification-created",
                 "team-domain-verification-deleted",
                 "team-domain-verification-verified",
@@ -253100,8 +253722,8 @@
           },
           "image": {
             "type": "string",
-            "description": "Digest-pinned reference of the container image the sandbox was created from, when it was created from an image (\"{repository}@{manifestDigest}\").",
-            "example": "my-repo@sha256:2c4e8f9a1b3d5e7f091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708"
+            "description": "Owner-qualified, digest-pinned reference of the container image the sandbox was created from (\"{team}/{project}/{repository}@{manifestDigest}\").",
+            "example": "my-team/my-project/my-repo@sha256:2c4e8f9a1b3d5e7f091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708"
           },
           "keepLastSnapshots": {
             "properties": {
