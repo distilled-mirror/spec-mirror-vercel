@@ -1771,7 +1771,7 @@
         ]
       }
     },
-    "/v1/ai-gateway/virtual-model-configs": {
+    "/ai-gateway/virtual-model-configs": {
       "post": {
         "description": "Create a virtual model config (VMC)",
         "operationId": "createAiGatewayVirtualModelConfig",
@@ -1782,7 +1782,7 @@
         ],
         "summary": "Create virtual model config",
         "tags": [
-          "api-ai-gateway"
+          "ai-gateway"
         ],
         "responses": {
           "201": {
@@ -1851,7 +1851,7 @@
         ],
         "summary": "Get virtual model config",
         "tags": [
-          "api-ai-gateway"
+          "ai-gateway"
         ],
         "responses": {
           "200": {
@@ -1950,7 +1950,7 @@
         ],
         "summary": "Update virtual model config",
         "tags": [
-          "api-ai-gateway"
+          "ai-gateway"
         ],
         "responses": {
           "200": {
@@ -2016,7 +2016,7 @@
         ],
         "summary": "Delete virtual model config",
         "tags": [
-          "api-ai-gateway"
+          "ai-gateway"
         ],
         "responses": {
           "204": {
@@ -2110,7 +2110,7 @@
         ]
       }
     },
-    "/v1/ai-gateway/virtual-model-configs/list": {
+    "/ai-gateway/virtual-model-configs/list": {
       "get": {
         "description": "List virtual model configs. With `ownerId`, returns all of that team's VMCs. Without it, pages through VMCs across all teams (newest-first, `limit`/`cursor`).",
         "operationId": "listAiGatewayVirtualModelConfigs",
@@ -2121,7 +2121,7 @@
         ],
         "summary": "List virtual model configs",
         "tags": [
-          "api-ai-gateway"
+          "ai-gateway"
         ],
         "responses": {
           "200": {
@@ -2197,7 +2197,7 @@
         ]
       }
     },
-    "/v1/ai-gateway/virtual-model-configs/{vmcSlug}": {
+    "/ai-gateway/virtual-model-configs/{vmcSlug}": {
       "get": {
         "description": "Get a virtual model config by path slug",
         "operationId": "getAiGatewayVirtualModelConfigBySlug",
@@ -2208,7 +2208,7 @@
         ],
         "summary": "Get virtual model config",
         "tags": [
-          "api-ai-gateway"
+          "ai-gateway"
         ],
         "responses": {
           "200": {
@@ -2287,7 +2287,7 @@
         ],
         "summary": "Update virtual model config",
         "tags": [
-          "api-ai-gateway"
+          "ai-gateway"
         ],
         "responses": {
           "200": {
@@ -2361,7 +2361,7 @@
         ],
         "summary": "Delete virtual model config",
         "tags": [
-          "api-ai-gateway"
+          "ai-gateway"
         ],
         "responses": {
           "204": {
@@ -2455,7 +2455,7 @@
         ]
       }
     },
-    "/v1/ai-gateway/rules": {
+    "/ai-gateway/rules": {
       "post": {
         "description": "Create a routing rule",
         "operationId": "createAiGatewayRule",
@@ -2708,6 +2708,563 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
+      }
+    },
+    "/ai-gateway/budgets/list": {
+      "get": {
+        "description": "List the team's AI Gateway budgets (team/project/user scopes, plus default-covered api-key spend) as a flat list, optionally filtered by scope.",
+        "operationId": "listAiGatewayBudgets",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "List AI Gateway budgets",
+        "tags": [
+          "ai-gateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiGatewayBudgetList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "scopeType",
+            "description": "Restrict the list to a single budget scope.",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "team",
+                "project",
+                "user",
+                "api-key"
+              ],
+              "description": "Restrict the list to a single budget scope."
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
+      }
+    },
+    "/ai-gateway/budgets": {
+      "put": {
+        "description": "Create or update a team-, project-, or user-scope AI Gateway budget.",
+        "operationId": "upsertAiGatewayBudget",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Upsert AI Gateway budget",
+        "tags": [
+          "ai-gateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiGatewayBudget"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request body is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "scopeType",
+                  "limitAmount"
+                ],
+                "properties": {
+                  "scopeType": {
+                    "type": "string",
+                    "enum": [
+                      "team",
+                      "project",
+                      "user"
+                    ]
+                  },
+                  "projectId": {
+                    "type": "string",
+                    "description": "Required when scopeType is \"project\"."
+                  },
+                  "userId": {
+                    "type": "string",
+                    "description": "Required when scopeType is \"user\"."
+                  },
+                  "limitAmount": {
+                    "type": "number",
+                    "minimum": 1,
+                    "description": "Budget limit in dollars."
+                  },
+                  "refreshPeriod": {
+                    "type": "string",
+                    "enum": [
+                      "daily",
+                      "weekly",
+                      "monthly",
+                      "none"
+                    ],
+                    "default": "monthly"
+                  },
+                  "includeByokInQuota": {
+                    "type": "boolean",
+                    "description": "Whether BYOK usage counts toward this budget."
+                  },
+                  "alertThresholds": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "enum": [
+                        50,
+                        75,
+                        100
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Archive a team-, project-, or user-scope AI Gateway budget.",
+        "operationId": "archiveAiGatewayBudget",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Archive AI Gateway budget",
+        "tags": [
+          "ai-gateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiGatewayBudget"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "scopeType",
+            "description": "The budget scope to archive.",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "team",
+                "project",
+                "user"
+              ],
+              "description": "The budget scope to archive."
+            }
+          },
+          {
+            "name": "projectId",
+            "description": "Required when scopeType is \"project\".",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Required when scopeType is \"project\"."
+            }
+          },
+          {
+            "name": "userId",
+            "description": "Required when scopeType is \"user\".",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Required when scopeType is \"user\"."
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
+      }
+    },
+    "/ai-gateway/budgets/defaults/list": {
+      "get": {
+        "description": "List the team's AI Gateway budget defaults as a flat per-scope list (one row per team/project/api-key/user scope with a default set). An empty list is a normal state for the dashboard.",
+        "operationId": "listAiGatewayBudgetDefaults",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "List AI Gateway budget defaults",
+        "tags": [
+          "ai-gateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiGatewayBudgetDefaultList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": ""
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
+      }
+    },
+    "/ai-gateway/budgets/defaults": {
+      "put": {
+        "description": "Create or update an AI Gateway budget default for one scope. Team-level authority only (owners/admins).",
+        "operationId": "upsertAiGatewayBudgetDefault",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Upsert AI Gateway budget default",
+        "tags": [
+          "ai-gateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiGatewayBudgetDefault"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request body is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "scopeType",
+                  "limitAmount"
+                ],
+                "properties": {
+                  "scopeType": {
+                    "type": "string",
+                    "enum": [
+                      "team",
+                      "project",
+                      "api-key",
+                      "user"
+                    ]
+                  },
+                  "limitAmount": {
+                    "type": "number",
+                    "minimum": 1,
+                    "description": "Default budget limit in dollars."
+                  },
+                  "refreshPeriod": {
+                    "type": "string",
+                    "enum": [
+                      "daily",
+                      "weekly",
+                      "monthly",
+                      "none"
+                    ]
+                  },
+                  "alertThresholds": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "enum": [
+                        50,
+                        75,
+                        100
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete an AI Gateway budget default for one scope. Team-level authority only (owners/admins).",
+        "operationId": "archiveAiGatewayBudgetDefault",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Archive AI Gateway budget default",
+        "tags": [
+          "ai-gateway"
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "scopeType",
+            "description": "The budget default scope to delete.",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "team",
+                "project",
+                "api-key",
+                "user"
+              ],
+              "description": "The budget default scope to delete."
             }
           },
           {
@@ -7296,6 +7853,12 @@
               "application/json": {
                 "schema": {
                   "properties": {
+                    "availableNativeChecks": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
                     "checks": {
                       "items": {
                         "properties": {
@@ -7467,6 +8030,7 @@
                     }
                   },
                   "required": [
+                    "availableNativeChecks",
                     "checks"
                   ],
                   "type": "object"
@@ -15187,9 +15751,6 @@
             "description": ""
           },
           "429": {
-            "description": ""
-          },
-          "504": {
             "description": ""
           }
         },
@@ -85169,6 +85730,20 @@
                           },
                           "jobs": {
                             "properties": {
+                              "flag-definitions-present": {
+                                "properties": {
+                                  "targets": {
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  }
+                                },
+                                "required": [
+                                  "targets"
+                                ],
+                                "type": "object"
+                              },
                               "lint": {
                                 "properties": {
                                   "targets": {
@@ -110333,6 +110908,20 @@
                               },
                               "jobs": {
                                 "properties": {
+                                  "flag-definitions-present": {
+                                    "properties": {
+                                      "targets": {
+                                        "items": {
+                                          "type": "string"
+                                        },
+                                        "type": "array"
+                                      }
+                                    },
+                                    "required": [
+                                      "targets"
+                                    ],
+                                    "type": "object"
+                                  },
                                   "lint": {
                                     "properties": {
                                       "targets": {
@@ -119036,6 +119625,20 @@
                     },
                     "jobs": {
                       "properties": {
+                        "flag-definitions-present": {
+                          "properties": {
+                            "targets": {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "targets"
+                          ],
+                          "type": "object"
+                        },
                         "lint": {
                           "properties": {
                             "targets": {
@@ -128045,6 +128648,20 @@
                     },
                     "jobs": {
                       "properties": {
+                        "flag-definitions-present": {
+                          "properties": {
+                            "targets": {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "targets"
+                          ],
+                          "type": "object"
+                        },
                         "lint": {
                           "properties": {
                             "targets": {
@@ -136322,6 +136939,20 @@
                     },
                     "jobs": {
                       "properties": {
+                        "flag-definitions-present": {
+                          "properties": {
+                            "targets": {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "targets"
+                          ],
+                          "type": "object"
+                        },
                         "lint": {
                           "properties": {
                             "targets": {
@@ -145930,6 +146561,20 @@
                     },
                     "jobs": {
                       "properties": {
+                        "flag-definitions-present": {
+                          "properties": {
+                            "targets": {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "targets"
+                          ],
+                          "type": "object"
+                        },
                         "lint": {
                           "properties": {
                             "targets": {
@@ -154567,33 +155212,8 @@
                         "id": {
                           "type": "string"
                         },
-                        "internalContentHint": {
-                          "nullable": true,
-                          "properties": {
-                            "encryptedValue": {
-                              "type": "string",
-                              "description": "Contains the `value` of the env variable, encrypted with a special key to make decryption possible in the subscriber Lambda."
-                            },
-                            "type": {
-                              "type": "string",
-                              "enum": [
-                                "flags-secret"
-                              ]
-                            }
-                          },
-                          "required": [
-                            "encryptedValue",
-                            "type"
-                          ],
-                          "type": "object",
-                          "description": "Similar to `contentHints`, but should not be exposed to the user."
-                        },
                         "key": {
                           "type": "string"
-                        },
-                        "legacyValue": {
-                          "type": "string",
-                          "description": "Legacy now-encryption ciphertext, present after migration swaps value/vsmValue"
                         },
                         "securityIssues": {
                           "items": {
@@ -155049,33 +155669,8 @@
                               "id": {
                                 "type": "string"
                               },
-                              "internalContentHint": {
-                                "nullable": true,
-                                "properties": {
-                                  "encryptedValue": {
-                                    "type": "string",
-                                    "description": "Contains the `value` of the env variable, encrypted with a special key to make decryption possible in the subscriber Lambda."
-                                  },
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "flags-secret"
-                                    ]
-                                  }
-                                },
-                                "required": [
-                                  "encryptedValue",
-                                  "type"
-                                ],
-                                "type": "object",
-                                "description": "Similar to `contentHints`, but should not be exposed to the user."
-                              },
                               "key": {
                                 "type": "string"
-                              },
-                              "legacyValue": {
-                                "type": "string",
-                                "description": "Legacy now-encryption ciphertext, present after migration swaps value/vsmValue"
                               },
                               "securityIssues": {
                                 "items": {
@@ -155543,33 +156138,8 @@
                               "id": {
                                 "type": "string"
                               },
-                              "internalContentHint": {
-                                "nullable": true,
-                                "properties": {
-                                  "encryptedValue": {
-                                    "type": "string",
-                                    "description": "Contains the `value` of the env variable, encrypted with a special key to make decryption possible in the subscriber Lambda."
-                                  },
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "flags-secret"
-                                    ]
-                                  }
-                                },
-                                "required": [
-                                  "encryptedValue",
-                                  "type"
-                                ],
-                                "type": "object",
-                                "description": "Similar to `contentHints`, but should not be exposed to the user."
-                              },
                               "key": {
                                 "type": "string"
-                              },
-                              "legacyValue": {
-                                "type": "string",
-                                "description": "Legacy now-encryption ciphertext, present after migration swaps value/vsmValue"
                               },
                               "securityIssues": {
                                 "items": {
@@ -157484,33 +158054,8 @@
                         "id": {
                           "type": "string"
                         },
-                        "internalContentHint": {
-                          "nullable": true,
-                          "properties": {
-                            "encryptedValue": {
-                              "type": "string",
-                              "description": "Contains the `value` of the env variable, encrypted with a special key to make decryption possible in the subscriber Lambda."
-                            },
-                            "type": {
-                              "type": "string",
-                              "enum": [
-                                "flags-secret"
-                              ]
-                            }
-                          },
-                          "required": [
-                            "encryptedValue",
-                            "type"
-                          ],
-                          "type": "object",
-                          "description": "Similar to `contentHints`, but should not be exposed to the user."
-                        },
                         "key": {
                           "type": "string"
-                        },
-                        "legacyValue": {
-                          "type": "string",
-                          "description": "Legacy now-encryption ciphertext, present after migration swaps value/vsmValue"
                         },
                         "sunsetSecretId": {
                           "type": "string",
@@ -157940,6 +158485,439 @@
                         "id": {
                           "type": "string"
                         },
+                        "key": {
+                          "type": "string"
+                        },
+                        "sunsetSecretId": {
+                          "type": "string",
+                          "description": "This is used to identify variables that have been migrated from type secret to sensitive."
+                        },
+                        "target": {
+                          "oneOf": [
+                            {
+                              "items": {
+                                "type": "string",
+                                "enum": [
+                                  "production",
+                                  "preview",
+                                  "development"
+                                ]
+                              },
+                              "type": "array"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "production",
+                                "preview",
+                                "development"
+                              ]
+                            }
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "encrypted",
+                            "plain",
+                            "secret",
+                            "sensitive",
+                            "system"
+                          ]
+                        },
+                        "updatedAt": {
+                          "type": "number"
+                        },
+                        "updatedBy": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        },
+                        "visibility": {
+                          "type": "string",
+                          "enum": [
+                            "config",
+                            "secret"
+                          ],
+                          "description": "User-facing config/secret model. When set, authoritative for new code paths. Legacy rows omit this field and callers fall back to existing `type` behavior."
+                        }
+                      },
+                      "required": [
+                        "decrypted",
+                        "key",
+                        "type",
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "properties": {
+                        "comment": {
+                          "type": "string"
+                        },
+                        "configurationId": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "contentHint": {
+                          "nullable": true,
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "redis-url"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "redis-rest-api-url"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "redis-rest-api-token"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "redis-rest-api-read-only-token"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "blob-read-write-token"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "blob-store-id"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "blob-webhook-public-key"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "postgres-url"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "postgres-url-non-pooling"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "postgres-prisma-url"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "postgres-user"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "postgres-host"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "postgres-password"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "postgres-database"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "postgres-url-no-ssl"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "integrationConfigurationId": {
+                                  "type": "string"
+                                },
+                                "integrationId": {
+                                  "type": "string"
+                                },
+                                "integrationProductId": {
+                                  "type": "string"
+                                },
+                                "storeId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "integration-store-secret"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "integrationConfigurationId",
+                                "integrationId",
+                                "integrationProductId",
+                                "storeId",
+                                "type"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "properties": {
+                                "projectId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "flags-connection-string"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "projectId",
+                                "type"
+                              ],
+                              "type": "object"
+                            }
+                          ]
+                        },
+                        "createdAt": {
+                          "type": "number"
+                        },
+                        "createdBy": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "customEnvironmentIds": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "decrypted": {
+                          "type": "boolean",
+                          "enum": [
+                            false,
+                            true
+                          ]
+                        },
+                        "edgeConfigId": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "edgeConfigTokenId": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "gitBranch": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
                         "internalContentHint": {
                           "nullable": true,
                           "properties": {
@@ -157976,12 +158954,7 @@
                           "oneOf": [
                             {
                               "items": {
-                                "type": "string",
-                                "enum": [
-                                  "production",
-                                  "preview",
-                                  "development"
-                                ]
+                                "type": "string"
                               },
                               "type": "array"
                             },
@@ -167052,6 +168025,20 @@
                     },
                     "jobs": {
                       "properties": {
+                        "flag-definitions-present": {
+                          "properties": {
+                            "targets": {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "targets"
+                          ],
+                          "type": "object"
+                        },
                         "lint": {
                           "properties": {
                             "targets": {
@@ -175752,7 +176739,7 @@
         }
       },
       "delete": {
-        "description": "Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name and the named sandbox metadata.",
+        "description": "Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name and the named sandbox metadata. Returns 404 if the sandbox does not exist or was deleted by a concurrent request.",
         "operationId": "deleteSandbox",
         "security": [
           {
@@ -199720,6 +200707,13 @@
                                         true
                                       ]
                                     },
+                                    "mcpConfiguration": {
+                                      "type": "boolean",
+                                      "enum": [
+                                        false,
+                                        true
+                                      ]
+                                    },
                                     "mcpReadonly": {
                                       "type": "boolean",
                                       "enum": [
@@ -207335,6 +208329,235 @@
             "schema": {
               "type": "string",
               "description": "Pagination cursor from a previous response."
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
+      }
+    },
+    "/v2/vercel-ci/branches": {
+      "get": {
+        "description": "List branches",
+        "operationId": "listVercelCiBranches",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "List Vercel CI branch suggestions for a team",
+        "tags": [
+          "vercel-ci"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully listed Vercel CI branch suggestions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "branches": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "count": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "count"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "branches"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have permission to access this resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "limit": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "name",
+                        "message",
+                        "limit"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 50
             }
           },
           {
@@ -220098,6 +221321,183 @@
         ],
         "type": "object"
       },
+      "AiGatewayBudget": {
+        "properties": {
+          "active": {
+            "type": "boolean",
+            "enum": [
+              false,
+              true
+            ]
+          },
+          "alertThresholds": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "archived": {
+            "type": "boolean",
+            "enum": [
+              false,
+              true
+            ]
+          },
+          "createdAt": {
+            "type": "number"
+          },
+          "currentByokSpend": {
+            "type": "number"
+          },
+          "currentSpend": {
+            "type": "number"
+          },
+          "includeByokInQuota": {
+            "type": "boolean",
+            "enum": [
+              false,
+              true
+            ]
+          },
+          "limitAmount": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "quotaEntityId": {
+            "type": "string"
+          },
+          "refreshPeriod": {
+            "type": "string",
+            "enum": [
+              "daily",
+              "monthly",
+              "none",
+              "weekly"
+            ]
+          },
+          "scopeId": {
+            "type": "string",
+            "description": "The native Vercel id of the scoped entity. Team/project ids already carry their prefix, so this equals `quotaEntityId` (`team_…` / `prj_…`); for the api-key scope it is the api key id (the `api_key_id_` prefix stripped)."
+          },
+          "scopeType": {
+            "type": "string",
+            "enum": [
+              "api-key",
+              "project",
+              "team",
+              "user"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "default"
+            ],
+            "description": "Set when the row is inherited from the team's budget default."
+          },
+          "updatedAt": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "active",
+          "archived",
+          "createdAt",
+          "currentByokSpend",
+          "currentSpend",
+          "includeByokInQuota",
+          "limitAmount",
+          "quotaEntityId",
+          "refreshPeriod",
+          "scopeId",
+          "scopeType",
+          "updatedAt"
+        ],
+        "type": "object"
+      },
+      "AiGatewayBudgetList": {
+        "properties": {
+          "budgets": {
+            "items": {
+              "$ref": "#/components/schemas/AiGatewayBudget"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "budgets"
+        ],
+        "type": "object"
+      },
+      "AiGatewayBudgetDefault": {
+        "properties": {
+          "active": {
+            "type": "boolean",
+            "enum": [
+              false,
+              true
+            ]
+          },
+          "alertThresholds": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "createdAt": {
+            "type": "number"
+          },
+          "limitAmount": {
+            "type": "number"
+          },
+          "refreshPeriod": {
+            "type": "string",
+            "enum": [
+              "daily",
+              "monthly",
+              "none",
+              "weekly"
+            ]
+          },
+          "scopeType": {
+            "type": "string",
+            "enum": [
+              "api-key",
+              "project",
+              "team",
+              "user"
+            ]
+          },
+          "updatedAt": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "active",
+          "createdAt",
+          "limitAmount",
+          "refreshPeriod",
+          "scopeType",
+          "updatedAt"
+        ],
+        "type": "object"
+      },
+      "AiGatewayBudgetDefaultList": {
+        "properties": {
+          "defaults": {
+            "items": {
+              "$ref": "#/components/schemas/AiGatewayBudgetDefault"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "defaults"
+        ],
+        "type": "object"
+      },
       "Network": {
         "properties": {
           "awsAccountId": {
@@ -222486,7 +223886,7 @@
           },
           "triggerType": {
             "type": "string",
-            "description": "Trigger driver type. Resolved automatically from the service or known service registry when not provided. Only set when using the newly decoupled triggers resolution flow."
+            "description": "Trigger driver type. Resolved automatically from the known service connection method when not provided. Only set when using the newly decoupled triggers resolution flow."
           },
           "triggerData": {
             "type": "object",
@@ -238988,6 +240388,9 @@
                       false,
                       true
                     ]
+                  },
+                  "resourceOnlyIntegrationCount": {
+                    "type": "number"
                   }
                 },
                 "required": [
@@ -255280,6 +256683,22 @@
           },
           "defaultProjectJobs": {
             "properties": {
+              "flag-definitions-present": {
+                "properties": {
+                  "targets": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "description": "Default job configuration applied to new projects created in this team."
+                  }
+                },
+                "required": [
+                  "targets"
+                ],
+                "type": "object",
+                "description": "Default job configuration applied to new projects created in this team."
+              },
               "lint": {
                 "properties": {
                   "targets": {
