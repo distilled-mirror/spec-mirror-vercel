@@ -3711,7 +3711,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The artifact was found and is downloaded as a stream. Content-Length should be verified.",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -9189,6 +9189,9 @@
                                   "none"
                                 ]
                               },
+                              "startedAt": {
+                                "type": "number"
+                              },
                               "status": {
                                 "type": "string",
                                 "enum": [
@@ -9549,6 +9552,9 @@
                                   "deployment-url",
                                   "none"
                                 ]
+                              },
+                              "startedAt": {
+                                "type": "number"
                               },
                               "status": {
                                 "type": "string",
@@ -9855,6 +9861,9 @@
                                   "none"
                                 ]
                               },
+                              "startedAt": {
+                                "type": "number"
+                              },
                               "status": {
                                 "type": "string",
                                 "enum": [
@@ -10216,6 +10225,9 @@
                                   "none"
                                 ]
                               },
+                              "startedAt": {
+                                "type": "number"
+                              },
                               "status": {
                                 "type": "string",
                                 "enum": [
@@ -10504,6 +10516,9 @@
                             "deployment-url",
                             "none"
                           ]
+                        },
+                        "startedAt": {
+                          "type": "number"
                         },
                         "status": {
                           "type": "string",
@@ -10865,6 +10880,9 @@
                             "deployment-url",
                             "none"
                           ]
+                        },
+                        "startedAt": {
+                          "type": "number"
                         },
                         "status": {
                           "type": "string",
@@ -11166,6 +11184,9 @@
                             "none"
                           ]
                         },
+                        "startedAt": {
+                          "type": "number"
+                        },
                         "status": {
                           "type": "string",
                           "enum": [
@@ -11526,6 +11547,9 @@
                             "deployment-url",
                             "none"
                           ]
+                        },
+                        "startedAt": {
+                          "type": "number"
                         },
                         "status": {
                           "type": "string",
@@ -11819,6 +11843,9 @@
                             "none"
                           ]
                         },
+                        "startedAt": {
+                          "type": "number"
+                        },
                         "status": {
                           "type": "string",
                           "enum": [
@@ -12179,6 +12206,9 @@
                             "deployment-url",
                             "none"
                           ]
+                        },
+                        "startedAt": {
+                          "type": "number"
                         },
                         "status": {
                           "type": "string",
@@ -16683,6 +16713,9 @@
                             "type": {
                               "type": "string",
                               "enum": [
+                                "app",
+                                "user",
+                                "jwt-bearer",
                                 "token"
                               ]
                             }
@@ -16969,6 +17002,9 @@
                             "type": {
                               "type": "string",
                               "enum": [
+                                "app",
+                                "user",
+                                "jwt-bearer",
                                 "token"
                               ]
                             }
@@ -22467,6 +22503,65 @@
                                           "bunVersion": {
                                             "type": "string"
                                           },
+                                          "daemon": {
+                                            "properties": {
+                                              "command": {
+                                                "items": {
+                                                  "type": "string"
+                                                },
+                                                "type": "array"
+                                              },
+                                              "entrypoint": {
+                                                "type": "string"
+                                              },
+                                              "replicas": {
+                                                "additionalProperties": {
+                                                  "type": "number"
+                                                },
+                                                "type": "object",
+                                                "description": "Replica counts by region."
+                                              },
+                                              "resources": {
+                                                "properties": {
+                                                  "requests": {
+                                                    "properties": {
+                                                      "memory": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "1Gi",
+                                                          "2Gi",
+                                                          "4Gi",
+                                                          "8Gi"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "memory"
+                                                    ],
+                                                    "type": "object"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "requests"
+                                                ],
+                                                "type": "object"
+                                              },
+                                              "root": {
+                                                "type": "string"
+                                              },
+                                              "name": {
+                                                "type": "string"
+                                              }
+                                            },
+                                            "required": [
+                                              "entrypoint",
+                                              "name",
+                                              "replicas",
+                                              "root"
+                                            ],
+                                            "type": "object",
+                                            "description": "Set when this build produces the named daemon."
+                                          },
                                           "debug": {
                                             "type": "boolean",
                                             "enum": [
@@ -23083,6 +23178,65 @@
                                           },
                                           "bunVersion": {
                                             "type": "string"
+                                          },
+                                          "daemon": {
+                                            "properties": {
+                                              "command": {
+                                                "items": {
+                                                  "type": "string"
+                                                },
+                                                "type": "array"
+                                              },
+                                              "entrypoint": {
+                                                "type": "string"
+                                              },
+                                              "replicas": {
+                                                "additionalProperties": {
+                                                  "type": "number"
+                                                },
+                                                "type": "object",
+                                                "description": "Replica counts by region."
+                                              },
+                                              "resources": {
+                                                "properties": {
+                                                  "requests": {
+                                                    "properties": {
+                                                      "memory": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "1Gi",
+                                                          "2Gi",
+                                                          "4Gi",
+                                                          "8Gi"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "memory"
+                                                    ],
+                                                    "type": "object"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "requests"
+                                                ],
+                                                "type": "object"
+                                              },
+                                              "root": {
+                                                "type": "string"
+                                              },
+                                              "name": {
+                                                "type": "string"
+                                              }
+                                            },
+                                            "required": [
+                                              "entrypoint",
+                                              "name",
+                                              "replicas",
+                                              "root"
+                                            ],
+                                            "type": "object",
+                                            "description": "Set when this build produces the named daemon."
                                           },
                                           "debug": {
                                             "type": "boolean",
@@ -31101,6 +31255,65 @@
                                           "bunVersion": {
                                             "type": "string"
                                           },
+                                          "daemon": {
+                                            "properties": {
+                                              "command": {
+                                                "items": {
+                                                  "type": "string"
+                                                },
+                                                "type": "array"
+                                              },
+                                              "entrypoint": {
+                                                "type": "string"
+                                              },
+                                              "replicas": {
+                                                "additionalProperties": {
+                                                  "type": "number"
+                                                },
+                                                "type": "object",
+                                                "description": "Replica counts by region."
+                                              },
+                                              "resources": {
+                                                "properties": {
+                                                  "requests": {
+                                                    "properties": {
+                                                      "memory": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "1Gi",
+                                                          "2Gi",
+                                                          "4Gi",
+                                                          "8Gi"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "memory"
+                                                    ],
+                                                    "type": "object"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "requests"
+                                                ],
+                                                "type": "object"
+                                              },
+                                              "root": {
+                                                "type": "string"
+                                              },
+                                              "name": {
+                                                "type": "string"
+                                              }
+                                            },
+                                            "required": [
+                                              "entrypoint",
+                                              "name",
+                                              "replicas",
+                                              "root"
+                                            ],
+                                            "type": "object",
+                                            "description": "Set when this build produces the named daemon."
+                                          },
                                           "debug": {
                                             "type": "boolean",
                                             "enum": [
@@ -31717,6 +31930,65 @@
                                           },
                                           "bunVersion": {
                                             "type": "string"
+                                          },
+                                          "daemon": {
+                                            "properties": {
+                                              "command": {
+                                                "items": {
+                                                  "type": "string"
+                                                },
+                                                "type": "array"
+                                              },
+                                              "entrypoint": {
+                                                "type": "string"
+                                              },
+                                              "replicas": {
+                                                "additionalProperties": {
+                                                  "type": "number"
+                                                },
+                                                "type": "object",
+                                                "description": "Replica counts by region."
+                                              },
+                                              "resources": {
+                                                "properties": {
+                                                  "requests": {
+                                                    "properties": {
+                                                      "memory": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "1Gi",
+                                                          "2Gi",
+                                                          "4Gi",
+                                                          "8Gi"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "memory"
+                                                    ],
+                                                    "type": "object"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "requests"
+                                                ],
+                                                "type": "object"
+                                              },
+                                              "root": {
+                                                "type": "string"
+                                              },
+                                              "name": {
+                                                "type": "string"
+                                              }
+                                            },
+                                            "required": [
+                                              "entrypoint",
+                                              "name",
+                                              "replicas",
+                                              "root"
+                                            ],
+                                            "type": "object",
+                                            "description": "Set when this build produces the named daemon."
                                           },
                                           "debug": {
                                             "type": "boolean",
@@ -38719,6 +38991,65 @@
                                       "bunVersion": {
                                         "type": "string"
                                       },
+                                      "daemon": {
+                                        "properties": {
+                                          "command": {
+                                            "items": {
+                                              "type": "string"
+                                            },
+                                            "type": "array"
+                                          },
+                                          "entrypoint": {
+                                            "type": "string"
+                                          },
+                                          "replicas": {
+                                            "additionalProperties": {
+                                              "type": "number"
+                                            },
+                                            "type": "object",
+                                            "description": "Replica counts by region."
+                                          },
+                                          "resources": {
+                                            "properties": {
+                                              "requests": {
+                                                "properties": {
+                                                  "memory": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "1Gi",
+                                                      "2Gi",
+                                                      "4Gi",
+                                                      "8Gi"
+                                                    ]
+                                                  }
+                                                },
+                                                "required": [
+                                                  "memory"
+                                                ],
+                                                "type": "object"
+                                              }
+                                            },
+                                            "required": [
+                                              "requests"
+                                            ],
+                                            "type": "object"
+                                          },
+                                          "root": {
+                                            "type": "string"
+                                          },
+                                          "name": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "entrypoint",
+                                          "name",
+                                          "replicas",
+                                          "root"
+                                        ],
+                                        "type": "object",
+                                        "description": "Set when this build produces the named daemon."
+                                      },
                                       "debug": {
                                         "type": "boolean",
                                         "enum": [
@@ -39335,6 +39666,65 @@
                                       },
                                       "bunVersion": {
                                         "type": "string"
+                                      },
+                                      "daemon": {
+                                        "properties": {
+                                          "command": {
+                                            "items": {
+                                              "type": "string"
+                                            },
+                                            "type": "array"
+                                          },
+                                          "entrypoint": {
+                                            "type": "string"
+                                          },
+                                          "replicas": {
+                                            "additionalProperties": {
+                                              "type": "number"
+                                            },
+                                            "type": "object",
+                                            "description": "Replica counts by region."
+                                          },
+                                          "resources": {
+                                            "properties": {
+                                              "requests": {
+                                                "properties": {
+                                                  "memory": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "1Gi",
+                                                      "2Gi",
+                                                      "4Gi",
+                                                      "8Gi"
+                                                    ]
+                                                  }
+                                                },
+                                                "required": [
+                                                  "memory"
+                                                ],
+                                                "type": "object"
+                                              }
+                                            },
+                                            "required": [
+                                              "requests"
+                                            ],
+                                            "type": "object"
+                                          },
+                                          "root": {
+                                            "type": "string"
+                                          },
+                                          "name": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "entrypoint",
+                                          "name",
+                                          "replicas",
+                                          "root"
+                                        ],
+                                        "type": "object",
+                                        "description": "Set when this build produces the named daemon."
                                       },
                                       "debug": {
                                         "type": "boolean",
@@ -84416,6 +84806,32 @@
                                   false,
                                   true
                                 ]
+                              },
+                              "elasticBuildMachine": {
+                                "properties": {
+                                  "cores": {
+                                    "type": "number"
+                                  },
+                                  "label": {
+                                    "type": "string",
+                                    "enum": [
+                                      "enhanced",
+                                      "standard",
+                                      "turbo"
+                                    ],
+                                    "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                                  },
+                                  "memory": {
+                                    "type": "number"
+                                  }
+                                },
+                                "required": [
+                                  "cores",
+                                  "label",
+                                  "memory"
+                                ],
+                                "type": "object",
+                                "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                               }
                             },
                             "type": "object",
@@ -89266,6 +89682,32 @@
                                   false,
                                   true
                                 ]
+                              },
+                              "elasticBuildMachine": {
+                                "properties": {
+                                  "cores": {
+                                    "type": "number"
+                                  },
+                                  "label": {
+                                    "type": "string",
+                                    "enum": [
+                                      "enhanced",
+                                      "standard",
+                                      "turbo"
+                                    ],
+                                    "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                                  },
+                                  "memory": {
+                                    "type": "number"
+                                  }
+                                },
+                                "required": [
+                                  "cores",
+                                  "label",
+                                  "memory"
+                                ],
+                                "type": "object",
+                                "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                               }
                             },
                             "type": "object",
@@ -100666,6 +101108,32 @@
                                   false,
                                   true
                                 ]
+                              },
+                              "elasticBuildMachine": {
+                                "properties": {
+                                  "cores": {
+                                    "type": "number"
+                                  },
+                                  "label": {
+                                    "type": "string",
+                                    "enum": [
+                                      "enhanced",
+                                      "standard",
+                                      "turbo"
+                                    ],
+                                    "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                                  },
+                                  "memory": {
+                                    "type": "number"
+                                  }
+                                },
+                                "required": [
+                                  "cores",
+                                  "label",
+                                  "memory"
+                                ],
+                                "type": "object",
+                                "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                               }
                             },
                             "type": "object",
@@ -104972,6 +105440,32 @@
                                       false,
                                       true
                                     ]
+                                  },
+                                  "elasticBuildMachine": {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number"
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "enhanced",
+                                          "standard",
+                                          "turbo"
+                                        ],
+                                        "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                                      },
+                                      "memory": {
+                                        "type": "number"
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
+                                    ],
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                   }
                                 },
                                 "type": "object",
@@ -107747,6 +108241,32 @@
                                       false,
                                       true
                                     ]
+                                  },
+                                  "elasticBuildMachine": {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number"
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "enhanced",
+                                          "standard",
+                                          "turbo"
+                                        ],
+                                        "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                                      },
+                                      "memory": {
+                                        "type": "number"
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
+                                    ],
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                   }
                                 },
                                 "type": "object",
@@ -112597,6 +113117,32 @@
                                       false,
                                       true
                                     ]
+                                  },
+                                  "elasticBuildMachine": {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number"
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "enhanced",
+                                          "standard",
+                                          "turbo"
+                                        ],
+                                        "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                                      },
+                                      "memory": {
+                                        "type": "number"
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
+                                    ],
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                   }
                                 },
                                 "type": "object",
@@ -115871,6 +116417,32 @@
                             false,
                             true
                           ]
+                        },
+                        "elasticBuildMachine": {
+                          "properties": {
+                            "cores": {
+                              "type": "number"
+                            },
+                            "label": {
+                              "type": "string",
+                              "enum": [
+                                "enhanced",
+                                "standard",
+                                "turbo"
+                              ],
+                              "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                            },
+                            "memory": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "cores",
+                            "label",
+                            "memory"
+                          ],
+                          "type": "object",
+                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                         }
                       },
                       "type": "object",
@@ -120721,6 +121293,32 @@
                             false,
                             true
                           ]
+                        },
+                        "elasticBuildMachine": {
+                          "properties": {
+                            "cores": {
+                              "type": "number"
+                            },
+                            "label": {
+                              "type": "string",
+                              "enum": [
+                                "enhanced",
+                                "standard",
+                                "turbo"
+                              ],
+                              "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                            },
+                            "memory": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "cores",
+                            "label",
+                            "memory"
+                          ],
+                          "type": "object",
+                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                         }
                       },
                       "type": "object",
@@ -124250,6 +124848,32 @@
                             false,
                             true
                           ]
+                        },
+                        "elasticBuildMachine": {
+                          "properties": {
+                            "cores": {
+                              "type": "number"
+                            },
+                            "label": {
+                              "type": "string",
+                              "enum": [
+                                "enhanced",
+                                "standard",
+                                "turbo"
+                              ],
+                              "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                            },
+                            "memory": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "cores",
+                            "label",
+                            "memory"
+                          ],
+                          "type": "object",
+                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                         }
                       },
                       "type": "object",
@@ -129131,6 +129755,32 @@
                             false,
                             true
                           ]
+                        },
+                        "elasticBuildMachine": {
+                          "properties": {
+                            "cores": {
+                              "type": "number"
+                            },
+                            "label": {
+                              "type": "string",
+                              "enum": [
+                                "enhanced",
+                                "standard",
+                                "turbo"
+                              ],
+                              "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                            },
+                            "memory": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "cores",
+                            "label",
+                            "memory"
+                          ],
+                          "type": "object",
+                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                         }
                       },
                       "type": "object",
@@ -131968,6 +132618,32 @@
                             false,
                             true
                           ]
+                        },
+                        "elasticBuildMachine": {
+                          "properties": {
+                            "cores": {
+                              "type": "number"
+                            },
+                            "label": {
+                              "type": "string",
+                              "enum": [
+                                "enhanced",
+                                "standard",
+                                "turbo"
+                              ],
+                              "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                            },
+                            "memory": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "cores",
+                            "label",
+                            "memory"
+                          ],
+                          "type": "object",
+                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                         }
                       },
                       "type": "object",
@@ -136809,6 +137485,32 @@
                             false,
                             true
                           ]
+                        },
+                        "elasticBuildMachine": {
+                          "properties": {
+                            "cores": {
+                              "type": "number"
+                            },
+                            "label": {
+                              "type": "string",
+                              "enum": [
+                                "enhanced",
+                                "standard",
+                                "turbo"
+                              ],
+                              "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                            },
+                            "memory": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "cores",
+                            "label",
+                            "memory"
+                          ],
+                          "type": "object",
+                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                         }
                       },
                       "type": "object",
@@ -140968,6 +141670,32 @@
                             false,
                             true
                           ]
+                        },
+                        "elasticBuildMachine": {
+                          "properties": {
+                            "cores": {
+                              "type": "number"
+                            },
+                            "label": {
+                              "type": "string",
+                              "enum": [
+                                "enhanced",
+                                "standard",
+                                "turbo"
+                              ],
+                              "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                            },
+                            "memory": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "cores",
+                            "label",
+                            "memory"
+                          ],
+                          "type": "object",
+                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                         }
                       },
                       "type": "object",
@@ -145818,6 +146546,32 @@
                             false,
                             true
                           ]
+                        },
+                        "elasticBuildMachine": {
+                          "properties": {
+                            "cores": {
+                              "type": "number"
+                            },
+                            "label": {
+                              "type": "string",
+                              "enum": [
+                                "enhanced",
+                                "standard",
+                                "turbo"
+                              ],
+                              "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                            },
+                            "memory": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "cores",
+                            "label",
+                            "memory"
+                          ],
+                          "type": "object",
+                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                         }
                       },
                       "type": "object",
@@ -161819,6 +162573,32 @@
                             false,
                             true
                           ]
+                        },
+                        "elasticBuildMachine": {
+                          "properties": {
+                            "cores": {
+                              "type": "number"
+                            },
+                            "label": {
+                              "type": "string",
+                              "enum": [
+                                "enhanced",
+                                "standard",
+                                "turbo"
+                              ],
+                              "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                            },
+                            "memory": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "cores",
+                            "label",
+                            "memory"
+                          ],
+                          "type": "object",
+                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                         }
                       },
                       "type": "object",
@@ -166669,6 +167449,32 @@
                             false,
                             true
                           ]
+                        },
+                        "elasticBuildMachine": {
+                          "properties": {
+                            "cores": {
+                              "type": "number"
+                            },
+                            "label": {
+                              "type": "string",
+                              "enum": [
+                                "enhanced",
+                                "standard",
+                                "turbo"
+                              ],
+                              "description": "Machine types an elastic decision can effectively apply or persist. The algorithm may consider Basic, but Basic is normalized to standard before an elastic decision becomes effective."
+                            },
+                            "memory": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "cores",
+                            "label",
+                            "memory"
+                          ],
+                          "type": "object",
+                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                         }
                       },
                       "type": "object",
@@ -169969,6 +170775,103 @@
         ]
       }
     },
+    "/v2/sandboxes/drives/{nameOrId}": {
+      "get": {
+        "description": "Gets an existing drive by project and name or drive ID. Returns 404 if doesn't exist.",
+        "operationId": "getDrive",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Get a drive",
+        "tags": [
+          "sandboxes"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "drive": {
+                      "$ref": "#/components/schemas/Drive"
+                    }
+                  },
+                  "required": [
+                    "drive"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "429": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "nameOrId",
+            "description": "The drive name or ID.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The drive name or ID.",
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "maxLength": 64,
+              "example": "workspace"
+            }
+          },
+          {
+            "name": "projectId",
+            "description": "The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+              "example": "prj_abc123"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
+      }
+    },
     "/v2/sandboxes/drives/{name}": {
       "post": {
         "description": "Gets an existing drive by project and name, or creates it when it does not exist.",
@@ -170223,6 +171126,134 @@
             }
           }
         ]
+      }
+    },
+    "/v2/sandboxes/drives/{name}/fork": {
+      "post": {
+        "description": "Fork the provided drive into a new one with the provided name, inheriting the region and max size.",
+        "operationId": "forkDrive",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Fork a drive",
+        "tags": [
+          "sandboxes"
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "drive": {
+                      "$ref": "#/components/schemas/Drive"
+                    }
+                  },
+                  "required": [
+                    "drive"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "402": {
+            "description": "The account is missing a payment so payment method must be updated"
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "409": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "429": {
+            "description": ""
+          },
+          "503": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "description": "Name of the source drive to fork.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "maxLength": 64,
+              "description": "Name of the source drive to fork.",
+              "example": "workspace"
+            }
+          },
+          {
+            "name": "projectId",
+            "description": "The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+              "example": "prj_abc123"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9_-]+$",
+                    "maxLength": 64,
+                    "description": "Name for the forked drive. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).",
+                    "example": "workspace-fork"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/v2/sandboxes/snapshots": {
@@ -197679,9 +198710,6 @@
           "400": {
             "description": "One of the provided values in the request query is invalid.\nUser is already a confirmed member of the team and did not request access. Only visible when the authenticated user does have access to the team."
           },
-          "401": {
-            "description": ""
-          },
           "403": {
             "description": "You do not have permission to access this resource."
           },
@@ -197770,9 +198798,6 @@
           },
           "400": {
             "description": "One of the provided values in the request body is invalid."
-          },
-          "401": {
-            "description": ""
           },
           "402": {
             "description": ""
@@ -199005,9 +200030,6 @@
           "400": {
             "description": "One of the provided values in the request query is invalid."
           },
-          "401": {
-            "description": ""
-          },
           "403": {
             "description": "You do not have permission to access this resource."
           },
@@ -199100,9 +200122,6 @@
           },
           "400": {
             "description": "One of the provided values in the request body is invalid.\nThe slug is already in use"
-          },
-          "401": {
-            "description": ""
           },
           "403": {
             "description": "You do not have permission to access this resource."
@@ -200109,9 +201128,6 @@
           "400": {
             "description": "One of the provided values in the request query is invalid."
           },
-          "401": {
-            "description": ""
-          },
           "403": {
             "description": "You do not have permission to access this resource."
           },
@@ -200174,9 +201190,6 @@
           },
           "400": {
             "description": "One of the provided values in the request query is invalid."
-          },
-          "401": {
-            "description": ""
           },
           "403": {
             "description": "You do not have permission to access this resource."
@@ -200329,9 +201342,6 @@
           },
           "400": {
             "description": "One of the provided values in the request body is invalid."
-          },
-          "401": {
-            "description": ""
           },
           "402": {
             "description": ""
@@ -222607,6 +223617,73 @@
               },
               {
                 "properties": {
+                  "boardId": {
+                    "type": "string"
+                  },
+                  "fields": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "operationId": {
+                    "type": "string"
+                  },
+                  "spaceId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "boardId",
+                  "fields",
+                  "operationId",
+                  "spaceId"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "boardId": {
+                    "type": "string"
+                  },
+                  "operationId": {
+                    "type": "string"
+                  },
+                  "visibility": {
+                    "type": "string",
+                    "enum": [
+                      "private",
+                      "team"
+                    ]
+                  }
+                },
+                "required": [
+                  "boardId",
+                  "operationId",
+                  "visibility"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "operationId": {
+                    "type": "string"
+                  },
+                  "schemaId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "operationId",
+                  "schemaId"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "provider": {
                     "type": "string",
                     "enum": [
@@ -225209,6 +226286,18 @@
                   "invoiceId",
                   "newInvoiceId",
                   "settlementMethod"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "subscriptionId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "subscriptionId"
                 ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
@@ -230441,6 +231530,136 @@
                       }
                     ]
                   },
+                  "updateDiff": {
+                    "properties": {
+                      "changedComment": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ]
+                      },
+                      "changedGitBranch": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ]
+                      },
+                      "changedValue": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ],
+                        "description": "Indicates a value was submitted, not whether its plaintext changed."
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "newCustomEnvironmentIds": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "newKey": {
+                        "type": "string"
+                      },
+                      "newTarget": {
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "development",
+                            "preview",
+                            "production"
+                          ]
+                        },
+                        "type": "array"
+                      },
+                      "newType": {
+                        "type": "string"
+                      },
+                      "oldCustomEnvironmentIds": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "oldTarget": {
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "development",
+                            "preview",
+                            "production"
+                          ]
+                        },
+                        "type": "array"
+                      },
+                      "oldType": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "changedValue"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "customEnvironmentSlugs": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "edgeConfigId": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "edgeConfigTokenId": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "gitBranch": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "ipAddress": {
+                    "type": "string"
+                  },
+                  "key": {
+                    "type": "string"
+                  },
+                  "projectId": {
+                    "type": "string"
+                  },
+                  "projectName": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      }
+                    ]
+                  },
                   "deploymentId": {
                     "type": "string"
                   },
@@ -231123,15 +232342,27 @@
                   },
                   "updateDiff": {
                     "properties": {
-                      "changedValue": {
+                      "changedComment": {
                         "type": "boolean",
                         "enum": [
                           false,
                           true
                         ]
                       },
-                      "id": {
-                        "type": "string"
+                      "changedGitBranch": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ]
+                      },
+                      "changedValue": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ],
+                        "description": "Indicates a value was submitted, not whether its plaintext changed."
                       },
                       "key": {
                         "type": "string"
@@ -231144,23 +232375,6 @@
                       },
                       "newKey": {
                         "type": "string"
-                      },
-                      "newProjects": {
-                        "items": {
-                          "properties": {
-                            "projectId": {
-                              "type": "string"
-                            },
-                            "projectName": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "projectId"
-                          ],
-                          "type": "object"
-                        },
-                        "type": "array"
                       },
                       "newTarget": {
                         "items": {
@@ -231182,7 +232396,24 @@
                         },
                         "type": "array"
                       },
-                      "oldProjects": {
+                      "oldTarget": {
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "development",
+                            "preview",
+                            "production"
+                          ]
+                        },
+                        "type": "array"
+                      },
+                      "oldType": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "newProjects": {
                         "items": {
                           "properties": {
                             "projectId": {
@@ -231199,19 +232430,22 @@
                         },
                         "type": "array"
                       },
-                      "oldTarget": {
+                      "oldProjects": {
                         "items": {
-                          "type": "string",
-                          "enum": [
-                            "development",
-                            "preview",
-                            "production"
-                          ]
+                          "properties": {
+                            "projectId": {
+                              "type": "string"
+                            },
+                            "projectName": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "projectId"
+                          ],
+                          "type": "object"
                         },
                         "type": "array"
-                      },
-                      "oldType": {
-                        "type": "string"
                       }
                     },
                     "required": [
@@ -244592,7 +245826,11 @@
               "messageboard-created",
               "messageboard-private-created",
               "messageboard-private-space-created",
+              "messageboard-private-space-updated",
+              "messageboard-schema-registered",
               "messageboard-space-created",
+              "messageboard-space-updated",
+              "messageboard-visibility-updated",
               "microfrontend-group-added",
               "microfrontend-group-deleted",
               "microfrontend-group-updated",
@@ -244952,6 +246190,7 @@
               "v0-chat-created",
               "v0-chat-message-sent",
               "v0-migration-payment-confirmed",
+              "v0-migration-subscription-completed",
               "vcr-image-deleted",
               "vcr-image-pushed",
               "vcr-repository-created",
@@ -245521,7 +246760,11 @@
               "messageboard-created",
               "messageboard-private-created",
               "messageboard-private-space-created",
+              "messageboard-private-space-updated",
+              "messageboard-schema-registered",
               "messageboard-space-created",
+              "messageboard-space-updated",
+              "messageboard-visibility-updated",
               "microfrontend-group-added",
               "microfrontend-group-deleted",
               "microfrontend-group-updated",
@@ -245881,6 +247124,7 @@
               "v0-chat-created",
               "v0-chat-message-sent",
               "v0-migration-payment-confirmed",
+              "v0-migration-subscription-completed",
               "vcr-image-deleted",
               "vcr-image-pushed",
               "vcr-repository-created",
@@ -246238,7 +247482,11 @@
                 "messageboard-created",
                 "messageboard-private-created",
                 "messageboard-private-space-created",
+                "messageboard-private-space-updated",
+                "messageboard-schema-registered",
                 "messageboard-space-created",
+                "messageboard-space-updated",
+                "messageboard-visibility-updated",
                 "microfrontend-group-added",
                 "microfrontend-group-deleted",
                 "microfrontend-group-updated",
@@ -246598,6 +247846,7 @@
                 "v0-chat-created",
                 "v0-chat-message-sent",
                 "v0-migration-payment-confirmed",
+                "v0-migration-subscription-completed",
                 "vcr-image-deleted",
                 "vcr-image-pushed",
                 "vcr-repository-created",
@@ -248795,6 +250044,10 @@
             "description": "The unique drive name within the project.",
             "example": "workspace"
           },
+          "parentDriveId": {
+            "type": "string",
+            "description": "The ID of the source drive when this drive is a fork."
+          },
           "projectId": {
             "type": "string",
             "description": "The project that owns the drive.",
@@ -248804,6 +250057,10 @@
             "type": "string",
             "description": "The region where the drive is stored.",
             "example": "iad1"
+          },
+          "rootDriveId": {
+            "type": "string",
+            "description": "The ID of the original drive at the root of this fork."
           },
           "updatedAt": {
             "type": "number",
@@ -249861,6 +251118,9 @@
                 ],
                 "type": "object"
               },
+              "organizationId": {
+                "type": "string"
+              },
               "role": {
                 "type": "string",
                 "enum": [
@@ -250541,6 +251801,9 @@
                   "origin"
                 ],
                 "type": "object"
+              },
+              "organizationId": {
+                "type": "string"
               },
               "role": {
                 "type": "string",
