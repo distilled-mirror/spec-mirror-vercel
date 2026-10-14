@@ -139963,20 +139963,11 @@
                           "additionalProperties": false
                         },
                         "minItems": 1
-                      },
-                      "protectionMode": {
-                        "description": "exclusive: ip match is enough to bypass deployment protection (regardless of other settings). additional: ip must match + any other protection should be also provided (password, vercel auth, shareable link, automation bypass header, automation bypass query param)",
-                        "enum": [
-                          "exclusive",
-                          "additional"
-                        ],
-                        "type": "string"
                       }
                     },
                     "required": [
                       "deploymentType",
-                      "addresses",
-                      "protectionMode"
+                      "addresses"
                     ],
                     "type": "object",
                     "nullable": true
@@ -179996,9 +179987,6 @@
           "404": {
             "description": ""
           },
-          "409": {
-            "description": ""
-          },
           "410": {
             "description": ""
           },
@@ -180006,15 +179994,9 @@
             "description": ""
           },
           "429": {
-            "description": "The concurrency limit has been exceeded."
+            "description": ""
           },
           "500": {
-            "description": ""
-          },
-          "502": {
-            "description": ""
-          },
-          "503": {
             "description": ""
           }
         },
@@ -239907,6 +239889,9 @@
                   "deploymentId": {
                     "type": "string"
                   },
+                  "projectId": {
+                    "type": "string"
+                  },
                   "url": {
                     "type": "string"
                   }
@@ -254759,6 +254744,9 @@
               },
               {
                 "properties": {
+                  "createdByParentTeamId": {
+                    "type": "string"
+                  },
                   "expiresAt": {
                     "type": "number",
                     "description": "Unix epoch milliseconds. Absent when the token never expires."
@@ -254898,6 +254886,12 @@
                     ],
                     "description": "Scope of the token: - `'user'`: full-account token (not tied to any team). - `'team'`: scoped to a single team. - `'project'`: scoped to a single project within a team."
                   },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "v0"
+                    ]
+                  },
                   "teamId": {
                     "type": "string",
                     "description": "Present when `scope` is `'team'` or `'project'`."
@@ -254943,6 +254937,9 @@
                   "actorTokenId": {
                     "type": "string",
                     "description": "The token's public ID."
+                  },
+                  "createdByParentTeamId": {
+                    "type": "string"
                   },
                   "expired": {
                     "type": "boolean",
@@ -255077,6 +255074,20 @@
                     "enum": [
                       false,
                       true
+                    ]
+                  },
+                  "scope": {
+                    "type": "string",
+                    "enum": [
+                      "project",
+                      "team",
+                      "user"
+                    ]
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "v0"
                     ]
                   },
                   "teamId": {
@@ -260907,6 +260918,13 @@
                 },
                 "type": "array"
               },
+              "isOrgBackingTeamMembership": {
+                "type": "boolean",
+                "enum": [
+                  false,
+                  true
+                ]
+              },
               "joinedFrom": {
                 "properties": {
                   "commitId": {
@@ -261590,6 +261608,13 @@
                   "type": "object"
                 },
                 "type": "array"
+              },
+              "isOrgBackingTeamMembership": {
+                "type": "boolean",
+                "enum": [
+                  false,
+                  true
+                ]
               },
               "joinedFrom": {
                 "properties": {
