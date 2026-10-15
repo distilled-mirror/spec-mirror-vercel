@@ -2112,7 +2112,7 @@
     },
     "/ai-gateway/virtual-model-configs/list": {
       "get": {
-        "description": "List virtual model configs. With `ownerId`, returns all of that team's VMCs. Without it, pages through VMCs across all teams (newest-first, `limit`/`cursor`).",
+        "description": "List virtual model configs. For a team, returns all of its VMCs, or with `limit` or `cursor` one page ordered by `virtualModelSlug`. Across teams, pages newest-first. `includeArchived=false` omits archived VMCs.",
         "operationId": "listAiGatewayVirtualModelConfigs",
         "security": [
           {
@@ -2174,6 +2174,17 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "includeArchived",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
             }
           },
           {
@@ -2597,7 +2608,7 @@
         ]
       },
       "get": {
-        "description": "List the authenticated team's routing rules",
+        "description": "List the authenticated team's routing rules, oldest first. Without `limit` or `cursor`, returns every rule. With either, returns one page and a `nextCursor` for the next page (null on the last page). Paging reads and sorts the team's rules server-side, which is fine at current rule counts.",
         "operationId": "listAiGatewayRules",
         "security": [
           {
@@ -2648,6 +2659,25 @@
                 "true",
                 "false"
               ]
+            }
+          },
+          {
+            "name": "limit",
+            "description": "Maximum number of rules to return (capped at 200). Enables pagination.",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum number of rules to return (capped at 200). Enables pagination."
+            }
+          },
+          {
+            "name": "cursor",
+            "description": "Opaque cursor returned by a prior call as nextCursor.",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "description": "Opaque cursor returned by a prior call as nextCursor."
             }
           },
           {
@@ -2807,7 +2837,7 @@
     },
     "/ai-gateway/budgets/list": {
       "get": {
-        "description": "List the team's AI Gateway budgets (team/project/user scopes, plus default-covered api-key spend) as a flat list, optionally filtered by scope.",
+        "description": "List the team's AI Gateway budgets (team/project/user scopes, plus default-covered api-key spend) as a flat list, optionally filtered by scope. Without `limit` or `cursor`, returns every budget. With either, returns one page ordered by `quotaEntityId` plus `nextCursor` (null on the last page) and `defaultCoveredCounts`. Paging still reads the full merge server-side: the gateway meter list it joins has no cursor.",
         "operationId": "listAiGatewayBudgets",
         "security": [
           {
@@ -2862,6 +2892,38 @@
                 "api-key"
               ],
               "description": "Restrict the list to a single budget scope."
+            }
+          },
+          {
+            "name": "includeDefaultCovered",
+            "description": "Whether to include rows inherited from a budget default (`source: \"default\"`). Defaults to true.",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ],
+              "description": "Whether to include rows inherited from a budget default (`source: \"default\"`). Defaults to true."
+            }
+          },
+          {
+            "name": "limit",
+            "description": "Maximum number of budgets to return (capped at 200). Enables pagination.",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum number of budgets to return (capped at 200). Enables pagination."
+            }
+          },
+          {
+            "name": "cursor",
+            "description": "Opaque cursor returned by a prior call as nextCursor.",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "description": "Opaque cursor returned by a prior call as nextCursor."
             }
           },
           {
@@ -3542,6 +3604,31 @@
                         "status"
                       ],
                       "type": "object"
+                    },
+                    {
+                      "properties": {
+                        "readOnly": {
+                          "type": "boolean",
+                          "enum": [
+                            false,
+                            true
+                          ],
+                          "description": "Present and `true` when the token can read artifacts but cannot upload them."
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "disabled",
+                            "enabled",
+                            "over_limit",
+                            "paused"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status"
+                      ],
+                      "type": "object"
                     }
                   ]
                 }
@@ -3613,11 +3700,7 @@
                       "items": {
                         "type": "string"
                       },
-                      "type": "array",
-                      "description": "Array of URLs where the artifact was updated",
-                      "example": [
-                        "https://api.vercel.com/v2/now/artifact/12HKQaOmR5t5Uy6vdcQsNIiZgHGB"
-                      ]
+                      "type": "array"
                     }
                   },
                   "required": [
@@ -18743,20 +18826,30 @@
                                   "claims": {
                                     "type": "object",
                                     "additionalProperties": {
-                                      "nullable": true,
-                                      "oneOf": [
+                                      "anyOf": [
                                         {
-                                          "type": "string"
+                                          "nullable": true,
+                                          "oneOf": [
+                                            {
+                                              "type": "string"
+                                            },
+                                            {
+                                              "type": "number"
+                                            },
+                                            {
+                                              "type": "boolean"
+                                            }
+                                          ]
                                         },
                                         {
-                                          "type": "number"
-                                        },
-                                        {
-                                          "type": "boolean"
+                                          "type": "array",
+                                          "items": {
+                                            "type": "string"
+                                          }
                                         }
                                       ]
                                     },
-                                    "description": "Claims to set (string, number, or boolean), shallow-merged over earlier rules and over the default claims. `null` removes a claim. Reserved claims cannot be set; `aud` and `sub` can be overridden with a string but not removed."
+                                    "description": "Claims to set (string, number, boolean, or array of strings), shallow-merged over earlier rules and over the default claims. `null` removes a claim. Reserved claims cannot be set; `aud` and `sub` can be overridden with a string but not removed."
                                   }
                                 },
                                 "additionalProperties": false
@@ -22591,12 +22684,19 @@
                                               "entrypoint": {
                                                 "type": "string"
                                               },
+                                              "instances": {
+                                                "additionalProperties": {
+                                                  "type": "number"
+                                                },
+                                                "type": "object",
+                                                "description": "Instance counts by region."
+                                              },
                                               "replicas": {
                                                 "additionalProperties": {
                                                   "type": "number"
                                                 },
                                                 "type": "object",
-                                                "description": "Replica counts by region."
+                                                "description": "Instance counts by region."
                                               },
                                               "resources": {
                                                 "properties": {
@@ -22626,6 +22726,9 @@
                                               "root": {
                                                 "type": "string"
                                               },
+                                              "terminationGracePeriodSeconds": {
+                                                "type": "number"
+                                              },
                                               "name": {
                                                 "type": "string"
                                               }
@@ -22633,7 +22736,6 @@
                                             "required": [
                                               "entrypoint",
                                               "name",
-                                              "replicas",
                                               "root"
                                             ],
                                             "type": "object",
@@ -23267,12 +23369,19 @@
                                               "entrypoint": {
                                                 "type": "string"
                                               },
+                                              "instances": {
+                                                "additionalProperties": {
+                                                  "type": "number"
+                                                },
+                                                "type": "object",
+                                                "description": "Instance counts by region."
+                                              },
                                               "replicas": {
                                                 "additionalProperties": {
                                                   "type": "number"
                                                 },
                                                 "type": "object",
-                                                "description": "Replica counts by region."
+                                                "description": "Instance counts by region."
                                               },
                                               "resources": {
                                                 "properties": {
@@ -23302,6 +23411,9 @@
                                               "root": {
                                                 "type": "string"
                                               },
+                                              "terminationGracePeriodSeconds": {
+                                                "type": "number"
+                                              },
                                               "name": {
                                                 "type": "string"
                                               }
@@ -23309,7 +23421,6 @@
                                             "required": [
                                               "entrypoint",
                                               "name",
-                                              "replicas",
                                               "root"
                                             ],
                                             "type": "object",
@@ -31343,12 +31454,19 @@
                                               "entrypoint": {
                                                 "type": "string"
                                               },
+                                              "instances": {
+                                                "additionalProperties": {
+                                                  "type": "number"
+                                                },
+                                                "type": "object",
+                                                "description": "Instance counts by region."
+                                              },
                                               "replicas": {
                                                 "additionalProperties": {
                                                   "type": "number"
                                                 },
                                                 "type": "object",
-                                                "description": "Replica counts by region."
+                                                "description": "Instance counts by region."
                                               },
                                               "resources": {
                                                 "properties": {
@@ -31378,6 +31496,9 @@
                                               "root": {
                                                 "type": "string"
                                               },
+                                              "terminationGracePeriodSeconds": {
+                                                "type": "number"
+                                              },
                                               "name": {
                                                 "type": "string"
                                               }
@@ -31385,7 +31506,6 @@
                                             "required": [
                                               "entrypoint",
                                               "name",
-                                              "replicas",
                                               "root"
                                             ],
                                             "type": "object",
@@ -32019,12 +32139,19 @@
                                               "entrypoint": {
                                                 "type": "string"
                                               },
+                                              "instances": {
+                                                "additionalProperties": {
+                                                  "type": "number"
+                                                },
+                                                "type": "object",
+                                                "description": "Instance counts by region."
+                                              },
                                               "replicas": {
                                                 "additionalProperties": {
                                                   "type": "number"
                                                 },
                                                 "type": "object",
-                                                "description": "Replica counts by region."
+                                                "description": "Instance counts by region."
                                               },
                                               "resources": {
                                                 "properties": {
@@ -32054,6 +32181,9 @@
                                               "root": {
                                                 "type": "string"
                                               },
+                                              "terminationGracePeriodSeconds": {
+                                                "type": "number"
+                                              },
                                               "name": {
                                                 "type": "string"
                                               }
@@ -32061,7 +32191,6 @@
                                             "required": [
                                               "entrypoint",
                                               "name",
-                                              "replicas",
                                               "root"
                                             ],
                                             "type": "object",
@@ -39079,12 +39208,19 @@
                                           "entrypoint": {
                                             "type": "string"
                                           },
+                                          "instances": {
+                                            "additionalProperties": {
+                                              "type": "number"
+                                            },
+                                            "type": "object",
+                                            "description": "Instance counts by region."
+                                          },
                                           "replicas": {
                                             "additionalProperties": {
                                               "type": "number"
                                             },
                                             "type": "object",
-                                            "description": "Replica counts by region."
+                                            "description": "Instance counts by region."
                                           },
                                           "resources": {
                                             "properties": {
@@ -39114,6 +39250,9 @@
                                           "root": {
                                             "type": "string"
                                           },
+                                          "terminationGracePeriodSeconds": {
+                                            "type": "number"
+                                          },
                                           "name": {
                                             "type": "string"
                                           }
@@ -39121,7 +39260,6 @@
                                         "required": [
                                           "entrypoint",
                                           "name",
-                                          "replicas",
                                           "root"
                                         ],
                                         "type": "object",
@@ -39755,12 +39893,19 @@
                                           "entrypoint": {
                                             "type": "string"
                                           },
+                                          "instances": {
+                                            "additionalProperties": {
+                                              "type": "number"
+                                            },
+                                            "type": "object",
+                                            "description": "Instance counts by region."
+                                          },
                                           "replicas": {
                                             "additionalProperties": {
                                               "type": "number"
                                             },
                                             "type": "object",
-                                            "description": "Replica counts by region."
+                                            "description": "Instance counts by region."
                                           },
                                           "resources": {
                                             "properties": {
@@ -39790,6 +39935,9 @@
                                           "root": {
                                             "type": "string"
                                           },
+                                          "terminationGracePeriodSeconds": {
+                                            "type": "number"
+                                          },
                                           "name": {
                                             "type": "string"
                                           }
@@ -39797,7 +39945,6 @@
                                         "required": [
                                           "entrypoint",
                                           "name",
-                                          "replicas",
                                           "root"
                                         ],
                                         "type": "object",
@@ -63096,6 +63243,13 @@
                     "seed": {
                       "type": "number"
                     },
+                    "seenInProduction": {
+                      "type": "boolean",
+                      "enum": [
+                        false,
+                        true
+                      ]
+                    },
                     "slug": {
                       "type": "string"
                     },
@@ -64709,6 +64863,13 @@
                     },
                     "seed": {
                       "type": "number"
+                    },
+                    "seenInProduction": {
+                      "type": "boolean",
+                      "enum": [
+                        false,
+                        true
+                      ]
                     },
                     "slug": {
                       "type": "string"
@@ -71989,6 +72150,12 @@
                                       "type": "number"
                                     },
                                     {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    },
+                                    {
                                       "type": "boolean",
                                       "enum": [
                                         false,
@@ -72584,20 +72751,30 @@
                             "claims": {
                               "type": "object",
                               "additionalProperties": {
-                                "nullable": true,
-                                "oneOf": [
+                                "anyOf": [
                                   {
-                                    "type": "string"
+                                    "nullable": true,
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      },
+                                      {
+                                        "type": "boolean"
+                                      }
+                                    ]
                                   },
                                   {
-                                    "type": "number"
-                                  },
-                                  {
-                                    "type": "boolean"
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
                                   }
                                 ]
                               },
-                              "description": "Claims to set (string, number, or boolean), shallow-merged over earlier rules and over the default claims. `null` removes a claim. Reserved claims cannot be set; `aud` and `sub` can be overridden with a string but not removed."
+                              "description": "Claims to set (string, number, boolean, or array of strings), shallow-merged over earlier rules and over the default claims. `null` removes a claim. Reserved claims cannot be set; `aud` and `sub` can be overridden with a string but not removed."
                             }
                           },
                           "additionalProperties": false
@@ -72980,20 +73157,30 @@
                             "claims": {
                               "type": "object",
                               "additionalProperties": {
-                                "nullable": true,
-                                "oneOf": [
+                                "anyOf": [
                                   {
-                                    "type": "string"
+                                    "nullable": true,
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      },
+                                      {
+                                        "type": "boolean"
+                                      }
+                                    ]
                                   },
                                   {
-                                    "type": "number"
-                                  },
-                                  {
-                                    "type": "boolean"
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
                                   }
                                 ]
                               },
-                              "description": "Claims to set (string, number, or boolean), shallow-merged over earlier rules and over the default claims. `null` removes a claim. Reserved claims cannot be set; `aud` and `sub` can be overridden with a string but not removed."
+                              "description": "Claims to set (string, number, boolean, or array of strings), shallow-merged over earlier rules and over the default claims. `null` removes a claim. Reserved claims cannot be set; `aud` and `sub` can be overridden with a string but not removed."
                             }
                           },
                           "additionalProperties": false
@@ -180706,7 +180893,7 @@
         }
       },
       "delete": {
-        "description": "Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name and the named sandbox metadata. Returns 404 if the sandbox does not exist or was deleted by a concurrent request.",
+        "description": "Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name and the named sandbox metadata. When the config item is already missing, the returned sandbox uses stored metadata and defaults; config fields may be stale.",
         "operationId": "deleteSandbox",
         "security": [
           {
@@ -226765,6 +226952,9 @@
           "404": {
             "description": "The deployment was not found"
           },
+          "409": {
+            "description": ""
+          },
           "410": {
             "description": ""
           }
@@ -227358,6 +227548,10 @@
       },
       "AiGatewayRuleList": {
         "properties": {
+          "nextCursor": {
+            "nullable": true,
+            "type": "string"
+          },
           "rules": {
             "items": {
               "$ref": "#/components/schemas/AiGatewayRule"
@@ -227366,6 +227560,7 @@
           }
         },
         "required": [
+          "nextCursor",
           "rules"
         ],
         "type": "object"
@@ -227473,6 +227668,35 @@
               "$ref": "#/components/schemas/AiGatewayBudget"
             },
             "type": "array"
+          },
+          "defaultCoveredCounts": {
+            "properties": {
+              "api-key": {
+                "type": "number"
+              },
+              "project": {
+                "type": "number"
+              },
+              "team": {
+                "type": "number"
+              },
+              "user": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "api-key",
+              "project",
+              "team",
+              "user"
+            ],
+            "type": "object",
+            "description": "Paged requests only: `source: 'default'` rows per scope type across the whole `scopeType`-filtered list, independent of the page and of `includeDefaultCovered`."
+          },
+          "nextCursor": {
+            "nullable": true,
+            "type": "string",
+            "description": "Paged requests only (`limit` or `cursor` set): pass as `cursor` to read the next page; null on the last page."
           }
         },
         "required": [
@@ -232899,6 +233123,58 @@
         "type": "object",
         "description": "The Global Config."
       },
+      "DeploymentCheckUpdatedPayload": {
+        "properties": {
+          "checkId": {
+            "type": "string"
+          },
+          "checkName": {
+            "type": "string"
+          },
+          "next": {
+            "properties": {
+              "targets": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "targets"
+            ],
+            "type": "object"
+          },
+          "previous": {
+            "properties": {
+              "targets": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "targets"
+            ],
+            "type": "object"
+          },
+          "projectId": {
+            "type": "string"
+          },
+          "projectName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "checkId",
+          "checkName",
+          "projectId",
+          "projectName"
+        ],
+        "type": "object",
+        "description": "The payload of the event, if requested."
+      },
       "UserEvent": {
         "properties": {
           "categories": {
@@ -237221,6 +237497,9 @@
                 ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
+              },
+              {
+                "$ref": "#/components/schemas/DeploymentCheckUpdatedPayload"
               },
               {
                 "properties": {
@@ -258472,6 +258751,13 @@
           },
           "seed": {
             "type": "number"
+          },
+          "seenInProduction": {
+            "type": "boolean",
+            "enum": [
+              false,
+              true
+            ]
           },
           "slug": {
             "type": "string"
