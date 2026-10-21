@@ -5175,6 +5175,33 @@
                                       "properties": {
                                         "fromPlan": {
                                           "properties": {
+                                            "additionalSubscriptions": {
+                                              "items": {
+                                                "properties": {
+                                                  "currentCycleEndDate": {
+                                                    "type": "string",
+                                                    "description": "The end of the additional source subscription billing cycle"
+                                                  },
+                                                  "orbSubscriptionId": {
+                                                    "type": "string",
+                                                    "description": "The additional source Orb subscription ID"
+                                                  },
+                                                  "planId": {
+                                                    "type": "string",
+                                                    "description": "The ID of the plan assigned to the additional source subscription"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "currentCycleEndDate",
+                                                  "orbSubscriptionId",
+                                                  "planId"
+                                                ],
+                                                "type": "object",
+                                                "description": "Additional source subscriptions replaced by this purchase"
+                                              },
+                                              "type": "array",
+                                              "description": "Additional source subscriptions replaced by this purchase"
+                                            },
                                             "currentCycleEndDate": {
                                               "type": "string",
                                               "description": "The end of the current plan billing cycle"
@@ -5186,6 +5213,44 @@
                                             "planId": {
                                               "type": "string",
                                               "description": "The ID of the plan currently assigned"
+                                            },
+                                            "planItemPrices": {
+                                              "items": {
+                                                "properties": {
+                                                  "planItemId": {
+                                                    "type": "string",
+                                                    "description": "The ID of the plan item to set the price for"
+                                                  },
+                                                  "price": {
+                                                    "properties": {
+                                                      "model": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "unit"
+                                                        ]
+                                                      },
+                                                      "unitAmount": {
+                                                        "type": "string",
+                                                        "description": "The non-negative per-unit USD amount, with at most two decimal places"
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "model",
+                                                      "unitAmount"
+                                                    ],
+                                                    "type": "object",
+                                                    "description": "The absolute price that replaces the plan item price, after any rate variant"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "planItemId",
+                                                  "price"
+                                                ],
+                                                "type": "object",
+                                                "description": "The current plan item price overrides"
+                                              },
+                                              "type": "array",
+                                              "description": "The current plan item price overrides"
                                             },
                                             "planItemQuantities": {
                                               "items": {
@@ -5232,6 +5297,44 @@
                                         "planId": {
                                           "type": "string",
                                           "description": "The ID of the plan to subscribe to"
+                                        },
+                                        "planItemPrices": {
+                                          "items": {
+                                            "properties": {
+                                              "planItemId": {
+                                                "type": "string",
+                                                "description": "The ID of the plan item to set the price for"
+                                              },
+                                              "price": {
+                                                "properties": {
+                                                  "model": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "unit"
+                                                    ]
+                                                  },
+                                                  "unitAmount": {
+                                                    "type": "string",
+                                                    "description": "The non-negative per-unit USD amount, with at most two decimal places"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "model",
+                                                  "unitAmount"
+                                                ],
+                                                "type": "object",
+                                                "description": "The absolute price that replaces the plan item price, after any rate variant"
+                                              }
+                                            },
+                                            "required": [
+                                              "planItemId",
+                                              "price"
+                                            ],
+                                            "type": "object",
+                                            "description": "The plan item prices to set for the subscription, independent of quantities"
+                                          },
+                                          "type": "array",
+                                          "description": "The plan item prices to set for the subscription, independent of quantities"
                                         },
                                         "planItemQuantities": {
                                           "items": {
@@ -9529,24 +9632,6 @@
                                           },
                                           {
                                             "properties": {
-                                              "job": {
-                                                "type": "string"
-                                              },
-                                              "kind": {
-                                                "type": "string",
-                                                "enum": [
-                                                  "job"
-                                                ]
-                                              }
-                                            },
-                                            "required": [
-                                              "job",
-                                              "kind"
-                                            ],
-                                            "type": "object"
-                                          },
-                                          {
-                                            "properties": {
                                               "failIfNoMatch": {
                                                 "type": "boolean",
                                                 "enum": [
@@ -10201,24 +10286,6 @@
                                           },
                                           {
                                             "properties": {
-                                              "job": {
-                                                "type": "string"
-                                              },
-                                              "kind": {
-                                                "type": "string",
-                                                "enum": [
-                                                  "job"
-                                                ]
-                                              }
-                                            },
-                                            "required": [
-                                              "job",
-                                              "kind"
-                                            ],
-                                            "type": "object"
-                                          },
-                                          {
-                                            "properties": {
                                               "failIfNoMatch": {
                                                 "type": "boolean",
                                                 "enum": [
@@ -10851,24 +10918,6 @@
                                         }
                                       },
                                       "required": [
-                                        "kind"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    {
-                                      "properties": {
-                                        "job": {
-                                          "type": "string"
-                                        },
-                                        "kind": {
-                                          "type": "string",
-                                          "enum": [
-                                            "job"
-                                          ]
-                                        }
-                                      },
-                                      "required": [
-                                        "job",
                                         "kind"
                                       ],
                                       "type": "object"
@@ -11524,24 +11573,6 @@
                                     },
                                     {
                                       "properties": {
-                                        "job": {
-                                          "type": "string"
-                                        },
-                                        "kind": {
-                                          "type": "string",
-                                          "enum": [
-                                            "job"
-                                          ]
-                                        }
-                                      },
-                                      "required": [
-                                        "job",
-                                        "kind"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    {
-                                      "properties": {
                                         "failIfNoMatch": {
                                           "type": "boolean",
                                           "enum": [
@@ -12177,24 +12208,6 @@
                                         }
                                       },
                                       "required": [
-                                        "kind"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    {
-                                      "properties": {
-                                        "job": {
-                                          "type": "string"
-                                        },
-                                        "kind": {
-                                          "type": "string",
-                                          "enum": [
-                                            "job"
-                                          ]
-                                        }
-                                      },
-                                      "required": [
-                                        "job",
                                         "kind"
                                       ],
                                       "type": "object"
@@ -17250,7 +17263,7 @@
     },
     "/v1/projects/{idOrName}/daemons": {
       "get": {
-        "description": "Lists project daemons.",
+        "description": "List the daemons of a project.",
         "operationId": "getProjectBoxes",
         "security": [
           {
@@ -17697,7 +17710,7 @@
     },
     "/v1/projects/{idOrName}/daemons/{daemonName}/instances": {
       "put": {
-        "description": "Override an existing daemon's instance counts by region. Each region in the map replaces the configured count for that region. Regions not in the map keep their configured count. An empty map removes the overrides. The daemon configuration is not changed. Missing or deleted daemons return 404. Repeating the same overrides succeeds without a storage write or reconciliation event.",
+        "description": "Override the instance counts of a daemon by region, without changing its configuration. An empty map removes the overrides.",
         "operationId": "putProjectDaemonInstances",
         "security": [
           {
@@ -17823,7 +17836,7 @@
     },
     "/v1/projects/{idOrName}/daemons/{daemonName}/instances/{instanceId}/restart": {
       "post": {
-        "description": "Force restarts the user container of one running daemon instance. The instance's controller stops the current user container and starts a new one from the same configuration, so in-flight requests are interrupted and any state that only lives inside the container is lost. The instance keeps its ID and region. The response returns as soon as the controller accepts the restart, before the new container is running. Only production instances can be restarted. Accepts a Vercel token that can update the project, or a production project OIDC token issued for the same project. No request body or Content-Type header is required.",
+        "description": "Force restart a running production daemon instance. The new container starts asynchronously after the restart is accepted.",
         "operationId": "restartProjectDaemonInstance",
         "security": [
           {
@@ -17904,13 +17917,13 @@
           },
           {
             "name": "instanceId",
-            "description": "The ID of the daemon instance whose user container is restarted, for example `dmni_01k7d0q5w3x8y9z0a1b2c3d4e5`",
+            "description": "The ID of the daemon instance to restart",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "pattern": "^dmni_[0-9a-hjkmnp-tv-z]{26}$",
-              "description": "The ID of the daemon instance whose user container is restarted, for example `dmni_01k7d0q5w3x8y9z0a1b2c3d4e5`"
+              "description": "The ID of the daemon instance to restart"
             }
           },
           {
@@ -20684,6 +20697,10 @@
                               },
                               "includeFiles": {
                                 "type": "string"
+                              },
+                              "installCommand": {
+                                "type": "string",
+                                "description": "Overrides how dependencies are installed for this function. An empty string skips the install. Only honored by `@vercel/node`."
                               },
                               "maxConcurrency": {
                                 "type": "number"
@@ -23600,6 +23617,10 @@
                                                 "includeFiles": {
                                                   "type": "string"
                                                 },
+                                                "installCommand": {
+                                                  "type": "string",
+                                                  "description": "Overrides how dependencies are installed for this function. An empty string skips the install. Only honored by `@vercel/node`."
+                                                },
                                                 "maxConcurrency": {
                                                   "type": "number"
                                                 },
@@ -23776,6 +23797,14 @@
                                                   false,
                                                   true
                                                 ]
+                                              },
+                                              "vercelFlags": {
+                                                "properties": {
+                                                  "enabledAt": {
+                                                    "type": "number"
+                                                  }
+                                                },
+                                                "type": "object"
                                               }
                                             },
                                             "type": "object"
@@ -24285,6 +24314,10 @@
                                                 "includeFiles": {
                                                   "type": "string"
                                                 },
+                                                "installCommand": {
+                                                  "type": "string",
+                                                  "description": "Overrides how dependencies are installed for this function. An empty string skips the install. Only honored by `@vercel/node`."
+                                                },
                                                 "maxConcurrency": {
                                                   "type": "number"
                                                 },
@@ -24461,6 +24494,14 @@
                                                   false,
                                                   true
                                                 ]
+                                              },
+                                              "vercelFlags": {
+                                                "properties": {
+                                                  "enabledAt": {
+                                                    "type": "number"
+                                                  }
+                                                },
+                                                "type": "object"
                                               }
                                             },
                                             "type": "object"
@@ -24698,6 +24739,10 @@
                                         },
                                         "includeFiles": {
                                           "type": "string"
+                                        },
+                                        "installCommand": {
+                                          "type": "string",
+                                          "description": "Overrides how dependencies are installed for this function. An empty string skips the install. Only honored by `@vercel/node`."
                                         },
                                         "maxConcurrency": {
                                           "type": "number"
@@ -29458,6 +29503,10 @@
                               "includeFiles": {
                                 "type": "string"
                               },
+                              "installCommand": {
+                                "type": "string",
+                                "description": "Overrides how dependencies are installed for this function. An empty string skips the install. Only honored by `@vercel/node`."
+                              },
                               "maxConcurrency": {
                                 "type": "number"
                               },
@@ -32373,6 +32422,10 @@
                                                 "includeFiles": {
                                                   "type": "string"
                                                 },
+                                                "installCommand": {
+                                                  "type": "string",
+                                                  "description": "Overrides how dependencies are installed for this function. An empty string skips the install. Only honored by `@vercel/node`."
+                                                },
                                                 "maxConcurrency": {
                                                   "type": "number"
                                                 },
@@ -32549,6 +32602,14 @@
                                                   false,
                                                   true
                                                 ]
+                                              },
+                                              "vercelFlags": {
+                                                "properties": {
+                                                  "enabledAt": {
+                                                    "type": "number"
+                                                  }
+                                                },
+                                                "type": "object"
                                               }
                                             },
                                             "type": "object"
@@ -33058,6 +33119,10 @@
                                                 "includeFiles": {
                                                   "type": "string"
                                                 },
+                                                "installCommand": {
+                                                  "type": "string",
+                                                  "description": "Overrides how dependencies are installed for this function. An empty string skips the install. Only honored by `@vercel/node`."
+                                                },
                                                 "maxConcurrency": {
                                                   "type": "number"
                                                 },
@@ -33234,6 +33299,14 @@
                                                   false,
                                                   true
                                                 ]
+                                              },
+                                              "vercelFlags": {
+                                                "properties": {
+                                                  "enabledAt": {
+                                                    "type": "number"
+                                                  }
+                                                },
+                                                "type": "object"
                                               }
                                             },
                                             "type": "object"
@@ -33471,6 +33544,10 @@
                                         },
                                         "includeFiles": {
                                           "type": "string"
+                                        },
+                                        "installCommand": {
+                                          "type": "string",
+                                          "description": "Overrides how dependencies are installed for this function. An empty string skips the install. Only honored by `@vercel/node`."
                                         },
                                         "maxConcurrency": {
                                           "type": "number"
@@ -37215,6 +37292,10 @@
                           "includeFiles": {
                             "type": "string"
                           },
+                          "installCommand": {
+                            "type": "string",
+                            "description": "Overrides how dependencies are installed for this function. An empty string skips the install. Only honored by `@vercel/node`."
+                          },
                           "maxConcurrency": {
                             "type": "number"
                           },
@@ -40130,6 +40211,10 @@
                                             "includeFiles": {
                                               "type": "string"
                                             },
+                                            "installCommand": {
+                                              "type": "string",
+                                              "description": "Overrides how dependencies are installed for this function. An empty string skips the install. Only honored by `@vercel/node`."
+                                            },
                                             "maxConcurrency": {
                                               "type": "number"
                                             },
@@ -40306,6 +40391,14 @@
                                               false,
                                               true
                                             ]
+                                          },
+                                          "vercelFlags": {
+                                            "properties": {
+                                              "enabledAt": {
+                                                "type": "number"
+                                              }
+                                            },
+                                            "type": "object"
                                           }
                                         },
                                         "type": "object"
@@ -40815,6 +40908,10 @@
                                             "includeFiles": {
                                               "type": "string"
                                             },
+                                            "installCommand": {
+                                              "type": "string",
+                                              "description": "Overrides how dependencies are installed for this function. An empty string skips the install. Only honored by `@vercel/node`."
+                                            },
                                             "maxConcurrency": {
                                               "type": "number"
                                             },
@@ -40991,6 +41088,14 @@
                                               false,
                                               true
                                             ]
+                                          },
+                                          "vercelFlags": {
+                                            "properties": {
+                                              "enabledAt": {
+                                                "type": "number"
+                                              }
+                                            },
+                                            "type": "object"
                                           }
                                         },
                                         "type": "object"
@@ -41228,6 +41333,10 @@
                                     },
                                     "includeFiles": {
                                       "type": "string"
+                                    },
+                                    "installCommand": {
+                                      "type": "string",
+                                      "description": "Overrides how dependencies are installed for this function. An empty string skips the install. Only honored by `@vercel/node`."
                                     },
                                     "maxConcurrency": {
                                       "type": "number"
@@ -89380,7 +89489,7 @@
                                 "type": "array",
                                 "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                               },
-                              "messageboardSpace": {
+                              "messageboardChannel": {
                                 "items": {
                                   "$ref": "#/components/schemas/ACLAction"
                                 },
@@ -93645,7 +93754,7 @@
     },
     "/v1/organizations/{organizationId}": {
       "get": {
-        "description": "Get a single organization by ID. This endpoint is in private beta. Contact your Vercel account team for access.",
+        "description": "Get a single organization by ID or slug. This endpoint is in private beta. Contact your Vercel account team for access.",
         "operationId": "getOrganization",
         "security": [
           {
@@ -93686,12 +93795,12 @@
         "parameters": [
           {
             "name": "organizationId",
-            "description": "The ID of the organization to retrieve.",
+            "description": "The ID or slug of the organization to retrieve.",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "description": "The ID of the organization to retrieve."
+              "description": "The ID or slug of the organization to retrieve."
             }
           },
           {
@@ -113613,7 +113722,7 @@
                                     "type": "array",
                                     "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                                   },
-                                  "messageboardSpace": {
+                                  "messageboardChannel": {
                                     "items": {
                                       "$ref": "#/components/schemas/ACLAction"
                                     },
@@ -121819,7 +121928,7 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
-                        "messageboardSpace": {
+                        "messageboardChannel": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -125183,10 +125292,10 @@
                     "properties": {
                       "buildMachineType": {
                         "enum": [
+                          "standard",
                           "basic",
                           "enhanced",
                           "turbo",
-                          "standard",
                           "elastic"
                         ]
                       },
@@ -130311,7 +130420,7 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
-                        "messageboardSpace": {
+                        "messageboardChannel": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -138071,7 +138180,7 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
-                        "messageboardSpace": {
+                        "messageboardChannel": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -141256,10 +141365,10 @@
                       "buildMachineType": {
                         "enum": [
                           null,
+                          "standard",
                           "basic",
                           "enhanced",
                           "turbo",
-                          "standard",
                           "elastic"
                         ]
                       },
@@ -147154,7 +147263,7 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
-                        "messageboardSpace": {
+                        "messageboardChannel": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -154927,7 +155036,7 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
-                        "messageboardSpace": {
+                        "messageboardChannel": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -175841,7 +175950,7 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
-                        "messageboardSpace": {
+                        "messageboardChannel": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -235942,17 +236051,17 @@
                   "boardId": {
                     "type": "string"
                   },
-                  "operationId": {
+                  "channelId": {
                     "type": "string"
                   },
-                  "spaceId": {
+                  "operationId": {
                     "type": "string"
                   }
                 },
                 "required": [
                   "boardId",
-                  "operationId",
-                  "spaceId"
+                  "channelId",
+                  "operationId"
                 ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
@@ -235960,6 +236069,9 @@
               {
                 "properties": {
                   "boardId": {
+                    "type": "string"
+                  },
+                  "channelId": {
                     "type": "string"
                   },
                   "fields": {
@@ -235970,16 +236082,13 @@
                   },
                   "operationId": {
                     "type": "string"
-                  },
-                  "spaceId": {
-                    "type": "string"
                   }
                 },
                 "required": [
                   "boardId",
+                  "channelId",
                   "fields",
-                  "operationId",
-                  "spaceId"
+                  "operationId"
                 ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
@@ -253196,6 +253305,7 @@
                             "type": "string",
                             "enum": [
                               "organization",
+                              "product",
                               "project",
                               "team"
                             ],
@@ -253203,7 +253313,7 @@
                           },
                           "scopeId": {
                             "type": "string",
-                            "description": "Project id when `scope` is `project`."
+                            "description": "Project id when `scope` is `project`; product id when `scope` is `product`."
                           },
                           "teamId": {
                             "type": "string",
@@ -253327,6 +253437,7 @@
                         "type": "string",
                         "enum": [
                           "organization",
+                          "product",
                           "project",
                           "team"
                         ],
@@ -253334,7 +253445,7 @@
                       },
                       "scopeId": {
                         "type": "string",
-                        "description": "Project id when `scope` is `project`."
+                        "description": "Project id when `scope` is `project`; product id when `scope` is `product`."
                       },
                       "teamId": {
                         "type": "string",
@@ -253455,6 +253566,7 @@
                         "type": "string",
                         "enum": [
                           "organization",
+                          "product",
                           "project",
                           "team"
                         ],
@@ -253462,7 +253574,7 @@
                       },
                       "scopeId": {
                         "type": "string",
-                        "description": "Project id when `scope` is `project`."
+                        "description": "Project id when `scope` is `project`; product id when `scope` is `product`."
                       },
                       "teamId": {
                         "type": "string",
@@ -253580,6 +253692,7 @@
                         "type": "string",
                         "enum": [
                           "organization",
+                          "product",
                           "project",
                           "team"
                         ],
@@ -253587,7 +253700,7 @@
                       },
                       "scopeId": {
                         "type": "string",
-                        "description": "Project id when `scope` is `project`."
+                        "description": "Project id when `scope` is `project`; product id when `scope` is `product`."
                       },
                       "teamId": {
                         "type": "string",
@@ -253689,6 +253802,7 @@
                         "type": "string",
                         "enum": [
                           "organization",
+                          "product",
                           "project",
                           "team"
                         ],
@@ -253696,7 +253810,7 @@
                       },
                       "scopeId": {
                         "type": "string",
-                        "description": "Project id when `scope` is `project`."
+                        "description": "Project id when `scope` is `project`; product id when `scope` is `product`."
                       },
                       "teamId": {
                         "type": "string",
@@ -257130,6 +257244,68 @@
               },
               {
                 "properties": {
+                  "next": {
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ]
+                      },
+                      "issuerUrls": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "enabled",
+                      "issuerUrls"
+                    ],
+                    "type": "object"
+                  },
+                  "previous": {
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ]
+                      },
+                      "issuerUrls": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "enabled",
+                      "issuerUrls"
+                    ],
+                    "type": "object"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "enum": [
+                      "organization",
+                      "team"
+                    ]
+                  }
+                },
+                "required": [
+                  "next",
+                  "previous",
+                  "scope"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "app": {
                     "properties": {
                       "clientAuthenticationUsed": {
@@ -258643,13 +258819,13 @@
               "marketplace-billing-collection-updated",
               "marketplace-flex-commit-opt-in",
               "marketplace-integration-allowlist-updated",
+              "messageboard-channel-created",
+              "messageboard-channel-updated",
               "messageboard-created",
+              "messageboard-private-channel-created",
+              "messageboard-private-channel-updated",
               "messageboard-private-created",
-              "messageboard-private-space-created",
-              "messageboard-private-space-updated",
               "messageboard-schema-registered",
-              "messageboard-space-created",
-              "messageboard-space-updated",
               "messageboard-visibility-updated",
               "microfrontend-group-added",
               "microfrontend-group-deleted",
@@ -259045,7 +259221,8 @@
               "webhook-created",
               "webhook-deleted",
               "webhook-updated",
-              "workflow-deployment-key-accessed"
+              "workflow-deployment-key-accessed",
+              "xaa-updated"
             ],
             "description": "The type of the event.",
             "example": "login"
@@ -259591,13 +259768,13 @@
               "marketplace-billing-collection-updated",
               "marketplace-flex-commit-opt-in",
               "marketplace-integration-allowlist-updated",
+              "messageboard-channel-created",
+              "messageboard-channel-updated",
               "messageboard-created",
+              "messageboard-private-channel-created",
+              "messageboard-private-channel-updated",
               "messageboard-private-created",
-              "messageboard-private-space-created",
-              "messageboard-private-space-updated",
               "messageboard-schema-registered",
-              "messageboard-space-created",
-              "messageboard-space-updated",
               "messageboard-visibility-updated",
               "microfrontend-group-added",
               "microfrontend-group-deleted",
@@ -259993,7 +260170,8 @@
               "webhook-created",
               "webhook-deleted",
               "webhook-updated",
-              "workflow-deployment-key-accessed"
+              "workflow-deployment-key-accessed",
+              "xaa-updated"
             ],
             "description": "The name of the event type.",
             "example": "deployment-created"
@@ -260327,13 +260505,13 @@
                 "marketplace-billing-collection-updated",
                 "marketplace-flex-commit-opt-in",
                 "marketplace-integration-allowlist-updated",
+                "messageboard-channel-created",
+                "messageboard-channel-updated",
                 "messageboard-created",
+                "messageboard-private-channel-created",
+                "messageboard-private-channel-updated",
                 "messageboard-private-created",
-                "messageboard-private-space-created",
-                "messageboard-private-space-updated",
                 "messageboard-schema-registered",
-                "messageboard-space-created",
-                "messageboard-space-updated",
                 "messageboard-visibility-updated",
                 "microfrontend-group-added",
                 "microfrontend-group-deleted",
@@ -260729,7 +260907,8 @@
                 "webhook-created",
                 "webhook-deleted",
                 "webhook-updated",
-                "workflow-deployment-key-accessed"
+                "workflow-deployment-key-accessed",
+                "xaa-updated"
               ],
               "description": "Event type names that supersede this deprecated event type."
             },
@@ -262315,9 +262494,6 @@
           "organizationId": {
             "type": "string"
           },
-          "ownerId": {
-            "type": "string"
-          },
           "slug": {
             "type": "string"
           },
@@ -262339,7 +262515,6 @@
           "avatar",
           "createdAt",
           "organizationId",
-          "ownerId",
           "slug",
           "teamCount",
           "teamId",
