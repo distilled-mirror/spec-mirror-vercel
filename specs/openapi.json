@@ -212602,7 +212602,7 @@
     },
     "/v1/teams/{teamId}": {
       "delete": {
-        "description": "Delete a team under your account. You need to send a `DELETE` request with the desired team `id`. An optional array of reasons for deletion may also be sent. Enterprise teams can only be deleted in test billing mode and when not linked to an organization.",
+        "description": "Delete a team under your account. You need to send a `DELETE` request with the desired team `id`. An optional array of reasons for deletion may also be sent. Enterprise teams can only be deleted in test billing mode and when not linked to an organization. Enterprise children of an organization cannot be deleted.",
         "operationId": "deleteTeam",
         "security": [
           {
@@ -264706,18 +264706,18 @@
             "description": "The time when the named sandbox was last updated, in milliseconds since the epoch.",
             "example": 1750344501629
           },
-          "v0": {
-            "type": "boolean",
-            "enum": [
-              false,
-              true
-            ],
-            "description": "Whether this sandbox is managed by v0 on the customer's behalf."
-          },
           "vcpus": {
             "type": "number",
             "description": "Number of virtual CPUs allocated.",
             "example": 2
+          },
+          "workloadType": {
+            "type": "string",
+            "enum": [
+              "sandbox",
+              "v0"
+            ],
+            "description": "The workload type of this sandbox."
           }
         },
         "required": [
@@ -264986,18 +264986,18 @@
             "description": "The last time the sandbox was updated, in milliseconds since the epoch.",
             "example": 1750344501629
           },
-          "v0": {
-            "type": "boolean",
-            "enum": [
-              false,
-              true
-            ],
-            "description": "Whether this sandbox is managed by v0 on the customer's behalf."
-          },
           "vcpus": {
             "type": "number",
             "description": "Number of vCPUs allocated to this sandbox.",
             "example": 2
+          },
+          "workloadType": {
+            "type": "string",
+            "enum": [
+              "sandbox",
+              "v0"
+            ],
+            "description": "The workload type of this sandbox."
           }
         },
         "required": [
@@ -265073,13 +265073,13 @@
             "description": "The last time the drive was updated, in milliseconds since the epoch.",
             "example": 1750344501629
           },
-          "v0": {
-            "type": "boolean",
+          "workloadType": {
+            "type": "string",
             "enum": [
-              false,
-              true
+              "sandbox",
+              "v0"
             ],
-            "description": "Whether this drive is managed by v0 on the customer's behalf."
+            "description": "The workload type of this drive."
           }
         },
         "required": [
@@ -265179,13 +265179,13 @@
             "description": "The last time the snapshot was updated, in milliseconds since the epoch.",
             "example": 1750344501629
           },
-          "v0": {
-            "type": "boolean",
+          "workloadType": {
+            "type": "string",
             "enum": [
-              false,
-              true
+              "sandbox",
+              "v0"
             ],
-            "description": "Whether this snapshot is managed by v0 on the customer's behalf."
+            "description": "The workload type of this snapshot."
           }
         },
         "required": [
