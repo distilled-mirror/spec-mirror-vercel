@@ -16696,16 +16696,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "An internal error occurred.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConnectError"
-                }
-              }
-            }
           }
         },
         "parameters": [
@@ -22607,6 +22597,15 @@
                                 "id"
                               ],
                               "type": "object"
+                            },
+                            "vercelFlags": {
+                              "properties": {
+                                "enabledAt": {
+                                  "type": "number"
+                                }
+                              },
+                              "type": "object",
+                              "description": "Vercel Flags activation metadata copied from the project at deployment creation."
                             },
                             "webAnalytics": {
                               "properties": {
@@ -31552,6 +31551,15 @@
                               ],
                               "type": "object"
                             },
+                            "vercelFlags": {
+                              "properties": {
+                                "enabledAt": {
+                                  "type": "number"
+                                }
+                              },
+                              "type": "object",
+                              "description": "Vercel Flags activation metadata copied from the project at deployment creation."
+                            },
                             "webAnalytics": {
                               "properties": {
                                 "canceledAt": {
@@ -39476,6 +39484,15 @@
                             "id"
                           ],
                           "type": "object"
+                        },
+                        "vercelFlags": {
+                          "properties": {
+                            "enabledAt": {
+                              "type": "number"
+                            }
+                          },
+                          "type": "object",
+                          "description": "Vercel Flags activation metadata copied from the project at deployment creation."
                         },
                         "webAnalytics": {
                           "properties": {
@@ -82266,7 +82283,7 @@
     },
     "/v1/kms/issuers": {
       "get": {
-        "description": "Retrieve the list of KMS issuers that belong to the authenticated team. The results are paginated.",
+        "description": "Retrieve the paginated KMS issuers that belong to the authenticated team or organization (`orgId`).",
         "operationId": "listKmsIssuers",
         "security": [
           {
@@ -82611,7 +82628,7 @@
         ]
       },
       "post": {
-        "description": "Create a new KMS issuer for the authenticated team. An issuer owns the asymmetric signing keys that are used to sign tokens and messages.",
+        "description": "Create a new KMS issuer for the authenticated team, or for the team or organization identified by a Connect policy token. An issuer owns the asymmetric signing keys used to sign tokens and messages.",
         "operationId": "createKmsIssuer",
         "security": [
           {
@@ -83759,7 +83776,7 @@
     },
     "/v1/kms/issuers/{issuerId}": {
       "get": {
-        "description": "Retrieve a single KMS issuer by its ID. Accepts either a team bearer token (existing path) or an OIDC token authorized by one of the issuer's policies (e.g. a connex-grant token). The OIDC path returns the issuer without policies, since a policy token only proves signing access, not management access.",
+        "description": "Retrieve a single KMS issuer by its ID. Accepts a team or organization bearer token, or an OIDC token authorized by one of the issuer's policies (e.g. a connex-grant token). The OIDC path returns the issuer without policies, since a policy token only proves signing access, not management access.",
         "operationId": "getKmsIssuer",
         "security": [
           {
@@ -86918,30 +86935,95 @@
                                 ]
                               },
                               "elasticBuildMachine": {
-                                "properties": {
-                                  "cores": {
-                                    "type": "number"
-                                  },
-                                  "label": {
-                                    "type": "string",
-                                    "enum": [
-                                      "enhanced",
-                                      "standard",
-                                      "turbo"
+                                "oneOf": [
+                                  {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number",
+                                        "enum": [
+                                          4
+                                        ]
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "standard"
+                                        ]
+                                      },
+                                      "memory": {
+                                        "type": "number",
+                                        "enum": [
+                                          8192
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
                                     ],
-                                    "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                   },
-                                  "memory": {
-                                    "type": "number"
+                                  {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number",
+                                        "enum": [
+                                          8
+                                        ]
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "enhanced"
+                                        ]
+                                      },
+                                      "memory": {
+                                        "type": "number",
+                                        "enum": [
+                                          16384
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
+                                    ],
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                  },
+                                  {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number",
+                                        "enum": [
+                                          30
+                                        ]
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "turbo"
+                                        ]
+                                      },
+                                      "memory": {
+                                        "type": "number",
+                                        "enum": [
+                                          61440
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
+                                    ],
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                   }
-                                },
-                                "required": [
-                                  "cores",
-                                  "label",
-                                  "memory"
-                                ],
-                                "type": "object",
-                                "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                ]
                               }
                             },
                             "type": "object",
@@ -90214,6 +90296,13 @@
                                 "type": "array",
                                 "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                               },
+                              "emaSetup": {
+                                "items": {
+                                  "$ref": "#/components/schemas/ACLAction"
+                                },
+                                "type": "array",
+                                "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                              },
                               "endpointVerification": {
                                 "items": {
                                   "$ref": "#/components/schemas/ACLAction"
@@ -91845,30 +91934,95 @@
                                 ]
                               },
                               "elasticBuildMachine": {
-                                "properties": {
-                                  "cores": {
-                                    "type": "number"
-                                  },
-                                  "label": {
-                                    "type": "string",
-                                    "enum": [
-                                      "enhanced",
-                                      "standard",
-                                      "turbo"
+                                "oneOf": [
+                                  {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number",
+                                        "enum": [
+                                          4
+                                        ]
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "standard"
+                                        ]
+                                      },
+                                      "memory": {
+                                        "type": "number",
+                                        "enum": [
+                                          8192
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
                                     ],
-                                    "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                   },
-                                  "memory": {
-                                    "type": "number"
+                                  {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number",
+                                        "enum": [
+                                          8
+                                        ]
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "enhanced"
+                                        ]
+                                      },
+                                      "memory": {
+                                        "type": "number",
+                                        "enum": [
+                                          16384
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
+                                    ],
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                  },
+                                  {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number",
+                                        "enum": [
+                                          30
+                                        ]
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "turbo"
+                                        ]
+                                      },
+                                      "memory": {
+                                        "type": "number",
+                                        "enum": [
+                                          61440
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
+                                    ],
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                   }
-                                },
-                                "required": [
-                                  "cores",
-                                  "label",
-                                  "memory"
-                                ],
-                                "type": "object",
-                                "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                ]
                               }
                             },
                             "type": "object",
@@ -93438,6 +93592,15 @@
                               false,
                               true
                             ]
+                          },
+                          "vercelFlags": {
+                            "properties": {
+                              "enabledAt": {
+                                "type": "number",
+                                "description": "When Flags were enabled for the project, taken from the Flags settings row's `createdAt`. Recorded by `@api/api-feature-flags` on flags sync."
+                              }
+                            },
+                            "type": "object"
                           },
                           "webAnalytics": {
                             "properties": {
@@ -100643,6 +100806,13 @@
                           },
                           "type": "array"
                         },
+                        "caseSensitive": {
+                          "type": "boolean",
+                          "enum": [
+                            false,
+                            true
+                          ]
+                        },
                         "conditions": {
                           "items": {
                             "properties": {
@@ -100814,6 +100984,9 @@
                             "type": "string"
                           }
                         }
+                      },
+                      "caseSensitive": {
+                        "type": "boolean"
                       },
                       "conditions": {
                         "type": "array",
@@ -103919,30 +104092,95 @@
                                 ]
                               },
                               "elasticBuildMachine": {
-                                "properties": {
-                                  "cores": {
-                                    "type": "number"
-                                  },
-                                  "label": {
-                                    "type": "string",
-                                    "enum": [
-                                      "enhanced",
-                                      "standard",
-                                      "turbo"
+                                "oneOf": [
+                                  {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number",
+                                        "enum": [
+                                          4
+                                        ]
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "standard"
+                                        ]
+                                      },
+                                      "memory": {
+                                        "type": "number",
+                                        "enum": [
+                                          8192
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
                                     ],
-                                    "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                   },
-                                  "memory": {
-                                    "type": "number"
+                                  {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number",
+                                        "enum": [
+                                          8
+                                        ]
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "enhanced"
+                                        ]
+                                      },
+                                      "memory": {
+                                        "type": "number",
+                                        "enum": [
+                                          16384
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
+                                    ],
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                  },
+                                  {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number",
+                                        "enum": [
+                                          30
+                                        ]
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "turbo"
+                                        ]
+                                      },
+                                      "memory": {
+                                        "type": "number",
+                                        "enum": [
+                                          61440
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
+                                    ],
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                   }
-                                },
-                                "required": [
-                                  "cores",
-                                  "label",
-                                  "memory"
-                                ],
-                                "type": "object",
-                                "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                ]
                               }
                             },
                             "type": "object",
@@ -108352,30 +108590,95 @@
                                     ]
                                   },
                                   "elasticBuildMachine": {
-                                    "properties": {
-                                      "cores": {
-                                        "type": "number"
-                                      },
-                                      "label": {
-                                        "type": "string",
-                                        "enum": [
-                                          "enhanced",
-                                          "standard",
-                                          "turbo"
+                                    "oneOf": [
+                                      {
+                                        "properties": {
+                                          "cores": {
+                                            "type": "number",
+                                            "enum": [
+                                              4
+                                            ]
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "enum": [
+                                              "standard"
+                                            ]
+                                          },
+                                          "memory": {
+                                            "type": "number",
+                                            "enum": [
+                                              8192
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "cores",
+                                          "label",
+                                          "memory"
                                         ],
-                                        "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                                        "type": "object",
+                                        "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                       },
-                                      "memory": {
-                                        "type": "number"
+                                      {
+                                        "properties": {
+                                          "cores": {
+                                            "type": "number",
+                                            "enum": [
+                                              8
+                                            ]
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "enum": [
+                                              "enhanced"
+                                            ]
+                                          },
+                                          "memory": {
+                                            "type": "number",
+                                            "enum": [
+                                              16384
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "cores",
+                                          "label",
+                                          "memory"
+                                        ],
+                                        "type": "object",
+                                        "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                      },
+                                      {
+                                        "properties": {
+                                          "cores": {
+                                            "type": "number",
+                                            "enum": [
+                                              30
+                                            ]
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "enum": [
+                                              "turbo"
+                                            ]
+                                          },
+                                          "memory": {
+                                            "type": "number",
+                                            "enum": [
+                                              61440
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "cores",
+                                          "label",
+                                          "memory"
+                                        ],
+                                        "type": "object",
+                                        "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                       }
-                                    },
-                                    "required": [
-                                      "cores",
-                                      "label",
-                                      "memory"
-                                    ],
-                                    "type": "object",
-                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                    ]
                                   }
                                 },
                                 "type": "object",
@@ -111253,30 +111556,95 @@
                                     ]
                                   },
                                   "elasticBuildMachine": {
-                                    "properties": {
-                                      "cores": {
-                                        "type": "number"
-                                      },
-                                      "label": {
-                                        "type": "string",
-                                        "enum": [
-                                          "enhanced",
-                                          "standard",
-                                          "turbo"
+                                    "oneOf": [
+                                      {
+                                        "properties": {
+                                          "cores": {
+                                            "type": "number",
+                                            "enum": [
+                                              4
+                                            ]
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "enum": [
+                                              "standard"
+                                            ]
+                                          },
+                                          "memory": {
+                                            "type": "number",
+                                            "enum": [
+                                              8192
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "cores",
+                                          "label",
+                                          "memory"
                                         ],
-                                        "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                                        "type": "object",
+                                        "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                       },
-                                      "memory": {
-                                        "type": "number"
+                                      {
+                                        "properties": {
+                                          "cores": {
+                                            "type": "number",
+                                            "enum": [
+                                              8
+                                            ]
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "enum": [
+                                              "enhanced"
+                                            ]
+                                          },
+                                          "memory": {
+                                            "type": "number",
+                                            "enum": [
+                                              16384
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "cores",
+                                          "label",
+                                          "memory"
+                                        ],
+                                        "type": "object",
+                                        "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                      },
+                                      {
+                                        "properties": {
+                                          "cores": {
+                                            "type": "number",
+                                            "enum": [
+                                              30
+                                            ]
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "enum": [
+                                              "turbo"
+                                            ]
+                                          },
+                                          "memory": {
+                                            "type": "number",
+                                            "enum": [
+                                              61440
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "cores",
+                                          "label",
+                                          "memory"
+                                        ],
+                                        "type": "object",
+                                        "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                       }
-                                    },
-                                    "required": [
-                                      "cores",
-                                      "label",
-                                      "memory"
-                                    ],
-                                    "type": "object",
-                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                    ]
                                   }
                                 },
                                 "type": "object",
@@ -114549,6 +114917,13 @@
                                     "type": "array",
                                     "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                                   },
+                                  "emaSetup": {
+                                    "items": {
+                                      "$ref": "#/components/schemas/ACLAction"
+                                    },
+                                    "type": "array",
+                                    "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                                  },
                                   "endpointVerification": {
                                     "items": {
                                       "$ref": "#/components/schemas/ACLAction"
@@ -116180,30 +116555,95 @@
                                     ]
                                   },
                                   "elasticBuildMachine": {
-                                    "properties": {
-                                      "cores": {
-                                        "type": "number"
-                                      },
-                                      "label": {
-                                        "type": "string",
-                                        "enum": [
-                                          "enhanced",
-                                          "standard",
-                                          "turbo"
+                                    "oneOf": [
+                                      {
+                                        "properties": {
+                                          "cores": {
+                                            "type": "number",
+                                            "enum": [
+                                              4
+                                            ]
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "enum": [
+                                              "standard"
+                                            ]
+                                          },
+                                          "memory": {
+                                            "type": "number",
+                                            "enum": [
+                                              8192
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "cores",
+                                          "label",
+                                          "memory"
                                         ],
-                                        "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                                        "type": "object",
+                                        "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                       },
-                                      "memory": {
-                                        "type": "number"
+                                      {
+                                        "properties": {
+                                          "cores": {
+                                            "type": "number",
+                                            "enum": [
+                                              8
+                                            ]
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "enum": [
+                                              "enhanced"
+                                            ]
+                                          },
+                                          "memory": {
+                                            "type": "number",
+                                            "enum": [
+                                              16384
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "cores",
+                                          "label",
+                                          "memory"
+                                        ],
+                                        "type": "object",
+                                        "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                      },
+                                      {
+                                        "properties": {
+                                          "cores": {
+                                            "type": "number",
+                                            "enum": [
+                                              30
+                                            ]
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "enum": [
+                                              "turbo"
+                                            ]
+                                          },
+                                          "memory": {
+                                            "type": "number",
+                                            "enum": [
+                                              61440
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "cores",
+                                          "label",
+                                          "memory"
+                                        ],
+                                        "type": "object",
+                                        "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                                       }
-                                    },
-                                    "required": [
-                                      "cores",
-                                      "label",
-                                      "memory"
-                                    ],
-                                    "type": "object",
-                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                    ]
                                   }
                                 },
                                 "type": "object",
@@ -117762,6 +118202,15 @@
                                   false,
                                   true
                                 ]
+                              },
+                              "vercelFlags": {
+                                "properties": {
+                                  "enabledAt": {
+                                    "type": "number",
+                                    "description": "When Flags were enabled for the project, taken from the Flags settings row's `createdAt`. Recorded by `@api/api-feature-flags` on flags sync."
+                                  }
+                                },
+                                "type": "object"
                               },
                               "webAnalytics": {
                                 "properties": {
@@ -119506,30 +119955,95 @@
                           ]
                         },
                         "elasticBuildMachine": {
-                          "properties": {
-                            "cores": {
-                              "type": "number"
-                            },
-                            "label": {
-                              "type": "string",
-                              "enum": [
-                                "enhanced",
-                                "standard",
-                                "turbo"
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    4
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    8192
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
                               ],
-                              "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             },
-                            "memory": {
-                              "type": "number"
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    8
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "enhanced"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    30
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "turbo"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    61440
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             }
-                          },
-                          "required": [
-                            "cores",
-                            "label",
-                            "memory"
-                          ],
-                          "type": "object",
-                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                          ]
                         }
                       },
                       "type": "object",
@@ -122802,6 +123316,13 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "emaSetup": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "endpointVerification": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -124433,30 +124954,95 @@
                           ]
                         },
                         "elasticBuildMachine": {
-                          "properties": {
-                            "cores": {
-                              "type": "number"
-                            },
-                            "label": {
-                              "type": "string",
-                              "enum": [
-                                "enhanced",
-                                "standard",
-                                "turbo"
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    4
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    8192
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
                               ],
-                              "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             },
-                            "memory": {
-                              "type": "number"
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    8
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "enhanced"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    30
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "turbo"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    61440
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             }
-                          },
-                          "required": [
-                            "cores",
-                            "label",
-                            "memory"
-                          ],
-                          "type": "object",
-                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                          ]
                         }
                       },
                       "type": "object",
@@ -126015,6 +126601,15 @@
                         false,
                         true
                       ]
+                    },
+                    "vercelFlags": {
+                      "properties": {
+                        "enabledAt": {
+                          "type": "number",
+                          "description": "When Flags were enabled for the project, taken from the Flags settings row's `createdAt`. Recorded by `@api/api-feature-flags` on flags sync."
+                        }
+                      },
+                      "type": "object"
                     },
                     "webAnalytics": {
                       "properties": {
@@ -128014,30 +128609,95 @@
                           ]
                         },
                         "elasticBuildMachine": {
-                          "properties": {
-                            "cores": {
-                              "type": "number"
-                            },
-                            "label": {
-                              "type": "string",
-                              "enum": [
-                                "enhanced",
-                                "standard",
-                                "turbo"
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    4
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    8192
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
                               ],
-                              "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             },
-                            "memory": {
-                              "type": "number"
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    8
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "enhanced"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    30
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "turbo"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    61440
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             }
-                          },
-                          "required": [
-                            "cores",
-                            "label",
-                            "memory"
-                          ],
-                          "type": "object",
-                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                          ]
                         }
                       },
                       "type": "object",
@@ -131341,6 +132001,13 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "emaSetup": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "endpointVerification": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -132972,30 +133639,95 @@
                           ]
                         },
                         "elasticBuildMachine": {
-                          "properties": {
-                            "cores": {
-                              "type": "number"
-                            },
-                            "label": {
-                              "type": "string",
-                              "enum": [
-                                "enhanced",
-                                "standard",
-                                "turbo"
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    4
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    8192
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
                               ],
-                              "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             },
-                            "memory": {
-                              "type": "number"
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    8
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "enhanced"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    30
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "turbo"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    61440
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             }
-                          },
-                          "required": [
-                            "cores",
-                            "label",
-                            "memory"
-                          ],
-                          "type": "object",
-                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                          ]
                         }
                       },
                       "type": "object",
@@ -134555,6 +135287,15 @@
                         true
                       ]
                     },
+                    "vercelFlags": {
+                      "properties": {
+                        "enabledAt": {
+                          "type": "number",
+                          "description": "When Flags were enabled for the project, taken from the Flags settings row's `createdAt`. Recorded by `@api/api-feature-flags` on flags sync."
+                        }
+                      },
+                      "type": "object"
+                    },
                     "webAnalytics": {
                       "properties": {
                         "canceledAt": {
@@ -135861,30 +136602,95 @@
                           ]
                         },
                         "elasticBuildMachine": {
-                          "properties": {
-                            "cores": {
-                              "type": "number"
-                            },
-                            "label": {
-                              "type": "string",
-                              "enum": [
-                                "enhanced",
-                                "standard",
-                                "turbo"
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    4
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    8192
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
                               ],
-                              "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             },
-                            "memory": {
-                              "type": "number"
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    8
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "enhanced"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    30
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "turbo"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    61440
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             }
-                          },
-                          "required": [
-                            "cores",
-                            "label",
-                            "memory"
-                          ],
-                          "type": "object",
-                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                          ]
                         }
                       },
                       "type": "object",
@@ -139148,6 +139954,13 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "emaSetup": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "endpointVerification": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -140779,30 +141592,95 @@
                           ]
                         },
                         "elasticBuildMachine": {
-                          "properties": {
-                            "cores": {
-                              "type": "number"
-                            },
-                            "label": {
-                              "type": "string",
-                              "enum": [
-                                "enhanced",
-                                "standard",
-                                "turbo"
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    4
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    8192
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
                               ],
-                              "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             },
-                            "memory": {
-                              "type": "number"
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    8
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "enhanced"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    30
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "turbo"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    61440
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             }
-                          },
-                          "required": [
-                            "cores",
-                            "label",
-                            "memory"
-                          ],
-                          "type": "object",
-                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                          ]
                         }
                       },
                       "type": "object",
@@ -142361,6 +143239,15 @@
                         false,
                         true
                       ]
+                    },
+                    "vercelFlags": {
+                      "properties": {
+                        "enabledAt": {
+                          "type": "number",
+                          "description": "When Flags were enabled for the project, taken from the Flags settings row's `createdAt`. Recorded by `@api/api-feature-flags` on flags sync."
+                        }
+                      },
+                      "type": "object"
                     },
                     "webAnalytics": {
                       "properties": {
@@ -144985,30 +145872,95 @@
                           ]
                         },
                         "elasticBuildMachine": {
-                          "properties": {
-                            "cores": {
-                              "type": "number"
-                            },
-                            "label": {
-                              "type": "string",
-                              "enum": [
-                                "enhanced",
-                                "standard",
-                                "turbo"
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    4
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    8192
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
                               ],
-                              "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             },
-                            "memory": {
-                              "type": "number"
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    8
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "enhanced"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    30
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "turbo"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    61440
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             }
-                          },
-                          "required": [
-                            "cores",
-                            "label",
-                            "memory"
-                          ],
-                          "type": "object",
-                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                          ]
                         }
                       },
                       "type": "object",
@@ -148281,6 +149233,13 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "emaSetup": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "endpointVerification": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -149912,30 +150871,95 @@
                           ]
                         },
                         "elasticBuildMachine": {
-                          "properties": {
-                            "cores": {
-                              "type": "number"
-                            },
-                            "label": {
-                              "type": "string",
-                              "enum": [
-                                "enhanced",
-                                "standard",
-                                "turbo"
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    4
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    8192
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
                               ],
-                              "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             },
-                            "memory": {
-                              "type": "number"
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    8
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "enhanced"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    30
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "turbo"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    61440
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             }
-                          },
-                          "required": [
-                            "cores",
-                            "label",
-                            "memory"
-                          ],
-                          "type": "object",
-                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                          ]
                         }
                       },
                       "type": "object",
@@ -151494,6 +152518,15 @@
                         false,
                         true
                       ]
+                    },
+                    "vercelFlags": {
+                      "properties": {
+                        "enabledAt": {
+                          "type": "number",
+                          "description": "When Flags were enabled for the project, taken from the Flags settings row's `createdAt`. Recorded by `@api/api-feature-flags` on flags sync."
+                        }
+                      },
+                      "type": "object"
                     },
                     "webAnalytics": {
                       "properties": {
@@ -152805,30 +153838,95 @@
                           ]
                         },
                         "elasticBuildMachine": {
-                          "properties": {
-                            "cores": {
-                              "type": "number"
-                            },
-                            "label": {
-                              "type": "string",
-                              "enum": [
-                                "enhanced",
-                                "standard",
-                                "turbo"
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    4
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    8192
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
                               ],
-                              "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             },
-                            "memory": {
-                              "type": "number"
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    8
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "enhanced"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    30
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "turbo"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    61440
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             }
-                          },
-                          "required": [
-                            "cores",
-                            "label",
-                            "memory"
-                          ],
-                          "type": "object",
-                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                          ]
                         }
                       },
                       "type": "object",
@@ -156101,6 +157199,13 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "emaSetup": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "endpointVerification": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -157732,30 +158837,95 @@
                           ]
                         },
                         "elasticBuildMachine": {
-                          "properties": {
-                            "cores": {
-                              "type": "number"
-                            },
-                            "label": {
-                              "type": "string",
-                              "enum": [
-                                "enhanced",
-                                "standard",
-                                "turbo"
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    4
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    8192
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
                               ],
-                              "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             },
-                            "memory": {
-                              "type": "number"
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    8
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "enhanced"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    30
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "turbo"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    61440
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             }
-                          },
-                          "required": [
-                            "cores",
-                            "label",
-                            "memory"
-                          ],
-                          "type": "object",
-                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                          ]
                         }
                       },
                       "type": "object",
@@ -159314,6 +160484,15 @@
                         false,
                         true
                       ]
+                    },
+                    "vercelFlags": {
+                      "properties": {
+                        "enabledAt": {
+                          "type": "number",
+                          "description": "When Flags were enabled for the project, taken from the Flags settings row's `createdAt`. Recorded by `@api/api-feature-flags` on flags sync."
+                        }
+                      },
+                      "type": "object"
                     },
                     "webAnalytics": {
                       "properties": {
@@ -173766,30 +174945,95 @@
                           ]
                         },
                         "elasticBuildMachine": {
-                          "properties": {
-                            "cores": {
-                              "type": "number"
-                            },
-                            "label": {
-                              "type": "string",
-                              "enum": [
-                                "enhanced",
-                                "standard",
-                                "turbo"
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    4
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    8192
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
                               ],
-                              "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             },
-                            "memory": {
-                              "type": "number"
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    8
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "enhanced"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    30
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "turbo"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    61440
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             }
-                          },
-                          "required": [
-                            "cores",
-                            "label",
-                            "memory"
-                          ],
-                          "type": "object",
-                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                          ]
                         }
                       },
                       "type": "object",
@@ -177062,6 +178306,13 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "emaSetup": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "endpointVerification": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -178693,30 +179944,95 @@
                           ]
                         },
                         "elasticBuildMachine": {
-                          "properties": {
-                            "cores": {
-                              "type": "number"
-                            },
-                            "label": {
-                              "type": "string",
-                              "enum": [
-                                "enhanced",
-                                "standard",
-                                "turbo"
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    4
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    8192
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
                               ],
-                              "description": "Machine types elastic can assign. Widens when the elastic algorithm adds the 14 CPU tier."
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             },
-                            "memory": {
-                              "type": "number"
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    8
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "enhanced"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    30
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "turbo"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    61440
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
                             }
-                          },
-                          "required": [
-                            "cores",
-                            "label",
-                            "memory"
-                          ],
-                          "type": "object",
-                          "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                          ]
                         }
                       },
                       "type": "object",
@@ -180275,6 +181591,15 @@
                         false,
                         true
                       ]
+                    },
+                    "vercelFlags": {
+                      "properties": {
+                        "enabledAt": {
+                          "type": "number",
+                          "description": "When Flags were enabled for the project, taken from the Flags settings row's `createdAt`. Recorded by `@api/api-feature-flags` on flags sync."
+                        }
+                      },
+                      "type": "object"
                     },
                     "webAnalytics": {
                       "properties": {
@@ -182200,6 +183525,9 @@
             "description": ""
           },
           "429": {
+            "description": ""
+          },
+          "503": {
             "description": ""
           }
         },
@@ -230564,6 +231892,15 @@
                                   "id"
                                 ],
                                 "type": "object"
+                              },
+                              "vercelFlags": {
+                                "properties": {
+                                  "enabledAt": {
+                                    "type": "number"
+                                  }
+                                },
+                                "type": "object",
+                                "description": "Vercel Flags activation metadata copied from the project at deployment creation."
                               },
                               "webAnalytics": {
                                 "properties": {
