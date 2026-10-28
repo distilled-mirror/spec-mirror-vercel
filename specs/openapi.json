@@ -1771,6 +1771,783 @@
         ]
       }
     },
+    "/ai-gateway/byok-credentials": {
+      "post": {
+        "description": "Create a new BYOK credential",
+        "operationId": "createAiGatewayByokCredential",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Create a BYOK credential",
+        "tags": [
+          "ai-gateway"
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "active": {
+                      "type": "boolean",
+                      "enum": [
+                        false,
+                        true
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "number"
+                    },
+                    "credentialId": {
+                      "type": "string"
+                    },
+                    "lastFourChars": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "ownerId": {
+                      "type": "string"
+                    },
+                    "providerSlug": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "number"
+                    },
+                    "zeroDataRetention": {
+                      "type": "boolean",
+                      "enum": [
+                        false,
+                        true
+                      ]
+                    }
+                  },
+                  "required": [
+                    "active",
+                    "createdAt",
+                    "credentialId",
+                    "lastFourChars",
+                    "name",
+                    "ownerId",
+                    "providerSlug",
+                    "updatedAt",
+                    "zeroDataRetention"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request body is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "429": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "providerSlug",
+                  "name",
+                  "credential"
+                ],
+                "properties": {
+                  "ownerId": {
+                    "type": "string",
+                    "description": "The owner ID for this credential. Ignored for customer tokens, which always create in their own team."
+                  },
+                  "providerSlug": {
+                    "type": "string",
+                    "description": "The provider slug this credential is for (e.g., \"openai\", \"anthropic\")"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The developer-entered name for this credential",
+                    "maxLength": 100
+                  },
+                  "active": {
+                    "type": "boolean",
+                    "description": "Whether the credential is active and can be used",
+                    "default": true
+                  },
+                  "zeroDataRetention": {
+                    "type": "boolean",
+                    "description": "Whether the customer attested this external credential has a zero data retention policy",
+                    "default": false
+                  },
+                  "userId": {
+                    "type": "string",
+                    "description": "The ID of the user performing this action, used for Activity-log attribution."
+                  },
+                  "mappings": {
+                    "type": "array",
+                    "description": "Model mappings to create atomically with the credential (e.g. Azure deployments). One DynamoDB transaction holds the credential plus all mappings, so at most 99 mappings fit.",
+                    "maxItems": 99,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "gatewayModelSlug",
+                        "customModelId"
+                      ],
+                      "properties": {
+                        "gatewayModelSlug": {
+                          "type": "string",
+                          "description": "The AI Gateway model slug (e.g., \"openai/gpt-5.4\")"
+                        },
+                        "customModelId": {
+                          "type": "string",
+                          "description": "The customer's custom model ID (e.g., \"my-finetuned-gpt-5\")"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai-gateway/byok-credentials/list": {
+      "get": {
+        "description": "List BYOK credentials for an owner, optionally filtered by provider",
+        "operationId": "listAiGatewayByokCredentials",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "List BYOK credentials",
+        "tags": [
+          "ai-gateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "credentials": {
+                      "items": {
+                        "properties": {
+                          "active": {
+                            "type": "boolean",
+                            "enum": [
+                              false,
+                              true
+                            ]
+                          },
+                          "createdAt": {
+                            "type": "number"
+                          },
+                          "credential": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "credentialId": {
+                            "type": "string"
+                          },
+                          "deleted": {
+                            "type": "boolean",
+                            "enum": [
+                              false,
+                              true
+                            ]
+                          },
+                          "lastFourChars": {
+                            "type": "string"
+                          },
+                          "modelMappings": {
+                            "items": {
+                              "properties": {
+                                "customModelId": {
+                                  "type": "string"
+                                },
+                                "gatewayModelSlug": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "customModelId",
+                                "gatewayModelSlug"
+                              ],
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "ownerId": {
+                            "type": "string"
+                          },
+                          "providerSlug": {
+                            "type": "string"
+                          },
+                          "updatedAt": {
+                            "type": "number"
+                          },
+                          "zeroDataRetention": {
+                            "type": "boolean",
+                            "enum": [
+                              false,
+                              true
+                            ]
+                          }
+                        },
+                        "required": [
+                          "active",
+                          "createdAt",
+                          "credential",
+                          "credentialId",
+                          "deleted",
+                          "lastFourChars",
+                          "modelMappings",
+                          "name",
+                          "ownerId",
+                          "providerSlug",
+                          "updatedAt",
+                          "zeroDataRetention"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "credentials"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "ownerId",
+            "description": "The owner ID to list credentials for. Ignored for customer tokens, which always list their own team.",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "description": "The owner ID to list credentials for. Ignored for customer tokens, which always list their own team."
+            }
+          },
+          {
+            "name": "providerSlug",
+            "description": "Optional provider slug to filter credentials by",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "description": "Optional provider slug to filter credentials by"
+            }
+          },
+          {
+            "name": "includeDeleted",
+            "description": "Whether to include soft-deleted credentials",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ],
+              "description": "Whether to include soft-deleted credentials",
+              "default": "false"
+            }
+          },
+          {
+            "name": "decrypt",
+            "description": "Not supported. Credential values are never returned.",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ],
+              "description": "Not supported. Credential values are never returned.",
+              "default": "false"
+            }
+          },
+          {
+            "name": "includeModelMappings",
+            "description": "Whether to include model mappings for each credential in the response",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ],
+              "description": "Whether to include model mappings for each credential in the response",
+              "default": "false"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
+      }
+    },
+    "/ai-gateway/byok-credentials/{credentialId}": {
+      "get": {
+        "description": "Get a BYOK credential by ID. The credential value is never returned.",
+        "operationId": "getAiGatewayByokCredential",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Get a BYOK credential",
+        "tags": [
+          "ai-gateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "active": {
+                      "type": "boolean",
+                      "enum": [
+                        false,
+                        true
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "number"
+                    },
+                    "credentialId": {
+                      "type": "string"
+                    },
+                    "lastFourChars": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "ownerId": {
+                      "type": "string"
+                    },
+                    "providerSlug": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "number"
+                    },
+                    "zeroDataRetention": {
+                      "type": "boolean",
+                      "enum": [
+                        false,
+                        true
+                      ]
+                    }
+                  },
+                  "required": [
+                    "active",
+                    "createdAt",
+                    "credentialId",
+                    "lastFourChars",
+                    "name",
+                    "ownerId",
+                    "providerSlug",
+                    "updatedAt",
+                    "zeroDataRetention"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "ownerId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "credentialId",
+            "description": "The unique ID of the credential",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The unique ID of the credential"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "description": "Update a BYOK credential. Send `credential` to replace the key value in place, which keeps the credential ID, settings and model mappings.",
+        "operationId": "updateAiGatewayByokCredential",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Update a BYOK credential",
+        "tags": [
+          "ai-gateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "active": {
+                      "type": "boolean",
+                      "enum": [
+                        false,
+                        true
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "number"
+                    },
+                    "credentialId": {
+                      "type": "string"
+                    },
+                    "lastFourChars": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "ownerId": {
+                      "type": "string"
+                    },
+                    "providerSlug": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "number"
+                    },
+                    "zeroDataRetention": {
+                      "type": "boolean",
+                      "enum": [
+                        false,
+                        true
+                      ]
+                    }
+                  },
+                  "required": [
+                    "active",
+                    "createdAt",
+                    "credentialId",
+                    "lastFourChars",
+                    "name",
+                    "ownerId",
+                    "providerSlug",
+                    "updatedAt",
+                    "zeroDataRetention"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "ownerId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "credentialId",
+            "description": "The unique ID of the credential to update",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The unique ID of the credential to update"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The new name for the credential",
+                    "maxLength": 100
+                  },
+                  "active": {
+                    "type": "boolean",
+                    "description": "Whether the credential should be active"
+                  },
+                  "zeroDataRetention": {
+                    "type": "boolean",
+                    "description": "Whether the customer attested this external credential has a zero data retention policy"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "description": "The ID of the user performing this action, used for Activity-log attribution."
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a BYOK credential (soft delete) and its model mappings",
+        "operationId": "deleteAiGatewayByokCredential",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Delete a BYOK credential",
+        "tags": [
+          "ai-gateway"
+        ],
+        "responses": {
+          "204": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "ownerId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "credentialId",
+            "description": "The unique ID of the credential to delete",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The unique ID of the credential to delete"
+            }
+          },
+          {
+            "name": "userId",
+            "description": "The ID of the user performing this action, used for Activity-log attribution.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The ID of the user performing this action, used for Activity-log attribution."
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
+      }
+    },
     "/ai-gateway/virtual-model-configs": {
       "post": {
         "description": "Create a virtual model config (VMC)",
@@ -15342,12 +16119,12 @@
         "parameters": [
           {
             "name": "connector",
-            "description": "Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.",
+            "description": "Stable connector ID or URL-encoded owner-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "description": "Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`."
+              "description": "Stable connector ID or URL-encoded owner-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`."
             }
           },
           {
@@ -16432,6 +17209,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectError"
+                }
+              }
+            }
+          },
           "500": {
             "description": "An internal error occurred.",
             "content": {
@@ -16441,6 +17228,12 @@
                 }
               }
             }
+          },
+          "501": {
+            "description": ""
+          },
+          "504": {
+            "description": ""
           }
         },
         "parameters": [
@@ -16570,6 +17363,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectError"
+                }
+              }
+            }
+          },
           "500": {
             "description": "An internal error occurred.",
             "content": {
@@ -16579,6 +17382,12 @@
                 }
               }
             }
+          },
+          "501": {
+            "description": ""
+          },
+          "504": {
+            "description": ""
           }
         },
         "parameters": [
@@ -23616,6 +24425,72 @@
                                                 "type": "object",
                                                 "description": "Instance counts by region."
                                               },
+                                              "livenessProbe": {
+                                                "properties": {
+                                                  "failureThreshold": {
+                                                    "type": "number"
+                                                  },
+                                                  "httpGet": {
+                                                    "properties": {
+                                                      "host": {
+                                                        "type": "string"
+                                                      },
+                                                      "httpHeaders": {
+                                                        "items": {
+                                                          "properties": {
+                                                            "name": {
+                                                              "type": "string"
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "name",
+                                                            "value"
+                                                          ],
+                                                          "type": "object"
+                                                        },
+                                                        "type": "array"
+                                                      },
+                                                      "path": {
+                                                        "type": "string"
+                                                      },
+                                                      "port": {
+                                                        "type": "number"
+                                                      },
+                                                      "scheme": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "HTTP",
+                                                          "HTTPS"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "port"
+                                                    ],
+                                                    "type": "object"
+                                                  },
+                                                  "initialDelaySeconds": {
+                                                    "type": "number"
+                                                  },
+                                                  "periodSeconds": {
+                                                    "type": "number"
+                                                  },
+                                                  "successThreshold": {
+                                                    "type": "number"
+                                                  },
+                                                  "timeoutSeconds": {
+                                                    "type": "number"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "httpGet"
+                                                ],
+                                                "type": "object",
+                                                "description": "A Kubernetes-style HTTP liveness probe."
+                                              },
                                               "replicas": {
                                                 "additionalProperties": {
                                                   "type": "number"
@@ -24349,6 +25224,72 @@
                                                 },
                                                 "type": "object",
                                                 "description": "Instance counts by region."
+                                              },
+                                              "livenessProbe": {
+                                                "properties": {
+                                                  "failureThreshold": {
+                                                    "type": "number"
+                                                  },
+                                                  "httpGet": {
+                                                    "properties": {
+                                                      "host": {
+                                                        "type": "string"
+                                                      },
+                                                      "httpHeaders": {
+                                                        "items": {
+                                                          "properties": {
+                                                            "name": {
+                                                              "type": "string"
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "name",
+                                                            "value"
+                                                          ],
+                                                          "type": "object"
+                                                        },
+                                                        "type": "array"
+                                                      },
+                                                      "path": {
+                                                        "type": "string"
+                                                      },
+                                                      "port": {
+                                                        "type": "number"
+                                                      },
+                                                      "scheme": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "HTTP",
+                                                          "HTTPS"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "port"
+                                                    ],
+                                                    "type": "object"
+                                                  },
+                                                  "initialDelaySeconds": {
+                                                    "type": "number"
+                                                  },
+                                                  "periodSeconds": {
+                                                    "type": "number"
+                                                  },
+                                                  "successThreshold": {
+                                                    "type": "number"
+                                                  },
+                                                  "timeoutSeconds": {
+                                                    "type": "number"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "httpGet"
+                                                ],
+                                                "type": "object",
+                                                "description": "A Kubernetes-style HTTP liveness probe."
                                               },
                                               "replicas": {
                                                 "additionalProperties": {
@@ -32569,6 +33510,72 @@
                                                 "type": "object",
                                                 "description": "Instance counts by region."
                                               },
+                                              "livenessProbe": {
+                                                "properties": {
+                                                  "failureThreshold": {
+                                                    "type": "number"
+                                                  },
+                                                  "httpGet": {
+                                                    "properties": {
+                                                      "host": {
+                                                        "type": "string"
+                                                      },
+                                                      "httpHeaders": {
+                                                        "items": {
+                                                          "properties": {
+                                                            "name": {
+                                                              "type": "string"
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "name",
+                                                            "value"
+                                                          ],
+                                                          "type": "object"
+                                                        },
+                                                        "type": "array"
+                                                      },
+                                                      "path": {
+                                                        "type": "string"
+                                                      },
+                                                      "port": {
+                                                        "type": "number"
+                                                      },
+                                                      "scheme": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "HTTP",
+                                                          "HTTPS"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "port"
+                                                    ],
+                                                    "type": "object"
+                                                  },
+                                                  "initialDelaySeconds": {
+                                                    "type": "number"
+                                                  },
+                                                  "periodSeconds": {
+                                                    "type": "number"
+                                                  },
+                                                  "successThreshold": {
+                                                    "type": "number"
+                                                  },
+                                                  "timeoutSeconds": {
+                                                    "type": "number"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "httpGet"
+                                                ],
+                                                "type": "object",
+                                                "description": "A Kubernetes-style HTTP liveness probe."
+                                              },
                                               "replicas": {
                                                 "additionalProperties": {
                                                   "type": "number"
@@ -33302,6 +34309,72 @@
                                                 },
                                                 "type": "object",
                                                 "description": "Instance counts by region."
+                                              },
+                                              "livenessProbe": {
+                                                "properties": {
+                                                  "failureThreshold": {
+                                                    "type": "number"
+                                                  },
+                                                  "httpGet": {
+                                                    "properties": {
+                                                      "host": {
+                                                        "type": "string"
+                                                      },
+                                                      "httpHeaders": {
+                                                        "items": {
+                                                          "properties": {
+                                                            "name": {
+                                                              "type": "string"
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "name",
+                                                            "value"
+                                                          ],
+                                                          "type": "object"
+                                                        },
+                                                        "type": "array"
+                                                      },
+                                                      "path": {
+                                                        "type": "string"
+                                                      },
+                                                      "port": {
+                                                        "type": "number"
+                                                      },
+                                                      "scheme": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "HTTP",
+                                                          "HTTPS"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "port"
+                                                    ],
+                                                    "type": "object"
+                                                  },
+                                                  "initialDelaySeconds": {
+                                                    "type": "number"
+                                                  },
+                                                  "periodSeconds": {
+                                                    "type": "number"
+                                                  },
+                                                  "successThreshold": {
+                                                    "type": "number"
+                                                  },
+                                                  "timeoutSeconds": {
+                                                    "type": "number"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "httpGet"
+                                                ],
+                                                "type": "object",
+                                                "description": "A Kubernetes-style HTTP liveness probe."
                                               },
                                               "replicas": {
                                                 "additionalProperties": {
@@ -40503,6 +41576,72 @@
                                             "type": "object",
                                             "description": "Instance counts by region."
                                           },
+                                          "livenessProbe": {
+                                            "properties": {
+                                              "failureThreshold": {
+                                                "type": "number"
+                                              },
+                                              "httpGet": {
+                                                "properties": {
+                                                  "host": {
+                                                    "type": "string"
+                                                  },
+                                                  "httpHeaders": {
+                                                    "items": {
+                                                      "properties": {
+                                                        "name": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "name",
+                                                        "value"
+                                                      ],
+                                                      "type": "object"
+                                                    },
+                                                    "type": "array"
+                                                  },
+                                                  "path": {
+                                                    "type": "string"
+                                                  },
+                                                  "port": {
+                                                    "type": "number"
+                                                  },
+                                                  "scheme": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "HTTP",
+                                                      "HTTPS"
+                                                    ]
+                                                  }
+                                                },
+                                                "required": [
+                                                  "port"
+                                                ],
+                                                "type": "object"
+                                              },
+                                              "initialDelaySeconds": {
+                                                "type": "number"
+                                              },
+                                              "periodSeconds": {
+                                                "type": "number"
+                                              },
+                                              "successThreshold": {
+                                                "type": "number"
+                                              },
+                                              "timeoutSeconds": {
+                                                "type": "number"
+                                              }
+                                            },
+                                            "required": [
+                                              "httpGet"
+                                            ],
+                                            "type": "object",
+                                            "description": "A Kubernetes-style HTTP liveness probe."
+                                          },
                                           "replicas": {
                                             "additionalProperties": {
                                               "type": "number"
@@ -41236,6 +42375,72 @@
                                             },
                                             "type": "object",
                                             "description": "Instance counts by region."
+                                          },
+                                          "livenessProbe": {
+                                            "properties": {
+                                              "failureThreshold": {
+                                                "type": "number"
+                                              },
+                                              "httpGet": {
+                                                "properties": {
+                                                  "host": {
+                                                    "type": "string"
+                                                  },
+                                                  "httpHeaders": {
+                                                    "items": {
+                                                      "properties": {
+                                                        "name": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "name",
+                                                        "value"
+                                                      ],
+                                                      "type": "object"
+                                                    },
+                                                    "type": "array"
+                                                  },
+                                                  "path": {
+                                                    "type": "string"
+                                                  },
+                                                  "port": {
+                                                    "type": "number"
+                                                  },
+                                                  "scheme": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "HTTP",
+                                                      "HTTPS"
+                                                    ]
+                                                  }
+                                                },
+                                                "required": [
+                                                  "port"
+                                                ],
+                                                "type": "object"
+                                              },
+                                              "initialDelaySeconds": {
+                                                "type": "number"
+                                              },
+                                              "periodSeconds": {
+                                                "type": "number"
+                                              },
+                                              "successThreshold": {
+                                                "type": "number"
+                                              },
+                                              "timeoutSeconds": {
+                                                "type": "number"
+                                              }
+                                            },
+                                            "required": [
+                                              "httpGet"
+                                            ],
+                                            "type": "object",
+                                            "description": "A Kubernetes-style HTTP liveness probe."
                                           },
                                           "replicas": {
                                             "additionalProperties": {
@@ -86863,6 +88068,7 @@
                               "buildMachineType": {
                                 "type": "string",
                                 "enum": [
+                                  "14cpu-28gb",
                                   "basic",
                                   "enhanced",
                                   "standard",
@@ -86983,6 +88189,35 @@
                                         "type": "number",
                                         "enum": [
                                           16384
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
+                                    ],
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                  },
+                                  {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number",
+                                        "enum": [
+                                          14
+                                        ]
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "14cpu-28gb"
+                                        ]
+                                      },
+                                      "memory": {
+                                        "type": "number",
+                                        "enum": [
+                                          28672
                                         ]
                                       }
                                     },
@@ -89694,6 +90929,13 @@
                                 "type": "array",
                                 "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                               },
+                              "aiGatewayByokCredentials": {
+                                "items": {
+                                  "$ref": "#/components/schemas/ACLAction"
+                                },
+                                "type": "array",
+                                "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                              },
                               "aiGatewayCredits": {
                                 "items": {
                                   "$ref": "#/components/schemas/ACLAction"
@@ -91862,6 +93104,7 @@
                               "buildMachineType": {
                                 "type": "string",
                                 "enum": [
+                                  "14cpu-28gb",
                                   "basic",
                                   "enhanced",
                                   "standard",
@@ -91982,6 +93225,35 @@
                                         "type": "number",
                                         "enum": [
                                           16384
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
+                                    ],
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                  },
+                                  {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number",
+                                        "enum": [
+                                          14
+                                        ]
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "14cpu-28gb"
+                                        ]
+                                      },
+                                      "memory": {
+                                        "type": "number",
+                                        "enum": [
+                                          28672
                                         ]
                                       }
                                     },
@@ -104020,6 +105292,7 @@
                               "buildMachineType": {
                                 "type": "string",
                                 "enum": [
+                                  "14cpu-28gb",
                                   "basic",
                                   "enhanced",
                                   "standard",
@@ -104140,6 +105413,35 @@
                                         "type": "number",
                                         "enum": [
                                           16384
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "cores",
+                                      "label",
+                                      "memory"
+                                    ],
+                                    "type": "object",
+                                    "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                  },
+                                  {
+                                    "properties": {
+                                      "cores": {
+                                        "type": "number",
+                                        "enum": [
+                                          14
+                                        ]
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "14cpu-28gb"
+                                        ]
+                                      },
+                                      "memory": {
+                                        "type": "number",
+                                        "enum": [
+                                          28672
                                         ]
                                       }
                                     },
@@ -108518,6 +109820,7 @@
                                   "buildMachineType": {
                                     "type": "string",
                                     "enum": [
+                                      "14cpu-28gb",
                                       "basic",
                                       "enhanced",
                                       "standard",
@@ -108638,6 +109941,35 @@
                                             "type": "number",
                                             "enum": [
                                               16384
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "cores",
+                                          "label",
+                                          "memory"
+                                        ],
+                                        "type": "object",
+                                        "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                      },
+                                      {
+                                        "properties": {
+                                          "cores": {
+                                            "type": "number",
+                                            "enum": [
+                                              14
+                                            ]
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "enum": [
+                                              "14cpu-28gb"
+                                            ]
+                                          },
+                                          "memory": {
+                                            "type": "number",
+                                            "enum": [
+                                              28672
                                             ]
                                           }
                                         },
@@ -111484,6 +112816,7 @@
                                   "buildMachineType": {
                                     "type": "string",
                                     "enum": [
+                                      "14cpu-28gb",
                                       "basic",
                                       "enhanced",
                                       "standard",
@@ -111604,6 +112937,35 @@
                                             "type": "number",
                                             "enum": [
                                               16384
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "cores",
+                                          "label",
+                                          "memory"
+                                        ],
+                                        "type": "object",
+                                        "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                      },
+                                      {
+                                        "properties": {
+                                          "cores": {
+                                            "type": "number",
+                                            "enum": [
+                                              14
+                                            ]
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "enum": [
+                                              "14cpu-28gb"
+                                            ]
+                                          },
+                                          "memory": {
+                                            "type": "number",
+                                            "enum": [
+                                              28672
                                             ]
                                           }
                                         },
@@ -114315,6 +115677,13 @@
                                     "type": "array",
                                     "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                                   },
+                                  "aiGatewayByokCredentials": {
+                                    "items": {
+                                      "$ref": "#/components/schemas/ACLAction"
+                                    },
+                                    "type": "array",
+                                    "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                                  },
                                   "aiGatewayCredits": {
                                     "items": {
                                       "$ref": "#/components/schemas/ACLAction"
@@ -116483,6 +117852,7 @@
                                   "buildMachineType": {
                                     "type": "string",
                                     "enum": [
+                                      "14cpu-28gb",
                                       "basic",
                                       "enhanced",
                                       "standard",
@@ -116603,6 +117973,35 @@
                                             "type": "number",
                                             "enum": [
                                               16384
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "cores",
+                                          "label",
+                                          "memory"
+                                        ],
+                                        "type": "object",
+                                        "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                                      },
+                                      {
+                                        "properties": {
+                                          "cores": {
+                                            "type": "number",
+                                            "enum": [
+                                              14
+                                            ]
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "enum": [
+                                              "14cpu-28gb"
+                                            ]
+                                          },
+                                          "memory": {
+                                            "type": "number",
+                                            "enum": [
+                                              28672
                                             ]
                                           }
                                         },
@@ -119883,6 +121282,7 @@
                         "buildMachineType": {
                           "type": "string",
                           "enum": [
+                            "14cpu-28gb",
                             "basic",
                             "enhanced",
                             "standard",
@@ -120003,6 +121403,35 @@
                                   "type": "number",
                                   "enum": [
                                     16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    14
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "14cpu-28gb"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    28672
                                   ]
                                 }
                               },
@@ -122714,6 +124143,13 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "aiGatewayByokCredentials": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "aiGatewayCredits": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -124882,6 +126318,7 @@
                         "buildMachineType": {
                           "type": "string",
                           "enum": [
+                            "14cpu-28gb",
                             "basic",
                             "enhanced",
                             "standard",
@@ -125002,6 +126439,35 @@
                                   "type": "number",
                                   "enum": [
                                     16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    14
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "14cpu-28gb"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    28672
                                   ]
                                 }
                               },
@@ -128537,6 +130003,7 @@
                         "buildMachineType": {
                           "type": "string",
                           "enum": [
+                            "14cpu-28gb",
                             "basic",
                             "enhanced",
                             "standard",
@@ -128657,6 +130124,35 @@
                                   "type": "number",
                                   "enum": [
                                     16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    14
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "14cpu-28gb"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    28672
                                   ]
                                 }
                               },
@@ -131399,6 +132895,13 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "aiGatewayByokCredentials": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "aiGatewayCredits": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -133567,6 +135070,7 @@
                         "buildMachineType": {
                           "type": "string",
                           "enum": [
+                            "14cpu-28gb",
                             "basic",
                             "enhanced",
                             "standard",
@@ -133687,6 +135191,35 @@
                                   "type": "number",
                                   "enum": [
                                     16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    14
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "14cpu-28gb"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    28672
                                   ]
                                 }
                               },
@@ -136530,6 +138063,7 @@
                         "buildMachineType": {
                           "type": "string",
                           "enum": [
+                            "14cpu-28gb",
                             "basic",
                             "enhanced",
                             "standard",
@@ -136650,6 +138184,35 @@
                                   "type": "number",
                                   "enum": [
                                     16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    14
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "14cpu-28gb"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    28672
                                   ]
                                 }
                               },
@@ -139352,6 +140915,13 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "aiGatewayByokCredentials": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "aiGatewayCredits": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -141520,6 +143090,7 @@
                         "buildMachineType": {
                           "type": "string",
                           "enum": [
+                            "14cpu-28gb",
                             "basic",
                             "enhanced",
                             "standard",
@@ -141640,6 +143211,35 @@
                                   "type": "number",
                                   "enum": [
                                     16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    14
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "14cpu-28gb"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    28672
                                   ]
                                 }
                               },
@@ -145800,6 +147400,7 @@
                         "buildMachineType": {
                           "type": "string",
                           "enum": [
+                            "14cpu-28gb",
                             "basic",
                             "enhanced",
                             "standard",
@@ -145920,6 +147521,35 @@
                                   "type": "number",
                                   "enum": [
                                     16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    14
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "14cpu-28gb"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    28672
                                   ]
                                 }
                               },
@@ -148631,6 +150261,13 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "aiGatewayByokCredentials": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "aiGatewayCredits": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -150799,6 +152436,7 @@
                         "buildMachineType": {
                           "type": "string",
                           "enum": [
+                            "14cpu-28gb",
                             "basic",
                             "enhanced",
                             "standard",
@@ -150919,6 +152557,35 @@
                                   "type": "number",
                                   "enum": [
                                     16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    14
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "14cpu-28gb"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    28672
                                   ]
                                 }
                               },
@@ -153766,6 +155433,7 @@
                         "buildMachineType": {
                           "type": "string",
                           "enum": [
+                            "14cpu-28gb",
                             "basic",
                             "enhanced",
                             "standard",
@@ -153886,6 +155554,35 @@
                                   "type": "number",
                                   "enum": [
                                     16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    14
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "14cpu-28gb"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    28672
                                   ]
                                 }
                               },
@@ -156597,6 +158294,13 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "aiGatewayByokCredentials": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "aiGatewayCredits": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -158765,6 +160469,7 @@
                         "buildMachineType": {
                           "type": "string",
                           "enum": [
+                            "14cpu-28gb",
                             "basic",
                             "enhanced",
                             "standard",
@@ -158885,6 +160590,35 @@
                                   "type": "number",
                                   "enum": [
                                     16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    14
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "14cpu-28gb"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    28672
                                   ]
                                 }
                               },
@@ -174873,6 +176607,7 @@
                         "buildMachineType": {
                           "type": "string",
                           "enum": [
+                            "14cpu-28gb",
                             "basic",
                             "enhanced",
                             "standard",
@@ -174993,6 +176728,35 @@
                                   "type": "number",
                                   "enum": [
                                     16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    14
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "14cpu-28gb"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    28672
                                   ]
                                 }
                               },
@@ -177704,6 +179468,13 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "aiGatewayByokCredentials": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "aiGatewayCredits": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -179872,6 +181643,7 @@
                         "buildMachineType": {
                           "type": "string",
                           "enum": [
+                            "14cpu-28gb",
                             "basic",
                             "enhanced",
                             "standard",
@@ -179992,6 +181764,35 @@
                                   "type": "number",
                                   "enum": [
                                     16384
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "cores",
+                                "label",
+                                "memory"
+                              ],
+                              "type": "object",
+                              "description": "Server-owned Elastic assignment; responses may fall back to the legacy label. Not accepted as input. Memory is measured in MiB."
+                            },
+                            {
+                              "properties": {
+                                "cores": {
+                                  "type": "number",
+                                  "enum": [
+                                    14
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "enum": [
+                                    "14cpu-28gb"
+                                  ]
+                                },
+                                "memory": {
+                                  "type": "number",
+                                  "enum": [
+                                    28672
                                   ]
                                 }
                               },
@@ -233633,6 +235434,14 @@
             "type": "array",
             "description": "Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service."
           },
+          "hasMcpEventDeliveries": {
+            "type": "boolean",
+            "enum": [
+              false,
+              true
+            ],
+            "description": "Whether Connect has successfully delivered an MCP event for this connector."
+          },
           "icon": {
             "type": "string",
             "description": "Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`."
@@ -233662,6 +235471,15 @@
             },
             "type": "object",
             "description": "Managed connector metadata exposed without leaking the manager connector or installation identifiers."
+          },
+          "mcpEventsUiVisibility": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "hide",
+              "show"
+            ],
+            "description": "MCP Events dashboard visibility. Defaults to auto: show after the first successful delivery."
           },
           "name": {
             "type": "string",
@@ -234159,6 +235977,14 @@
             "type": "array",
             "description": "Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service."
           },
+          "hasMcpEventDeliveries": {
+            "type": "boolean",
+            "enum": [
+              false,
+              true
+            ],
+            "description": "Whether Connect has successfully delivered an MCP event for this connector."
+          },
           "icon": {
             "type": "string",
             "description": "Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`."
@@ -234188,6 +236014,15 @@
             },
             "type": "object",
             "description": "Managed connector metadata exposed without leaking the manager connector or installation identifiers."
+          },
+          "mcpEventsUiVisibility": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "hide",
+              "show"
+            ],
+            "description": "MCP Events dashboard visibility. Defaults to auto: show after the first successful delivery."
           },
           "name": {
             "type": "string",
@@ -237000,6 +238835,15 @@
               "type": "string"
             }
           },
+          "mcpEventsUiVisibility": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "show",
+              "hide"
+            ],
+            "description": "MCP Events dashboard visibility. Auto (the default) shows the UI after the first successful delivery. Show and hide persist regardless of future deliveries. This does not enable or disable event delivery."
+          },
           "data": {
             "$ref": "#/components/schemas/ConnectConnectorUpdateData",
             "description": "Provider configuration fields to update."
@@ -238740,6 +240584,33 @@
             "type": "number",
             "description": "Timestamp (in milliseconds) of when the event was generated.",
             "example": 1632859321020
+          },
+          "details": {
+            "items": {
+              "properties": {
+                "display": {
+                  "type": "string",
+                  "enum": [
+                    "inline"
+                  ],
+                  "description": "Recognition context that should remain visible in a compact feed row."
+                },
+                "label": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "label",
+                "value"
+              ],
+              "type": "object",
+              "description": "Labeled event details for progressive disclosure in the activity feed."
+            },
+            "type": "array",
+            "description": "Labeled event details for progressive disclosure in the activity feed."
           },
           "entities": {
             "items": {
@@ -240983,6 +242854,7 @@
                         "read-write:access-group",
                         "read-write:ai-gateway-api-key",
                         "read-write:ai-gateway-budgets",
+                        "read-write:ai-gateway-byok-credentials",
                         "read-write:ai-gateway-guardrails",
                         "read-write:ai-gateway-private-models",
                         "read-write:ai-gateway-rules",
@@ -241020,6 +242892,7 @@
                         "read-write:webhooks",
                         "read:access-group",
                         "read:ai-gateway-budgets",
+                        "read:ai-gateway-byok-credentials",
                         "read:ai-gateway-guardrails",
                         "read:ai-gateway-private-models",
                         "read:ai-gateway-rules",
@@ -241112,6 +242985,7 @@
                         "read-write:access-group",
                         "read-write:ai-gateway-api-key",
                         "read-write:ai-gateway-budgets",
+                        "read-write:ai-gateway-byok-credentials",
                         "read-write:ai-gateway-guardrails",
                         "read-write:ai-gateway-private-models",
                         "read-write:ai-gateway-rules",
@@ -241149,6 +243023,7 @@
                         "read-write:webhooks",
                         "read:access-group",
                         "read:ai-gateway-budgets",
+                        "read:ai-gateway-byok-credentials",
                         "read:ai-gateway-guardrails",
                         "read:ai-gateway-private-models",
                         "read:ai-gateway-rules",
@@ -241221,6 +243096,7 @@
                             "read-write:access-group",
                             "read-write:ai-gateway-api-key",
                             "read-write:ai-gateway-budgets",
+                            "read-write:ai-gateway-byok-credentials",
                             "read-write:ai-gateway-guardrails",
                             "read-write:ai-gateway-private-models",
                             "read-write:ai-gateway-rules",
@@ -241258,6 +243134,7 @@
                             "read-write:webhooks",
                             "read:access-group",
                             "read:ai-gateway-budgets",
+                            "read:ai-gateway-byok-credentials",
                             "read:ai-gateway-guardrails",
                             "read:ai-gateway-private-models",
                             "read:ai-gateway-rules",
@@ -241360,6 +243237,7 @@
                             "read-write:access-group",
                             "read-write:ai-gateway-api-key",
                             "read-write:ai-gateway-budgets",
+                            "read-write:ai-gateway-byok-credentials",
                             "read-write:ai-gateway-guardrails",
                             "read-write:ai-gateway-private-models",
                             "read-write:ai-gateway-rules",
@@ -241397,6 +243275,7 @@
                             "read-write:webhooks",
                             "read:access-group",
                             "read:ai-gateway-budgets",
+                            "read:ai-gateway-byok-credentials",
                             "read:ai-gateway-guardrails",
                             "read:ai-gateway-private-models",
                             "read:ai-gateway-rules",
@@ -241515,6 +243394,7 @@
                         "read-write:access-group",
                         "read-write:ai-gateway-api-key",
                         "read-write:ai-gateway-budgets",
+                        "read-write:ai-gateway-byok-credentials",
                         "read-write:ai-gateway-guardrails",
                         "read-write:ai-gateway-private-models",
                         "read-write:ai-gateway-rules",
@@ -241552,6 +243432,7 @@
                         "read-write:webhooks",
                         "read:access-group",
                         "read:ai-gateway-budgets",
+                        "read:ai-gateway-byok-credentials",
                         "read:ai-gateway-guardrails",
                         "read:ai-gateway-private-models",
                         "read:ai-gateway-rules",
@@ -257745,6 +259626,26 @@
               },
               {
                 "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "reset",
+                      "updated"
+                    ]
+                  },
+                  "targetId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "action",
+                  "targetId"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "domain": {
                     "type": "string"
                   },
@@ -261598,6 +263499,10 @@
             "type": "string",
             "description": "The ID of the session that the principal's token belongs to, when it belongs to one."
           },
+          "summary": {
+            "type": "string",
+            "description": "Compact activity-feed text, when the event has additional details."
+          },
           "text": {
             "type": "string",
             "description": "The human-readable text of the Event.",
@@ -261732,6 +263637,7 @@
               "connect-attach-project",
               "connect-bitbucket",
               "connect-bitbucket-app",
+              "connect-branding-updated",
               "connect-cancel-mcp-event-subscription",
               "connect-configuration-created",
               "connect-configuration-deleted",
@@ -262693,6 +264599,7 @@
               "connect-attach-project",
               "connect-bitbucket",
               "connect-bitbucket-app",
+              "connect-branding-updated",
               "connect-cancel-mcp-event-subscription",
               "connect-configuration-created",
               "connect-configuration-deleted",
@@ -263442,6 +265349,7 @@
                 "connect-attach-project",
                 "connect-bitbucket",
                 "connect-bitbucket-app",
+                "connect-branding-updated",
                 "connect-cancel-mcp-event-subscription",
                 "connect-configuration-created",
                 "connect-configuration-deleted",
