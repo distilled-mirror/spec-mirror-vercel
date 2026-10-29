@@ -1816,6 +1816,10 @@
                     "providerSlug": {
                       "type": "string"
                     },
+                    "rotatedAt": {
+                      "nullable": true,
+                      "type": "number"
+                    },
                     "updatedAt": {
                       "type": "number"
                     },
@@ -1835,6 +1839,7 @@
                     "name",
                     "ownerId",
                     "providerSlug",
+                    "rotatedAt",
                     "updatedAt",
                     "zeroDataRetention"
                   ],
@@ -2029,6 +2034,10 @@
                           "providerSlug": {
                             "type": "string"
                           },
+                          "rotatedAt": {
+                            "nullable": true,
+                            "type": "number"
+                          },
                           "updatedAt": {
                             "type": "number"
                           },
@@ -2051,6 +2060,7 @@
                           "name",
                           "ownerId",
                           "providerSlug",
+                          "rotatedAt",
                           "updatedAt",
                           "zeroDataRetention"
                         ],
@@ -2213,6 +2223,10 @@
                     "providerSlug": {
                       "type": "string"
                     },
+                    "rotatedAt": {
+                      "nullable": true,
+                      "type": "number"
+                    },
                     "updatedAt": {
                       "type": "number"
                     },
@@ -2232,6 +2246,7 @@
                     "name",
                     "ownerId",
                     "providerSlug",
+                    "rotatedAt",
                     "updatedAt",
                     "zeroDataRetention"
                   ],
@@ -2342,6 +2357,10 @@
                     "providerSlug": {
                       "type": "string"
                     },
+                    "rotatedAt": {
+                      "nullable": true,
+                      "type": "number"
+                    },
                     "updatedAt": {
                       "type": "number"
                     },
@@ -2361,6 +2380,7 @@
                     "name",
                     "ownerId",
                     "providerSlug",
+                    "rotatedAt",
                     "updatedAt",
                     "zeroDataRetention"
                   ],
@@ -6424,18 +6444,173 @@
                                         "quantity": {
                                           "type": "number",
                                           "description": "The quantity to set for the plan item."
-                                        },
-                                        "resourceIds": {
-                                          "items": {
-                                            "type": "string"
-                                          },
-                                          "type": "array",
-                                          "description": "The resource IDs for the plan item. Only set if SKU requires resource entitlements."
                                         }
                                       },
                                       "required": [
                                         "productAlias",
                                         "quantity"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "output": {
+                                      "properties": {
+                                        "changedResources": {
+                                          "items": {
+                                            "properties": {
+                                              "addedResourceIds": {
+                                                "items": {
+                                                  "type": "string"
+                                                },
+                                                "type": "array",
+                                                "description": "Resource IDs that were added."
+                                              },
+                                              "effectiveAt": {
+                                                "type": "string",
+                                                "description": "When this resource change should take effect for downstream consumers."
+                                              },
+                                              "productAlias": {
+                                                "type": "string",
+                                                "description": "The alias of the product that was changed."
+                                              },
+                                              "productId": {
+                                                "type": "string",
+                                                "description": "The ID of the product that was changed."
+                                              },
+                                              "quantity": {
+                                                "type": "number",
+                                                "description": "The resulting quantity after this change."
+                                              },
+                                              "removedResourceIds": {
+                                                "items": {
+                                                  "type": "string"
+                                                },
+                                                "type": "array",
+                                                "description": "Resource IDs that were removed."
+                                              },
+                                              "resourceIds": {
+                                                "items": {
+                                                  "type": "string"
+                                                },
+                                                "type": "array",
+                                                "description": "The full set of resource IDs after the change."
+                                              }
+                                            },
+                                            "required": [
+                                              "productAlias",
+                                              "productId",
+                                              "quantity"
+                                            ],
+                                            "type": "object",
+                                            "description": "Resources that were changed as part of this intent. Tracks all logical changes including the primary change and any side effects."
+                                          },
+                                          "type": "array",
+                                          "description": "Resources that were changed as part of this intent. Tracks all logical changes including the primary change and any side effects."
+                                        },
+                                        "customerTimezone": {
+                                          "type": "string",
+                                          "description": "The Orb customer's timezone when the intent was created. Omitted for legacy intents."
+                                        },
+                                        "effectiveBehavior": {
+                                          "type": "string",
+                                          "enum": [
+                                            "end_of_term",
+                                            "immediate"
+                                          ],
+                                          "description": "When the subscription change should take effect."
+                                        },
+                                        "metadata": {
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          },
+                                          "type": "object",
+                                          "description": "Optional metadata associated with the intent to update the Orb subscription with."
+                                        },
+                                        "orbPriceId": {
+                                          "type": "string",
+                                          "description": "The Orb price ID for the subscription item being modified."
+                                        },
+                                        "pendingSubscriptionChangeId": {
+                                          "type": "string",
+                                          "description": "The ID of the pending subscription change if there is one."
+                                        },
+                                        "pricingSource": {
+                                          "type": "string",
+                                          "enum": [
+                                            "copper",
+                                            "orb"
+                                          ],
+                                          "description": "The source used as the authoritative price for this intent."
+                                        },
+                                        "productId": {
+                                          "type": "string",
+                                          "description": "The product ID associated with this intent."
+                                        },
+                                        "referenceBillingPeriod": {
+                                          "properties": {
+                                            "endDate": {
+                                              "type": "string",
+                                              "description": "The exclusive end of the reference billing period."
+                                            },
+                                            "startDate": {
+                                              "type": "string",
+                                              "description": "The inclusive start of the reference billing period."
+                                            }
+                                          },
+                                          "required": [
+                                            "endDate",
+                                            "startDate"
+                                          ],
+                                          "type": "object",
+                                          "description": "The canonical reference-product billing period at intent creation. Omitted for historical intents."
+                                        }
+                                      },
+                                      "required": [
+                                        "effectiveBehavior",
+                                        "orbPriceId",
+                                        "pricingSource",
+                                        "productId"
+                                      ],
+                                      "type": "object",
+                                      "description": "Output returned after configuring an OrbSubscriptionIntent."
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "set_plan_item_quantity"
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "options",
+                                    "output",
+                                    "type"
+                                  ],
+                                  "type": "object",
+                                  "description": "Configuration for the Orb subscription intent."
+                                },
+                                {
+                                  "properties": {
+                                    "options": {
+                                      "properties": {
+                                        "productAlias": {
+                                          "type": "string",
+                                          "description": "The alias of the product to set quantity for."
+                                        },
+                                        "quantity": {
+                                          "type": "number",
+                                          "description": "The quantity to set for the plan item."
+                                        },
+                                        "resourceIds": {
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        }
+                                      },
+                                      "required": [
+                                        "productAlias",
+                                        "quantity",
+                                        "resourceIds"
                                       ],
                                       "type": "object",
                                       "description": "Configuration input options for setting plan item quantity."
@@ -16412,6 +16587,9 @@
               }
             }
           },
+          "503": {
+            "description": ""
+          },
           "504": {
             "description": ""
           }
@@ -16715,6 +16893,9 @@
             }
           },
           "501": {
+            "description": ""
+          },
+          "503": {
             "description": ""
           },
           "504": {
@@ -17230,6 +17411,9 @@
             }
           },
           "501": {
+            "description": ""
+          },
+          "503": {
             "description": ""
           },
           "504": {
@@ -20990,8 +21174,7 @@
                                 "startedAt",
                                 "state"
                               ],
-                              "type": "object",
-                              "description": "Condensed check data. Retrieve individual check and check run data using api-checks v2 routes."
+                              "type": "object"
                             }
                           },
                           "required": [
@@ -23551,8 +23734,7 @@
                                   "required": [
                                     "machineSelectionType"
                                   ],
-                                  "type": "object",
-                                  "description": "Build machine configuration recorded for this deployment's build. See {@link DeploymentBuildMachine}. Distinct from the team/user `resourceConfig.buildMachine`, which only carries `default`."
+                                  "type": "object"
                                 },
                                 {
                                   "properties": {
@@ -23604,8 +23786,7 @@
                                       "description": "The setting which selected the build machine when the deployment was created. Frozen here so later project or team changes do not rewrite its history."
                                     }
                                   },
-                                  "type": "object",
-                                  "description": "Build machine configuration recorded for this deployment's build. See {@link DeploymentBuildMachine}. Distinct from the team/user `resourceConfig.buildMachine`, which only carries `default`."
+                                  "type": "object"
                                 }
                               ]
                             }
@@ -30075,8 +30256,7 @@
                                 "startedAt",
                                 "state"
                               ],
-                              "type": "object",
-                              "description": "Condensed check data. Retrieve individual check and check run data using api-checks v2 routes."
+                              "type": "object"
                             }
                           },
                           "required": [
@@ -32636,8 +32816,7 @@
                                   "required": [
                                     "machineSelectionType"
                                   ],
-                                  "type": "object",
-                                  "description": "Build machine configuration recorded for this deployment's build. See {@link DeploymentBuildMachine}. Distinct from the team/user `resourceConfig.buildMachine`, which only carries `default`."
+                                  "type": "object"
                                 },
                                 {
                                   "properties": {
@@ -32689,8 +32868,7 @@
                                       "description": "The setting which selected the build machine when the deployment was created. Frozen here so later project or team changes do not rewrite its history."
                                     }
                                   },
-                                  "type": "object",
-                                  "description": "Build machine configuration recorded for this deployment's build. See {@link DeploymentBuildMachine}. Distinct from the team/user `resourceConfig.buildMachine`, which only carries `default`."
+                                  "type": "object"
                                 }
                               ]
                             }
@@ -38141,8 +38319,7 @@
                             "startedAt",
                             "state"
                           ],
-                          "type": "object",
-                          "description": "Condensed check data. Retrieve individual check and check run data using api-checks v2 routes."
+                          "type": "object"
                         }
                       },
                       "required": [
@@ -40702,8 +40879,7 @@
                               "required": [
                                 "machineSelectionType"
                               ],
-                              "type": "object",
-                              "description": "Build machine configuration recorded for this deployment's build. See {@link DeploymentBuildMachine}. Distinct from the team/user `resourceConfig.buildMachine`, which only carries `default`."
+                              "type": "object"
                             },
                             {
                               "properties": {
@@ -40755,8 +40931,7 @@
                                   "description": "The setting which selected the build machine when the deployment was created. Frozen here so later project or team changes do not rewrite its history."
                                 }
                               },
-                              "type": "object",
-                              "description": "Build machine configuration recorded for this deployment's build. See {@link DeploymentBuildMachine}. Distinct from the team/user `resourceConfig.buildMachine`, which only carries `default`."
+                              "type": "object"
                             }
                           ]
                         }
@@ -75508,7 +75683,7 @@
                           "type": "string",
                           "maxLength": 32
                         },
-                        "description": "Roles a deployment may request when minting a token. The selected role becomes the `sub` claim."
+                        "description": "Roles a deployment may request when minting a token. The selected role is emitted as the `role` claim."
                       },
                       "defaultRole": {
                         "type": "string",
@@ -75911,7 +76086,7 @@
                           "type": "string",
                           "maxLength": 32
                         },
-                        "description": "Roles a deployment may request when minting a token. The selected role becomes the `sub` claim."
+                        "description": "Roles a deployment may request when minting a token. The selected role is emitted as the `role` claim."
                       },
                       "defaultRole": {
                         "type": "string",
@@ -213241,6 +213416,7 @@
                                   "nsnb-redeploy-attribution-card",
                                   "nsnb-request-access",
                                   "nsnb-viewer-upgrade",
+                                  "org-admin-sync",
                                   "organization-teams",
                                   "saml",
                                   "teams"
@@ -213774,6 +213950,7 @@
                             "nsnb-redeploy-attribution-card",
                             "nsnb-request-access",
                             "nsnb-viewer-upgrade",
+                            "org-admin-sync",
                             "organization-teams",
                             "saml",
                             "teams"
@@ -214034,6 +214211,7 @@
                             "nsnb-redeploy-attribution-card",
                             "nsnb-request-access",
                             "nsnb-viewer-upgrade",
+                            "org-admin-sync",
                             "organization-teams",
                             "saml",
                             "teams"
@@ -233197,8 +233375,7 @@
                                   "startedAt",
                                   "state"
                                 ],
-                                "type": "object",
-                                "description": "Detailed information about v2 deployment checks. Includes information about blocked workflows in the deployment lifecycle."
+                                "type": "object"
                               }
                             },
                             "required": [
@@ -239185,8 +239362,7 @@
             "items": {
               "$ref": "#/components/schemas/FlagJSONValue"
             },
-            "type": "array",
-            "description": "TODO: The following types will eventually be exported by a more relevant package."
+            "type": "array"
           },
           {
             "additionalProperties": {
@@ -241774,6 +241950,63 @@
               },
               {
                 "properties": {
+                  "credential": {
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "providerSlug": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "providerSlug"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "credential"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "changes": {
+                    "properties": {
+                      "active": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ]
+                      },
+                      "keyReplaced": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ]
+                      },
+                      "previousName": {
+                        "type": "string"
+                      },
+                      "zeroDataRetention": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  },
                   "credential": {
                     "properties": {
                       "id": {
@@ -253333,6 +253566,7 @@
                                 "nsnb-redeploy-attribution-card",
                                 "nsnb-request-access",
                                 "nsnb-viewer-upgrade",
+                                "org-admin-sync",
                                 "organization-teams",
                                 "saml",
                                 "teams"
@@ -253497,6 +253731,7 @@
                                 "nsnb-redeploy-attribution-card",
                                 "nsnb-request-access",
                                 "nsnb-viewer-upgrade",
+                                "org-admin-sync",
                                 "organization-teams",
                                 "saml",
                                 "teams"
@@ -259430,6 +259665,28 @@
               },
               {
                 "properties": {
+                  "disabled": {
+                    "type": "boolean",
+                    "enum": [
+                      false,
+                      true
+                    ]
+                  },
+                  "actorName": {
+                    "type": "string"
+                  },
+                  "actorType": {
+                    "type": "string",
+                    "enum": [
+                      "admin"
+                    ]
+                  }
+                },
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "isSystemInitiated": {
                     "type": "boolean",
                     "enum": [
@@ -260121,6 +260378,7 @@
                       "nsnb-redeploy-attribution-card",
                       "nsnb-request-access",
                       "nsnb-viewer-upgrade",
+                      "org-admin-sync",
                       "organization-teams",
                       "saml",
                       "teams"
@@ -264136,6 +264394,7 @@
               "team-agent-billing-migration-decision-changed",
               "team-avatar-update",
               "team-collaboration-settings-updated",
+              "team-data-cache-user-disabled-updated",
               "team-default-build-machine-updated",
               "team-default-passport-updated",
               "team-delete",
@@ -265098,6 +265357,7 @@
               "team-agent-billing-migration-decision-changed",
               "team-avatar-update",
               "team-collaboration-settings-updated",
+              "team-data-cache-user-disabled-updated",
               "team-default-build-machine-updated",
               "team-default-passport-updated",
               "team-delete",
@@ -265848,6 +266108,7 @@
                 "team-agent-billing-migration-decision-changed",
                 "team-avatar-update",
                 "team-collaboration-settings-updated",
+                "team-data-cache-user-disabled-updated",
                 "team-default-build-machine-updated",
                 "team-default-passport-updated",
                 "team-delete",
@@ -267601,6 +267862,14 @@
             "type": "string",
             "description": "ISO timestamp of when the team was linked to the organization."
           },
+          "dsyncMode": {
+            "type": "string",
+            "enum": [
+              "organization",
+              "team"
+            ],
+            "description": "Whether the organization's Directory Sync manages the team's memberships."
+          },
           "memberCount": {
             "type": "number",
             "description": "Present only when the request sets `includeMemberCount=true`. Number of members on the Team, including pending memberships. Excludes email invitations that do not have a membership record."
@@ -267637,6 +267906,7 @@
         "required": [
           "avatar",
           "createdAt",
+          "dsyncMode",
           "name",
           "organizationId",
           "slug",
@@ -267660,6 +267930,14 @@
           "createdAt": {
             "type": "string"
           },
+          "dsyncMode": {
+            "type": "string",
+            "enum": [
+              "organization",
+              "team"
+            ],
+            "description": "Whether the organization's Directory Sync manages the team's memberships."
+          },
           "organizationId": {
             "type": "string"
           },
@@ -267679,6 +267957,7 @@
         },
         "required": [
           "createdAt",
+          "dsyncMode",
           "organizationId",
           "ssoMode",
           "teamId",
@@ -269353,6 +269632,7 @@
                       "nsnb-redeploy-attribution-card",
                       "nsnb-request-access",
                       "nsnb-viewer-upgrade",
+                      "org-admin-sync",
                       "organization-teams",
                       "saml",
                       "teams"
@@ -270045,6 +270325,7 @@
                       "nsnb-redeploy-attribution-card",
                       "nsnb-request-access",
                       "nsnb-viewer-upgrade",
+                      "org-admin-sync",
                       "organization-teams",
                       "saml",
                       "teams"
@@ -270558,7 +270839,7 @@
               "verifiedEmuDomains"
             ],
             "type": "object",
-            "description": "Context for the Update Account screen. Present only when `isAccountUpdateRequired` is true. `managedTeams` is empty for orphan mode (user matches an EMU domain but is not on the team)."
+            "description": "Context for the Update Account screen. Present only when `isAccountUpdateRequired` is true. `managedTeams` is empty for orphan mode (user matches an EMU domain but is not on the team). When the teams the user must complete Update Account for include an organization's backing team, that team is listed as the organization, followed by the organization's Enterprise Managed root and child teams the user is a member of, including through Directory Sync group mappings."
           },
           "activeDashboardViews": {
             "items": {
