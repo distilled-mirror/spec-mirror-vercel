@@ -76333,11 +76333,11 @@
                   "eod": {
                     "type": "string",
                     "format": "date-time",
-                    "description": "End of Day, the UTC datetime for when the end of the billing/usage day is in UTC time. This tells us which day the usage data is for, and also allows for your \"end of day\" to be different from UTC 00:00:00. eod must be within the period dates, and cannot be older than 24h earlier from our server's current time."
+                    "description": "End of Day, the UTC datetime for when the end of the billing/usage day is in UTC time. This tells us which day the usage data is for, and also allows for your \"end of day\" to be different from UTC 00:00:00. eod must be within the period dates, and cannot be older than 30 days earlier from our server's current time."
                   },
                   "period": {
                     "type": "object",
-                    "description": "Period for the billing cycle. The period end date cannot be older than 24 hours earlier than our current server's time.",
+                    "description": "Period for the billing cycle. The period end date cannot be older than 30 days earlier than our current server's time.",
                     "properties": {
                       "start": {
                         "type": "string",
@@ -83642,6 +83642,13 @@
                           "createdAt": {
                             "type": "string"
                           },
+                          "discoveryLayout": {
+                            "type": "string",
+                            "enum": [
+                              "connect",
+                              "kms"
+                            ]
+                          },
                           "id": {
                             "type": "string"
                           },
@@ -83847,6 +83854,7 @@
                         "required": [
                           "algorithm",
                           "createdAt",
+                          "discoveryLayout",
                           "id",
                           "name",
                           "origin",
@@ -83983,6 +83991,13 @@
                     },
                     "createdAt": {
                       "type": "string"
+                    },
+                    "discoveryLayout": {
+                      "type": "string",
+                      "enum": [
+                        "connect",
+                        "kms"
+                      ]
                     },
                     "id": {
                       "type": "string"
@@ -84189,6 +84204,7 @@
                   "required": [
                     "algorithm",
                     "createdAt",
+                    "discoveryLayout",
                     "id",
                     "name",
                     "origin",
@@ -84212,6 +84228,9 @@
             "description": "You do not have permission to access this resource."
           },
           "404": {
+            "description": ""
+          },
+          "409": {
             "description": ""
           },
           "410": {
@@ -84812,6 +84831,13 @@
                     "createdAt": {
                       "type": "string"
                     },
+                    "discoveryLayout": {
+                      "type": "string",
+                      "enum": [
+                        "connect",
+                        "kms"
+                      ]
+                    },
                     "id": {
                       "type": "string"
                     },
@@ -85017,6 +85043,7 @@
                   "required": [
                     "algorithm",
                     "createdAt",
+                    "discoveryLayout",
                     "id",
                     "name",
                     "origin",
@@ -85132,6 +85159,13 @@
                     "createdAt": {
                       "type": "string"
                     },
+                    "discoveryLayout": {
+                      "type": "string",
+                      "enum": [
+                        "connect",
+                        "kms"
+                      ]
+                    },
                     "id": {
                       "type": "string"
                     },
@@ -85337,6 +85371,7 @@
                   "required": [
                     "algorithm",
                     "createdAt",
+                    "discoveryLayout",
                     "id",
                     "name",
                     "origin",
@@ -85437,6 +85472,13 @@
                     "createdAt": {
                       "type": "string"
                     },
+                    "discoveryLayout": {
+                      "type": "string",
+                      "enum": [
+                        "connect",
+                        "kms"
+                      ]
+                    },
                     "id": {
                       "type": "string"
                     },
@@ -85642,6 +85684,7 @@
                   "required": [
                     "algorithm",
                     "createdAt",
+                    "discoveryLayout",
                     "id",
                     "name",
                     "origin",
@@ -145515,6 +145558,55 @@
                         }
                       }
                     },
+                    "nullable": true
+                  },
+                  "gitComments": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "onPullRequest": {
+                        "description": "Whether or not Vercel should comment on pull requests",
+                        "type": "boolean"
+                      },
+                      "onCommit": {
+                        "description": "Whether or not Vercel should comment on commits",
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "onPullRequest",
+                      "onCommit"
+                    ],
+                    "description": "Opt-in to Git pull request and commit comments on the project level. Replaces `github.silent`.",
+                    "nullable": true
+                  },
+                  "gitProviderOptions": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "createDeployments": {
+                        "description": "Whether or not Vercel should automatically create GitHub deployments",
+                        "type": "string",
+                        "enum": [
+                          "enabled",
+                          "disabled"
+                        ]
+                      },
+                      "disableRepositoryDispatchEvents": {
+                        "description": "Whether Vercel should not automatically create GitHub repository-dispatch events on deployment events.",
+                        "type": "boolean"
+                      },
+                      "requireVerifiedCommits": {
+                        "description": "Whether the project requires commits to be signed & verified before deployments will be created. `true` enables, `false` disables (explicit override of the team setting), `null` clears the override to inherit from the team setting.",
+                        "type": "boolean",
+                        "nullable": true
+                      },
+                      "gitCommitStatus": {
+                        "description": "Whether Vercel should post git commit statuses for this project.",
+                        "type": "boolean"
+                      }
+                    },
+                    "description": "Miscellaneous options related to how this projects interacts with the linked git source.",
                     "nullable": true
                   },
                   "oidcTokenConfig": {
@@ -236065,7 +236157,7 @@
             "type": "string",
             "enum": [
               "api-key",
-              "aws-alpha",
+              "aws-oidc",
               "custom",
               "discord",
               "github",
@@ -236608,7 +236700,7 @@
             "type": "string",
             "enum": [
               "api-key",
-              "aws-alpha",
+              "aws-oidc",
               "custom",
               "discord",
               "github",
@@ -237808,6 +237900,17 @@
                 },
                 "additionalProperties": false,
                 "description": "Work Object preview settings for the managed Slack app. Updates preserve omitted settings."
+              },
+              "codeChannels": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enable Slack code channels. Adds the code_channels:manage bot scope and, with triggers, the agent_session_stopped and message.session events. Defaults to false for new apps."
+                  }
+                },
+                "additionalProperties": false,
+                "description": "Code channel settings for the managed Slack app. Updates preserve omitted settings."
               },
               "extras": {
                 "type": "object",
@@ -239200,6 +239303,17 @@
                 },
                 "additionalProperties": false,
                 "description": "Work Object preview settings for the managed Slack app. Updates preserve omitted settings."
+              },
+              "codeChannels": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enable Slack code channels. Adds the code_channels:manage bot scope and, with triggers, the agent_session_stopped and message.session events. Defaults to false for new apps."
+                  }
+                },
+                "additionalProperties": false,
+                "description": "Code channel settings for the managed Slack app. Updates preserve omitted settings."
               },
               "extras": {
                 "type": "object",
@@ -252990,6 +253104,58 @@
               },
               {
                 "properties": {
+                  "next": {
+                    "properties": {
+                      "dsyncMode": {
+                        "type": "string",
+                        "enum": [
+                          "organization",
+                          "team"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "dsyncMode"
+                    ],
+                    "type": "object"
+                  },
+                  "organizationId": {
+                    "type": "string"
+                  },
+                  "previous": {
+                    "properties": {
+                      "dsyncMode": {
+                        "type": "string",
+                        "enum": [
+                          "organization",
+                          "team"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "dsyncMode"
+                    ],
+                    "type": "object"
+                  },
+                  "teamId": {
+                    "type": "string"
+                  },
+                  "teamName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next",
+                  "organizationId",
+                  "previous",
+                  "teamId",
+                  "teamName"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "connectionType": {
                     "type": "string"
                   },
@@ -264665,6 +264831,7 @@
               "organization-team-add",
               "organization-team-create",
               "organization-team-delete",
+              "organization-team-dsync-update",
               "organization-team-sso-update",
               "organization-update-account-flow-dismissed",
               "organization-update-account-flow-triggered",
@@ -265634,6 +265801,7 @@
               "organization-team-add",
               "organization-team-create",
               "organization-team-delete",
+              "organization-team-dsync-update",
               "organization-team-sso-update",
               "organization-update-account-flow-dismissed",
               "organization-update-account-flow-triggered",
@@ -266391,6 +266559,7 @@
                 "organization-team-add",
                 "organization-team-create",
                 "organization-team-delete",
+                "organization-team-dsync-update",
                 "organization-team-sso-update",
                 "organization-update-account-flow-dismissed",
                 "organization-update-account-flow-triggered",
