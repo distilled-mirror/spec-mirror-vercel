@@ -260236,10 +260236,14 @@
                     "type": "string"
                   },
                   "deploymentId": {
-                    "type": "string"
+                    "nullable": true,
+                    "type": "string",
+                    "description": "Null for a repository's findings and those of an undeployed commit."
                   },
                   "environment": {
-                    "type": "string"
+                    "nullable": true,
+                    "type": "string",
+                    "description": "Null for a repository's findings."
                   },
                   "findingId": {
                     "type": "string"
@@ -260247,13 +260251,21 @@
                   "findingNumber": {
                     "type": "number"
                   },
-                  "projectId": {
-                    "type": "string"
-                  },
-                  "projectName": {
-                    "type": "string"
-                  },
                   "severity": {
+                    "type": "string"
+                  },
+                  "targetId": {
+                    "type": "string"
+                  },
+                  "targetKind": {
+                    "type": "string",
+                    "enum": [
+                      "project",
+                      "repository"
+                    ],
+                    "description": "A repository's findings are in code no project runs."
+                  },
+                  "targetName": {
                     "type": "string"
                   },
                   "vulnerabilityClass": {
@@ -260268,12 +260280,13 @@
                   "findingId",
                   "findingNumber",
                   "occurredAt",
-                  "projectId",
-                  "projectName",
                   "sessionId",
                   "sessionKind",
                   "severity",
                   "surface",
+                  "targetId",
+                  "targetKind",
+                  "targetName",
                   "vulnerabilityClass"
                 ],
                 "type": "object",
