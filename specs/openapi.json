@@ -24929,6 +24929,10 @@
                                               "terminationGracePeriodSeconds": {
                                                 "type": "number"
                                               },
+                                              "buildTarget": {
+                                                "type": "string",
+                                                "description": "Dockerfile stage from an `entrypoint` like `Dockerfile#worker`."
+                                              },
                                               "name": {
                                                 "type": "string"
                                               }
@@ -25728,6 +25732,10 @@
                                               },
                                               "terminationGracePeriodSeconds": {
                                                 "type": "number"
+                                              },
+                                              "buildTarget": {
+                                                "type": "string",
+                                                "description": "Dockerfile stage from an `entrypoint` like `Dockerfile#worker`."
                                               },
                                               "name": {
                                                 "type": "string"
@@ -34035,6 +34043,10 @@
                                               "terminationGracePeriodSeconds": {
                                                 "type": "number"
                                               },
+                                              "buildTarget": {
+                                                "type": "string",
+                                                "description": "Dockerfile stage from an `entrypoint` like `Dockerfile#worker`."
+                                              },
                                               "name": {
                                                 "type": "string"
                                               }
@@ -34834,6 +34846,10 @@
                                               },
                                               "terminationGracePeriodSeconds": {
                                                 "type": "number"
+                                              },
+                                              "buildTarget": {
+                                                "type": "string",
+                                                "description": "Dockerfile stage from an `entrypoint` like `Dockerfile#worker`."
                                               },
                                               "name": {
                                                 "type": "string"
@@ -42122,6 +42138,10 @@
                                           "terminationGracePeriodSeconds": {
                                             "type": "number"
                                           },
+                                          "buildTarget": {
+                                            "type": "string",
+                                            "description": "Dockerfile stage from an `entrypoint` like `Dockerfile#worker`."
+                                          },
                                           "name": {
                                             "type": "string"
                                           }
@@ -42921,6 +42941,10 @@
                                           },
                                           "terminationGracePeriodSeconds": {
                                             "type": "number"
+                                          },
+                                          "buildTarget": {
+                                            "type": "string",
+                                            "description": "Dockerfile stage from an `entrypoint` like `Dockerfile#worker`."
                                           },
                                           "name": {
                                             "type": "string"
@@ -53641,6 +53665,7 @@
                                           "compression": {
                                             "type": "string",
                                             "enum": [
+                                              "gzip",
                                               "none"
                                             ]
                                           },
@@ -54198,6 +54223,7 @@
                                           "compression": {
                                             "type": "string",
                                             "enum": [
+                                              "gzip",
                                               "none"
                                             ]
                                           },
@@ -55073,6 +55099,7 @@
                                 "compression": {
                                   "type": "string",
                                   "enum": [
+                                    "gzip",
                                     "none"
                                   ]
                                 },
@@ -55627,6 +55654,7 @@
                                 "compression": {
                                   "type": "string",
                                   "enum": [
+                                    "gzip",
                                     "none"
                                   ]
                                 },
@@ -56388,6 +56416,7 @@
                           "compression": {
                             "type": "string",
                             "enum": [
+                              "gzip",
                               "none"
                             ]
                           },
@@ -56721,6 +56750,7 @@
                                       "compression": {
                                         "type": "string",
                                         "enum": [
+                                          "gzip",
                                           "none"
                                         ]
                                       },
@@ -57278,6 +57308,7 @@
                                       "compression": {
                                         "type": "string",
                                         "enum": [
+                                          "gzip",
                                           "none"
                                         ]
                                       },
@@ -58054,6 +58085,7 @@
                             "compression": {
                               "type": "string",
                               "enum": [
+                                "gzip",
                                 "none"
                               ]
                             },
@@ -58689,6 +58721,7 @@
                                 "compression": {
                                   "type": "string",
                                   "enum": [
+                                    "gzip",
                                     "none"
                                   ]
                                 },
@@ -59243,6 +59276,7 @@
                                 "compression": {
                                   "type": "string",
                                   "enum": [
+                                    "gzip",
                                     "none"
                                   ]
                                 },
@@ -60015,6 +60049,7 @@
                           "compression": {
                             "type": "string",
                             "enum": [
+                              "gzip",
                               "none"
                             ]
                           },
@@ -60410,6 +60445,7 @@
                           "compression": {
                             "type": "string",
                             "enum": [
+                              "gzip",
                               "none"
                             ]
                           },
@@ -190935,7 +190971,7 @@
     },
     "/v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}": {
       "get": {
-        "description": "Retrieves the current status and details of a command executed in a session. Use the `wait` parameter to block until the command finishes execution.",
+        "description": "Retrieves the current status and details of a command executed in a session. Without `wait`, the stored command is returned as-is: its `exitCode` is `null` unless a previous request waited for the command to finish. Set `wait` to `true` to block until the command finishes and get its exit code.",
         "operationId": "getSessionCommand",
         "security": [
           {
@@ -190948,7 +190984,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The command data along with the exit code if the command did finish.",
+            "description": "The command data. `exitCode` is set if this or a previous request waited for the command to finish, and `null` otherwise.",
             "content": {
               "application/json": {
                 "schema": {
@@ -191012,12 +191048,12 @@
           },
           {
             "name": "wait",
-            "description": "If set to \"true\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.",
+            "description": "If set to \"true\", the request will block until the command finishes execution and the response will include its exit code. Otherwise, `exitCode` is `null` unless a previous request waited for the command to finish.",
             "in": "query",
             "required": false,
             "schema": {
               "type": "string",
-              "description": "If set to \"true\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.",
+              "description": "If set to \"true\", the request will block until the command finishes execution and the response will include its exit code. Otherwise, `exitCode` is `null` unless a previous request waited for the command to finish.",
               "enum": [
                 "true",
                 "false"
@@ -210845,7 +210881,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "number",
+              "type": "integer",
               "minimum": 1,
               "maximum": 5000
             }
@@ -210871,7 +210907,8 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "number"
+              "type": "integer",
+              "minimum": 0
             }
           },
           {
@@ -210879,7 +210916,8 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "number"
+              "type": "integer",
+              "minimum": 0
             }
           },
           {
@@ -211087,7 +211125,8 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "number"
+              "type": "integer",
+              "minimum": 0
             }
           },
           {
@@ -211095,7 +211134,8 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "number"
+              "type": "integer",
+              "minimum": 0
             }
           },
           {
@@ -218038,7 +218078,7 @@
     },
     "/v1/teams/{teamId}/members/{uid}": {
       "patch": {
-        "description": "Update the membership of a Team Member on the Team specified by `teamId`, such as changing the _role_ of the member, or confirming a request to join the Team for an unconfirmed member. The authenticated user must be an `OWNER` of the Team.",
+        "description": "Update the membership of a Team Member on the Team specified by `teamId`, such as changing the _role_ of the member, or confirming a request to join the Team for an unconfirmed member. The authenticated user must be an `OWNER` of the Team. An update that would leave the Team's organization without an organization admin is refused.",
         "operationId": "updateTeamMember",
         "security": [
           {
@@ -218217,7 +218257,7 @@
         }
       },
       "delete": {
-        "description": "Remove a Team Member from the Team, or dismiss a user that requested access, or leave a team. Directory Sync members can be removed when their directory email is absent or does not match the user's primary or verified secondary emails.",
+        "description": "Remove a Team Member from the Team, or dismiss a user that requested access, or leave a team. Directory Sync members can be removed when their directory email is absent or does not match the user's primary or verified secondary emails. Removing or leaving is refused when it would leave the Team's organization without an organization admin.",
         "operationId": "removeTeamMember",
         "security": [
           {
@@ -218258,6 +218298,9 @@
             "description": "You do not have permission to access this resource.\nNot authorized to update the team."
           },
           "404": {
+            "description": ""
+          },
+          "409": {
             "description": ""
           },
           "410": {
@@ -224110,6 +224153,10 @@
                                 "type": "string"
                               },
                               {
+                                "const": "awaiting_approval",
+                                "type": "string"
+                              },
+                              {
                                 "const": "skipped",
                                 "type": "string"
                               },
@@ -224405,6 +224452,7 @@
                 "type": "string",
                 "enum": [
                   "new",
+                  "awaiting_approval",
                   "skipped",
                   "bootstrapping",
                   "bootstrapping_failed",
@@ -225988,6 +226036,10 @@
                                 "type": "string"
                               },
                               {
+                                "const": "awaiting_approval",
+                                "type": "string"
+                              },
+                              {
                                 "const": "skipped",
                                 "type": "string"
                               },
@@ -226512,6 +226564,10 @@
                           "anyOf": [
                             {
                               "const": "new",
+                              "type": "string"
+                            },
+                            {
+                              "const": "awaiting_approval",
                               "type": "string"
                             },
                             {
@@ -227464,6 +227520,10 @@
                           "anyOf": [
                             {
                               "const": "new",
+                              "type": "string"
+                            },
+                            {
+                              "const": "awaiting_approval",
                               "type": "string"
                             },
                             {
@@ -252671,6 +252731,62 @@
               },
               {
                 "properties": {
+                  "driveName": {
+                    "type": "string"
+                  },
+                  "projectId": {
+                    "type": "string"
+                  },
+                  "projectName": {
+                    "type": "string"
+                  },
+                  "region": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "driveName",
+                  "projectId",
+                  "projectName",
+                  "region"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "driveName": {
+                    "type": "string"
+                  },
+                  "projectId": {
+                    "type": "string"
+                  },
+                  "projectName": {
+                    "type": "string"
+                  },
+                  "region": {
+                    "type": "string"
+                  },
+                  "snapshotId": {
+                    "type": "string"
+                  },
+                  "snapshotName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "driveName",
+                  "projectId",
+                  "projectName",
+                  "region",
+                  "snapshotId",
+                  "snapshotName"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "projectId": {
                     "type": "string"
                   },
@@ -262268,62 +262384,6 @@
               },
               {
                 "properties": {
-                  "driveName": {
-                    "type": "string"
-                  },
-                  "projectId": {
-                    "type": "string"
-                  },
-                  "projectName": {
-                    "type": "string"
-                  },
-                  "region": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "driveName",
-                  "projectId",
-                  "projectName",
-                  "region"
-                ],
-                "type": "object",
-                "description": "The payload of the event, if requested."
-              },
-              {
-                "properties": {
-                  "driveName": {
-                    "type": "string"
-                  },
-                  "projectId": {
-                    "type": "string"
-                  },
-                  "projectName": {
-                    "type": "string"
-                  },
-                  "region": {
-                    "type": "string"
-                  },
-                  "snapshotId": {
-                    "type": "string"
-                  },
-                  "snapshotName": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "driveName",
-                  "projectId",
-                  "projectName",
-                  "region",
-                  "snapshotId",
-                  "snapshotName"
-                ],
-                "type": "object",
-                "description": "The payload of the event, if requested."
-              },
-              {
-                "properties": {
                   "projectId": {
                     "type": "string"
                   },
@@ -268964,6 +269024,10 @@
               "drain-disabled",
               "drain-enabled",
               "drain-updated",
+              "drive-created",
+              "drive-deleted",
+              "drive-snapshot-created",
+              "drive-snapshot-deleted",
               "edge-cache-dangerously-delete-by-src-images",
               "edge-cache-dangerously-delete-by-tags",
               "edge-cache-dangerously-delete-immutable-static",
@@ -269982,6 +270046,10 @@
               "drain-disabled",
               "drain-enabled",
               "drain-updated",
+              "drive-created",
+              "drive-deleted",
+              "drive-snapshot-created",
+              "drive-snapshot-deleted",
               "edge-cache-dangerously-delete-by-src-images",
               "edge-cache-dangerously-delete-by-tags",
               "edge-cache-dangerously-delete-immutable-static",
@@ -270758,6 +270826,10 @@
                 "drain-disabled",
                 "drain-enabled",
                 "drain-updated",
+                "drive-created",
+                "drive-deleted",
+                "drive-snapshot-created",
+                "drive-snapshot-deleted",
                 "edge-cache-dangerously-delete-by-src-images",
                 "edge-cache-dangerously-delete-by-tags",
                 "edge-cache-dangerously-delete-immutable-static",
@@ -273919,7 +273991,7 @@
           "exitCode": {
             "nullable": true,
             "type": "number",
-            "description": "If the command did finish, the exit code.",
+            "description": "The exit code of the command, or `null` if no exit code has been recorded. The exit code is recorded only when a request waits for the command to finish (`wait=true` when running or getting the command). Polling without `wait=true` returns `null` until such a request records it, even if the command has already finished.",
             "example": 0
           },
           "id": {
@@ -274591,20 +274663,6 @@
             "type": "string",
             "description": "A short description of the Team.",
             "example": "Our mission is to make cloud computing accessible to everyone."
-          },
-          "disableHardAutoBlocks": {
-            "oneOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "boolean",
-                "enum": [
-                  false,
-                  true
-                ]
-              }
-            ]
           },
           "disableRepositoryDispatchEvents": {
             "type": "boolean",
