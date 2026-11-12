@@ -46882,6 +46882,24 @@
               "description": "The domain name",
               "example": "example.com"
             }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
           }
         ]
       }
@@ -46994,6 +47012,24 @@
             "schema": {
               "type": "string",
               "description": "The unique ID of the DNS record"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
             }
           }
         ]
@@ -93825,7 +93861,21 @@
                                 "type": "array",
                                 "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                               },
+                              "organizationAdmin": {
+                                "items": {
+                                  "$ref": "#/components/schemas/ACLAction"
+                                },
+                                "type": "array",
+                                "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                              },
                               "organizationDomain": {
+                                "items": {
+                                  "$ref": "#/components/schemas/ACLAction"
+                                },
+                                "type": "array",
+                                "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                              },
+                              "organizationMember": {
                                 "items": {
                                   "$ref": "#/components/schemas/ACLAction"
                                 },
@@ -119101,7 +119151,21 @@
                                     "type": "array",
                                     "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                                   },
+                                  "organizationAdmin": {
+                                    "items": {
+                                      "$ref": "#/components/schemas/ACLAction"
+                                    },
+                                    "type": "array",
+                                    "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                                  },
                                   "organizationDomain": {
+                                    "items": {
+                                      "$ref": "#/components/schemas/ACLAction"
+                                    },
+                                    "type": "array",
+                                    "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                                  },
+                                  "organizationMember": {
                                     "items": {
                                       "$ref": "#/components/schemas/ACLAction"
                                     },
@@ -127823,7 +127887,21 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "organizationAdmin": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "organizationDomain": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "organizationMember": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -136852,7 +136930,21 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "organizationAdmin": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "organizationDomain": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "organizationMember": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -145128,7 +145220,21 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "organizationAdmin": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "organizationDomain": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "organizationMember": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -154782,7 +154888,21 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "organizationAdmin": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "organizationDomain": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "organizationMember": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -163071,7 +163191,21 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "organizationAdmin": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "organizationDomain": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "organizationMember": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -184513,7 +184647,21 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "organizationAdmin": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "organizationDomain": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "organizationMember": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -245794,6 +245942,26 @@
                   "boardId": {
                     "type": "string"
                   },
+                  "grantId": {
+                    "type": "string"
+                  },
+                  "operationId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "boardId",
+                  "grantId",
+                  "operationId"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "boardId": {
+                    "type": "string"
+                  },
                   "operationId": {
                     "type": "string"
                   }
@@ -245801,6 +245969,37 @@
                 "required": [
                   "boardId",
                   "operationId"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "boardId": {
+                    "type": "string"
+                  },
+                  "environment": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "operationId": {
+                    "type": "string"
+                  },
+                  "projectId": {
+                    "type": "string"
+                  },
+                  "userId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "boardId",
+                  "environment",
+                  "name",
+                  "operationId",
+                  "projectId"
                 ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
@@ -255376,6 +255575,46 @@
                 },
                 "required": [
                   "action"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "environment": {
+                    "type": "string"
+                  },
+                  "expiresIn": {
+                    "type": "number",
+                    "description": "Seconds until the overrides expire."
+                  },
+                  "flags": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "description": "The keys of the overridden flags, never their values."
+                  },
+                  "projectId": {
+                    "type": "string"
+                  },
+                  "projectIds": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "description": "The projects that accept the overrides: a whole microfrontends group."
+                  },
+                  "projectName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "environment",
+                  "expiresIn",
+                  "flags",
+                  "projectId",
+                  "projectIds"
                 ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
@@ -269977,6 +270216,7 @@
               "flags-connection-created",
               "flags-connection-deleted",
               "flags-explorer-subscription",
+              "flags-overrides-signed",
               "flags-sdk-key",
               "flags-sdk-key-added",
               "flags-sdk-key-deleted",
@@ -270043,12 +270283,19 @@
               "messageboard-channel-created",
               "messageboard-channel-updated",
               "messageboard-created",
+              "messageboard-grant-created",
+              "messageboard-grant-revoked",
+              "messageboard-grant-updated",
               "messageboard-private-channel-created",
               "messageboard-private-channel-updated",
               "messageboard-private-created",
+              "messageboard-private-grant-created",
+              "messageboard-private-grant-revoked",
+              "messageboard-private-grant-updated",
               "messageboard-private-project-granted",
               "messageboard-private-project-revoked",
               "messageboard-project-channel-created",
+              "messageboard-project-created",
               "messageboard-project-granted",
               "messageboard-project-private-channel-created",
               "messageboard-project-revoked",
@@ -271001,6 +271248,7 @@
               "flags-connection-created",
               "flags-connection-deleted",
               "flags-explorer-subscription",
+              "flags-overrides-signed",
               "flags-sdk-key",
               "flags-sdk-key-added",
               "flags-sdk-key-deleted",
@@ -271067,12 +271315,19 @@
               "messageboard-channel-created",
               "messageboard-channel-updated",
               "messageboard-created",
+              "messageboard-grant-created",
+              "messageboard-grant-revoked",
+              "messageboard-grant-updated",
               "messageboard-private-channel-created",
               "messageboard-private-channel-updated",
               "messageboard-private-created",
+              "messageboard-private-grant-created",
+              "messageboard-private-grant-revoked",
+              "messageboard-private-grant-updated",
               "messageboard-private-project-granted",
               "messageboard-private-project-revoked",
               "messageboard-project-channel-created",
+              "messageboard-project-created",
               "messageboard-project-granted",
               "messageboard-project-private-channel-created",
               "messageboard-project-revoked",
@@ -271783,6 +272038,7 @@
                 "flags-connection-created",
                 "flags-connection-deleted",
                 "flags-explorer-subscription",
+                "flags-overrides-signed",
                 "flags-sdk-key",
                 "flags-sdk-key-added",
                 "flags-sdk-key-deleted",
@@ -271849,12 +272105,19 @@
                 "messageboard-channel-created",
                 "messageboard-channel-updated",
                 "messageboard-created",
+                "messageboard-grant-created",
+                "messageboard-grant-revoked",
+                "messageboard-grant-updated",
                 "messageboard-private-channel-created",
                 "messageboard-private-channel-updated",
                 "messageboard-private-created",
+                "messageboard-private-grant-created",
+                "messageboard-private-grant-revoked",
+                "messageboard-private-grant-updated",
                 "messageboard-private-project-granted",
                 "messageboard-private-project-revoked",
                 "messageboard-project-channel-created",
+                "messageboard-project-created",
                 "messageboard-project-granted",
                 "messageboard-project-private-channel-created",
                 "messageboard-project-revoked",
@@ -276885,6 +277148,31 @@
                   "slug"
                 ],
                 "type": "object"
+              },
+              "orphanSsoTeam": {
+                "properties": {
+                  "avatar": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "slug": {
+                    "type": "string"
+                  },
+                  "teamId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "avatar",
+                  "name",
+                  "slug",
+                  "teamId"
+                ],
+                "type": "object",
+                "description": "Orphans only: the team whose Directory Sync invite SSO sign-in redeems for a managed account once Update Account is complete."
               },
               "verifiedEmuDomains": {
                 "items": {
