@@ -2593,7 +2593,7 @@
             }
           },
           "400": {
-            "description": ""
+            "description": "One of the provided values in the request body is invalid."
           },
           "401": {
             "description": "The request is not authorized."
@@ -2636,7 +2636,314 @@
               "example": "my-team-url-slug"
             }
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "virtualModelSlug"
+                ],
+                "properties": {
+                  "virtualModelSlug": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9_.-]+$",
+                    "description": "The slug of the virtual model. Requests name it as `vmc/<slug>`. `list` is reserved."
+                  },
+                  "displayName": {
+                    "type": "string",
+                    "description": "The name shown in the UI."
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "The lifecycle status: `draft`, `active`, or `archived`. Any value other than `active` stops it serving requests. Defaults to `active`."
+                  },
+                  "modelSlug": {
+                    "type": "string",
+                    "description": "The model that the virtual model resolves to: a catalog model such as `openai/gpt-4o-mini`, or one of your team's private models as `private/<slug>`. Required on create."
+                  },
+                  "models": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "description": "A model ID: a catalog model such as `openai/gpt-4o`, or one of your team's private models as `private/<slug>`. A fallback can also name a virtual model as `vmc/<slug>`."
+                        },
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "model",
+                            "when"
+                          ],
+                          "description": "A conditional fallback. Only an alias can have one.",
+                          "properties": {
+                            "model": {
+                              "type": "string",
+                              "description": "A model ID: a catalog model such as `openai/gpt-4o`, or one of your team's private models as `private/<slug>`. A fallback can also name a virtual model as `vmc/<slug>`."
+                            },
+                            "when": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "description": "The fallback model is used when the answers of the primary model match this condition. Set exactly one of `confidenceBelow`, `probabilityBetween`, `any`, `all`, or `atLeast`. A condition tree can be 5 levels deep and can hold 100 conditions.",
+                              "properties": {
+                                "question": {
+                                  "type": "string",
+                                  "maxLength": 256,
+                                  "description": "The question to check, with `confidenceBelow` or `probabilityBetween`. Without it, the condition checks every question of the applicable type."
+                                },
+                                "confidenceBelow": {
+                                  "type": "number",
+                                  "minimum": 0,
+                                  "maximum": 1
+                                },
+                                "probabilityBetween": {
+                                  "type": "array",
+                                  "minItems": 2,
+                                  "maxItems": 2,
+                                  "items": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 1
+                                  },
+                                  "description": "A `[lower, upper]` pair."
+                                },
+                                "any": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "maxItems": 20,
+                                  "items": {
+                                    "type": "object"
+                                  },
+                                  "description": "Nested conditions. Each one has the same shape as `when`."
+                                },
+                                "all": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "maxItems": 20,
+                                  "items": {
+                                    "type": "object"
+                                  },
+                                  "description": "Nested conditions. Each one has the same shape as `when`."
+                                },
+                                "atLeast": {
+                                  "type": "object",
+                                  "additionalProperties": false,
+                                  "required": [
+                                    "count",
+                                    "conditions"
+                                  ],
+                                  "properties": {
+                                    "count": {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "description": "Must not be more than the number of conditions."
+                                    },
+                                    "conditions": {
+                                      "type": "array",
+                                      "minItems": 1,
+                                      "maxItems": 20,
+                                      "items": {
+                                        "type": "object"
+                                      },
+                                      "description": "Nested conditions. Each one has the same shape as `when`."
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "description": "The ordered fallback models, optionally led by one conditional `{ model, when }` entry."
+                  },
+                  "providerOrder": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "The providers to try, in order."
+                  },
+                  "providerOnly": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 256,
+                    "description": "Restrict routing to these providers."
+                  },
+                  "observabilityTags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Observability tags attached to requests through this virtual model."
+                  },
+                  "providerOptions": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "description": "Provider-specific options, keyed by provider slug. The slug of one of your team's private providers is also valid."
+                  },
+                  "byokCredentialIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 256,
+                    "description": "The BYOK credentials that this virtual model can use."
+                  },
+                  "inferenceRegion": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "description": "The region that requests are pinned to.",
+                    "properties": {
+                      "scope": {
+                        "type": "string",
+                        "enum": [
+                          "zone",
+                          "global"
+                        ],
+                        "description": "The pin scope: `zone` (a geo zone) or `global`."
+                      },
+                      "geoRegion": {
+                        "type": "string",
+                        "description": "The geo zone, for example `us` or `eu`. Required when `scope` is `zone`."
+                      },
+                      "providers": {
+                        "type": "object",
+                        "description": "Region overrides for each provider, keyed by provider slug.",
+                        "additionalProperties": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "scope": {
+                              "type": "string",
+                              "enum": [
+                                "zone",
+                                "global"
+                              ],
+                              "description": "The pin scope: `zone` (a geo zone) or `global`."
+                            },
+                            "geoRegion": {
+                              "type": "string",
+                              "description": "The geo zone, for example `us` or `eu`. Required when `scope` is `zone`."
+                            }
+                          },
+                          "nullable": true
+                        }
+                      }
+                    }
+                  },
+                  "sort": {
+                    "type": "string",
+                    "enum": [
+                      "@default",
+                      "cost",
+                      "ttft",
+                      "tps",
+                      "price",
+                      "latency",
+                      "throughput"
+                    ],
+                    "description": "Rank eligible providers by an attribute. `@default` ignores the value from the inference request."
+                  },
+                  "has": {
+                    "type": "array",
+                    "maxItems": 32,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "implicit-caching",
+                        "reasoning",
+                        "structured-output",
+                        "tool-use",
+                        "vision"
+                      ]
+                    },
+                    "description": "Limit providers to those with these features."
+                  },
+                  "caching": {
+                    "type": "string",
+                    "enum": [
+                      "@default",
+                      "auto"
+                    ],
+                    "description": "Use caching if available. `@default` ignores the value from the inference request."
+                  },
+                  "serviceTier": {
+                    "type": "string",
+                    "enum": [
+                      "@default",
+                      "flex",
+                      "priority",
+                      "fast"
+                    ],
+                    "description": "The service tier for providers that support it. `@default` ignores the value from the inference request."
+                  },
+                  "providerTimeouts": {
+                    "description": "Provider timeouts in milliseconds. `@default` ignores the value from the inference request.",
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "@default"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "byok": {
+                            "type": "object",
+                            "description": "The timeout for each provider that uses a BYOK credential, keyed by provider slug.",
+                            "additionalProperties": {
+                              "type": "integer",
+                              "minimum": 1000,
+                              "maximum": 789000
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "zeroDataRetention": {
+                    "type": "boolean",
+                    "description": "Only use providers with zero data retention."
+                  },
+                  "hipaaCompliant": {
+                    "type": "boolean",
+                    "description": "Only use HIPAA-compliant providers."
+                  },
+                  "disallowPromptTraining": {
+                    "type": "boolean",
+                    "description": "Only use providers that do not train on prompts."
+                  },
+                  "speed": {
+                    "type": "string",
+                    "enum": [
+                      "fast"
+                    ],
+                    "description": "Only use the fastest providers, with short timeouts."
+                  },
+                  "allowFallbackFromFast": {
+                    "type": "boolean",
+                    "description": "Allow fallback from fast to standard providers on failure."
+                  }
+                }
+              }
+            }
+          }
+        }
       },
       "get": {
         "description": "Get a virtual model config",
@@ -2761,7 +3068,7 @@
             }
           },
           "400": {
-            "description": ""
+            "description": "One of the provided values in the request body is invalid."
           },
           "401": {
             "description": "The request is not authorized."
@@ -2801,7 +3108,337 @@
               "example": "my-team-url-slug"
             }
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "virtualModelSlug"
+                ],
+                "properties": {
+                  "virtualModelSlug": {
+                    "type": "string",
+                    "description": "The slug of the virtual model to update."
+                  },
+                  "displayName": {
+                    "type": "string",
+                    "description": "The name shown in the UI."
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "The lifecycle status: `draft`, `active`, or `archived`. Any value other than `active` stops it serving requests. Defaults to `active`."
+                  },
+                  "modelSlug": {
+                    "type": "string",
+                    "description": "The model that the virtual model resolves to: a catalog model such as `openai/gpt-4o-mini`, or one of your team's private models as `private/<slug>`. Required on create."
+                  },
+                  "models": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "description": "A model ID: a catalog model such as `openai/gpt-4o`, or one of your team's private models as `private/<slug>`. A fallback can also name a virtual model as `vmc/<slug>`."
+                        },
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "model",
+                            "when"
+                          ],
+                          "description": "A conditional fallback. Only an alias can have one.",
+                          "properties": {
+                            "model": {
+                              "type": "string",
+                              "description": "A model ID: a catalog model such as `openai/gpt-4o`, or one of your team's private models as `private/<slug>`. A fallback can also name a virtual model as `vmc/<slug>`."
+                            },
+                            "when": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "description": "The fallback model is used when the answers of the primary model match this condition. Set exactly one of `confidenceBelow`, `probabilityBetween`, `any`, `all`, or `atLeast`. A condition tree can be 5 levels deep and can hold 100 conditions.",
+                              "properties": {
+                                "question": {
+                                  "type": "string",
+                                  "maxLength": 256,
+                                  "description": "The question to check, with `confidenceBelow` or `probabilityBetween`. Without it, the condition checks every question of the applicable type."
+                                },
+                                "confidenceBelow": {
+                                  "type": "number",
+                                  "minimum": 0,
+                                  "maximum": 1
+                                },
+                                "probabilityBetween": {
+                                  "type": "array",
+                                  "minItems": 2,
+                                  "maxItems": 2,
+                                  "items": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 1
+                                  },
+                                  "description": "A `[lower, upper]` pair."
+                                },
+                                "any": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "maxItems": 20,
+                                  "items": {
+                                    "type": "object"
+                                  },
+                                  "description": "Nested conditions. Each one has the same shape as `when`."
+                                },
+                                "all": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "maxItems": 20,
+                                  "items": {
+                                    "type": "object"
+                                  },
+                                  "description": "Nested conditions. Each one has the same shape as `when`."
+                                },
+                                "atLeast": {
+                                  "type": "object",
+                                  "additionalProperties": false,
+                                  "required": [
+                                    "count",
+                                    "conditions"
+                                  ],
+                                  "properties": {
+                                    "count": {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "description": "Must not be more than the number of conditions."
+                                    },
+                                    "conditions": {
+                                      "type": "array",
+                                      "minItems": 1,
+                                      "maxItems": 20,
+                                      "items": {
+                                        "type": "object"
+                                      },
+                                      "description": "Nested conditions. Each one has the same shape as `when`."
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "description": "The ordered fallback models, optionally led by one conditional `{ model, when }` entry."
+                  },
+                  "providerOrder": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "The providers to try, in order."
+                  },
+                  "providerOnly": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 256,
+                    "description": "Restrict routing to these providers."
+                  },
+                  "observabilityTags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Observability tags attached to requests through this virtual model."
+                  },
+                  "deleted": {
+                    "type": "boolean",
+                    "enum": [
+                      false
+                    ],
+                    "description": "Set to `false` to restore a deleted virtual model."
+                  },
+                  "providerOptions": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "description": "Provider-specific options, keyed by provider slug. The slug of one of your team's private providers is also valid. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "byokCredentialIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 256,
+                    "description": "The BYOK credentials that this virtual model can use. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "inferenceRegion": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "description": "The region that requests are pinned to. `null` removes the stored value.",
+                    "properties": {
+                      "scope": {
+                        "type": "string",
+                        "enum": [
+                          "zone",
+                          "global"
+                        ],
+                        "description": "The pin scope: `zone` (a geo zone) or `global`."
+                      },
+                      "geoRegion": {
+                        "type": "string",
+                        "description": "The geo zone, for example `us` or `eu`. Required when `scope` is `zone`."
+                      },
+                      "providers": {
+                        "type": "object",
+                        "description": "Region overrides for each provider, keyed by provider slug.",
+                        "additionalProperties": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "scope": {
+                              "type": "string",
+                              "enum": [
+                                "zone",
+                                "global"
+                              ],
+                              "description": "The pin scope: `zone` (a geo zone) or `global`."
+                            },
+                            "geoRegion": {
+                              "type": "string",
+                              "description": "The geo zone, for example `us` or `eu`. Required when `scope` is `zone`."
+                            }
+                          },
+                          "nullable": true
+                        }
+                      }
+                    },
+                    "nullable": true
+                  },
+                  "sort": {
+                    "type": "string",
+                    "enum": [
+                      "@default",
+                      "cost",
+                      "ttft",
+                      "tps",
+                      "price",
+                      "latency",
+                      "throughput",
+                      null
+                    ],
+                    "description": "Rank eligible providers by an attribute. `@default` ignores the value from the inference request. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "has": {
+                    "type": "array",
+                    "maxItems": 32,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "implicit-caching",
+                        "reasoning",
+                        "structured-output",
+                        "tool-use",
+                        "vision"
+                      ]
+                    },
+                    "description": "Limit providers to those with these features. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "caching": {
+                    "type": "string",
+                    "enum": [
+                      "@default",
+                      "auto",
+                      null
+                    ],
+                    "description": "Use caching if available. `@default` ignores the value from the inference request. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "serviceTier": {
+                    "type": "string",
+                    "enum": [
+                      "@default",
+                      "flex",
+                      "priority",
+                      "fast",
+                      null
+                    ],
+                    "description": "The service tier for providers that support it. `@default` ignores the value from the inference request. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "providerTimeouts": {
+                    "description": "Provider timeouts in milliseconds. `@default` ignores the value from the inference request. `null` removes the stored value.",
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "@default"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "byok": {
+                            "type": "object",
+                            "description": "The timeout for each provider that uses a BYOK credential, keyed by provider slug.",
+                            "additionalProperties": {
+                              "type": "integer",
+                              "minimum": 1000,
+                              "maximum": 789000
+                            }
+                          }
+                        },
+                        "nullable": true
+                      }
+                    ]
+                  },
+                  "zeroDataRetention": {
+                    "type": "boolean",
+                    "description": "Only use providers with zero data retention. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "hipaaCompliant": {
+                    "type": "boolean",
+                    "description": "Only use HIPAA-compliant providers. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "disallowPromptTraining": {
+                    "type": "boolean",
+                    "description": "Only use providers that do not train on prompts. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "speed": {
+                    "type": "string",
+                    "enum": [
+                      "fast",
+                      null
+                    ],
+                    "description": "Only use the fastest providers, with short timeouts. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "allowFallbackFromFast": {
+                    "type": "boolean",
+                    "description": "Allow fallback from fast to standard providers on failure. `null` removes the stored value.",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
       },
       "delete": {
         "description": "Delete a virtual model config (soft delete)",
@@ -3109,7 +3746,7 @@
             }
           },
           "400": {
-            "description": "One of the provided values in the request query is invalid."
+            "description": "One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid."
           },
           "401": {
             "description": "The request is not authorized."
@@ -3157,7 +3794,330 @@
               "example": "my-team-url-slug"
             }
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "displayName": {
+                    "type": "string",
+                    "description": "The name shown in the UI."
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "The lifecycle status: `draft`, `active`, or `archived`. Any value other than `active` stops it serving requests. Defaults to `active`."
+                  },
+                  "modelSlug": {
+                    "type": "string",
+                    "description": "The model that the virtual model resolves to: a catalog model such as `openai/gpt-4o-mini`, or one of your team's private models as `private/<slug>`. Required on create."
+                  },
+                  "models": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "description": "A model ID: a catalog model such as `openai/gpt-4o`, or one of your team's private models as `private/<slug>`. A fallback can also name a virtual model as `vmc/<slug>`."
+                        },
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "model",
+                            "when"
+                          ],
+                          "description": "A conditional fallback. Only an alias can have one.",
+                          "properties": {
+                            "model": {
+                              "type": "string",
+                              "description": "A model ID: a catalog model such as `openai/gpt-4o`, or one of your team's private models as `private/<slug>`. A fallback can also name a virtual model as `vmc/<slug>`."
+                            },
+                            "when": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "description": "The fallback model is used when the answers of the primary model match this condition. Set exactly one of `confidenceBelow`, `probabilityBetween`, `any`, `all`, or `atLeast`. A condition tree can be 5 levels deep and can hold 100 conditions.",
+                              "properties": {
+                                "question": {
+                                  "type": "string",
+                                  "maxLength": 256,
+                                  "description": "The question to check, with `confidenceBelow` or `probabilityBetween`. Without it, the condition checks every question of the applicable type."
+                                },
+                                "confidenceBelow": {
+                                  "type": "number",
+                                  "minimum": 0,
+                                  "maximum": 1
+                                },
+                                "probabilityBetween": {
+                                  "type": "array",
+                                  "minItems": 2,
+                                  "maxItems": 2,
+                                  "items": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 1
+                                  },
+                                  "description": "A `[lower, upper]` pair."
+                                },
+                                "any": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "maxItems": 20,
+                                  "items": {
+                                    "type": "object"
+                                  },
+                                  "description": "Nested conditions. Each one has the same shape as `when`."
+                                },
+                                "all": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "maxItems": 20,
+                                  "items": {
+                                    "type": "object"
+                                  },
+                                  "description": "Nested conditions. Each one has the same shape as `when`."
+                                },
+                                "atLeast": {
+                                  "type": "object",
+                                  "additionalProperties": false,
+                                  "required": [
+                                    "count",
+                                    "conditions"
+                                  ],
+                                  "properties": {
+                                    "count": {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "description": "Must not be more than the number of conditions."
+                                    },
+                                    "conditions": {
+                                      "type": "array",
+                                      "minItems": 1,
+                                      "maxItems": 20,
+                                      "items": {
+                                        "type": "object"
+                                      },
+                                      "description": "Nested conditions. Each one has the same shape as `when`."
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "description": "The ordered fallback models, optionally led by one conditional `{ model, when }` entry."
+                  },
+                  "providerOrder": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "The providers to try, in order."
+                  },
+                  "providerOnly": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 256,
+                    "description": "Restrict routing to these providers."
+                  },
+                  "observabilityTags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Observability tags attached to requests through this virtual model."
+                  },
+                  "deleted": {
+                    "type": "boolean",
+                    "enum": [
+                      false
+                    ],
+                    "description": "Set to `false` to restore a deleted virtual model."
+                  },
+                  "providerOptions": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "description": "Provider-specific options, keyed by provider slug. The slug of one of your team's private providers is also valid. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "byokCredentialIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 256,
+                    "description": "The BYOK credentials that this virtual model can use. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "inferenceRegion": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "description": "The region that requests are pinned to. `null` removes the stored value.",
+                    "properties": {
+                      "scope": {
+                        "type": "string",
+                        "enum": [
+                          "zone",
+                          "global"
+                        ],
+                        "description": "The pin scope: `zone` (a geo zone) or `global`."
+                      },
+                      "geoRegion": {
+                        "type": "string",
+                        "description": "The geo zone, for example `us` or `eu`. Required when `scope` is `zone`."
+                      },
+                      "providers": {
+                        "type": "object",
+                        "description": "Region overrides for each provider, keyed by provider slug.",
+                        "additionalProperties": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "scope": {
+                              "type": "string",
+                              "enum": [
+                                "zone",
+                                "global"
+                              ],
+                              "description": "The pin scope: `zone` (a geo zone) or `global`."
+                            },
+                            "geoRegion": {
+                              "type": "string",
+                              "description": "The geo zone, for example `us` or `eu`. Required when `scope` is `zone`."
+                            }
+                          },
+                          "nullable": true
+                        }
+                      }
+                    },
+                    "nullable": true
+                  },
+                  "sort": {
+                    "type": "string",
+                    "enum": [
+                      "@default",
+                      "cost",
+                      "ttft",
+                      "tps",
+                      "price",
+                      "latency",
+                      "throughput",
+                      null
+                    ],
+                    "description": "Rank eligible providers by an attribute. `@default` ignores the value from the inference request. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "has": {
+                    "type": "array",
+                    "maxItems": 32,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "implicit-caching",
+                        "reasoning",
+                        "structured-output",
+                        "tool-use",
+                        "vision"
+                      ]
+                    },
+                    "description": "Limit providers to those with these features. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "caching": {
+                    "type": "string",
+                    "enum": [
+                      "@default",
+                      "auto",
+                      null
+                    ],
+                    "description": "Use caching if available. `@default` ignores the value from the inference request. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "serviceTier": {
+                    "type": "string",
+                    "enum": [
+                      "@default",
+                      "flex",
+                      "priority",
+                      "fast",
+                      null
+                    ],
+                    "description": "The service tier for providers that support it. `@default` ignores the value from the inference request. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "providerTimeouts": {
+                    "description": "Provider timeouts in milliseconds. `@default` ignores the value from the inference request. `null` removes the stored value.",
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "@default"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "byok": {
+                            "type": "object",
+                            "description": "The timeout for each provider that uses a BYOK credential, keyed by provider slug.",
+                            "additionalProperties": {
+                              "type": "integer",
+                              "minimum": 1000,
+                              "maximum": 789000
+                            }
+                          }
+                        },
+                        "nullable": true
+                      }
+                    ]
+                  },
+                  "zeroDataRetention": {
+                    "type": "boolean",
+                    "description": "Only use providers with zero data retention. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "hipaaCompliant": {
+                    "type": "boolean",
+                    "description": "Only use HIPAA-compliant providers. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "disallowPromptTraining": {
+                    "type": "boolean",
+                    "description": "Only use providers that do not train on prompts. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "speed": {
+                    "type": "string",
+                    "enum": [
+                      "fast",
+                      null
+                    ],
+                    "description": "Only use the fastest providers, with short timeouts. `null` removes the stored value.",
+                    "nullable": true
+                  },
+                  "allowFallbackFromFast": {
+                    "type": "boolean",
+                    "description": "Allow fallback from fast to standard providers on failure. `null` removes the stored value.",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
       },
       "delete": {
         "description": "Delete a virtual model config by path slug (soft delete)",
@@ -3362,7 +4322,7 @@
             }
           },
           "400": {
-            "description": ""
+            "description": "One of the provided values in the request body is invalid."
           },
           "401": {
             "description": "The request is not authorized."
@@ -3402,7 +4362,67 @@
               "example": "my-team-url-slug"
             }
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "match"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "rewrite",
+                      "deny"
+                    ],
+                    "description": "`rewrite` sends requests for the matched model to another model. `deny` rejects them."
+                  },
+                  "match": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "model"
+                    ],
+                    "properties": {
+                      "model": {
+                        "type": "string",
+                        "description": "The model that the rule applies to."
+                      }
+                    }
+                  },
+                  "action": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "description": "Required when `type` is `rewrite`.",
+                    "properties": {
+                      "rewriteModel": {
+                        "type": "string",
+                        "description": "The model that serves the request: a catalog model, or one of your virtual models as `vmc/<slug>`. It must exist and be active. Required when `type` is `rewrite`."
+                      },
+                      "reason": {
+                        "type": "string",
+                        "description": "Why the model is denied. Used when `type` is `deny`."
+                      }
+                    }
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Whether the rule is enabled. Defaults to `true`."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "A free-text note about the rule."
+                  }
+                }
+              }
+            }
+          }
+        }
       },
       "get": {
         "description": "List the authenticated team's routing rules, oldest first. Without `limit` or `cursor`, returns every rule. With either, returns one page and a `nextCursor` for the next page (null on the last page). Paging reads and sorts the team's rules server-side, which is fine at current rule counts.",
@@ -3521,7 +4541,7 @@
             }
           },
           "400": {
-            "description": ""
+            "description": "One of the provided values in the request body is invalid."
           },
           "401": {
             "description": "The request is not authorized."
@@ -3558,7 +4578,49 @@
               "example": "my-team-url-slug"
             }
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "ruleId"
+                ],
+                "properties": {
+                  "ruleId": {
+                    "type": "string",
+                    "description": "The ID of the rule to update. Send at least one of `enabled`, `description`, or `action` with it."
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Whether the rule is enabled."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "A free-text note about the rule."
+                  },
+                  "action": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "description": "Replaces the stored action. For a rewrite rule it must contain `rewriteModel`.",
+                    "properties": {
+                      "rewriteModel": {
+                        "type": "string",
+                        "description": "The model that serves the request, for a rewrite rule: a catalog model, or one of your virtual models as `vmc/<slug>`. It must exist and be active."
+                      },
+                      "reason": {
+                        "type": "string",
+                        "description": "Why the model is denied, for a deny rule."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       },
       "delete": {
         "description": "Delete a routing rule (soft delete)",
@@ -20021,10 +21083,8 @@
                           }
                         ]
                       }
-                    ],
-                    "nullable": true
-                  },
-                  "nullable": true
+                    ]
+                  }
                 }
               },
               "application/stream+json": {
@@ -61108,6 +62168,104 @@
             }
           }
         ]
+      },
+      "delete": {
+        "description": "Deletes a drive by project and name or drive ID. Attached drives cannot be deleted. Stop or replace the session currently using the drive before retrying deletion.",
+        "operationId": "deleteDriveV1",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Delete a drive",
+        "tags": [
+          "drives"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "drive": {
+                      "$ref": "#/components/schemas/Drive"
+                    }
+                  },
+                  "required": [
+                    "drive"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "409": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "429": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "nameOrId",
+            "description": "The drive name or ID.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The drive name or ID.",
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "maxLength": 64,
+              "example": "workspace"
+            }
+          },
+          {
+            "name": "projectId",
+            "description": "The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+              "example": "prj_abc123"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
       }
     },
     "/v1/drives/{name}": {
@@ -61269,104 +62427,6 @@
             }
           }
         }
-      },
-      "delete": {
-        "description": "Deletes a drive by project and name. Attached drives cannot be deleted. Stop or replace the session currently using the drive before retrying deletion.",
-        "operationId": "deleteDriveV1",
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
-        "summary": "Delete a drive",
-        "tags": [
-          "drives"
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "drive": {
-                      "$ref": "#/components/schemas/Drive"
-                    }
-                  },
-                  "required": [
-                    "drive"
-                  ],
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "One of the provided values in the request query is invalid."
-          },
-          "401": {
-            "description": "The request is not authorized."
-          },
-          "403": {
-            "description": "You do not have permission to access this resource."
-          },
-          "404": {
-            "description": ""
-          },
-          "409": {
-            "description": ""
-          },
-          "410": {
-            "description": ""
-          },
-          "429": {
-            "description": ""
-          }
-        },
-        "parameters": [
-          {
-            "name": "name",
-            "description": "Name for the drive. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Name for the drive. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).",
-              "pattern": "^[a-zA-Z0-9_-]+$",
-              "maxLength": 64,
-              "example": "workspace"
-            }
-          },
-          {
-            "name": "projectId",
-            "description": "The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "description": "The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
-              "example": "prj_abc123"
-            }
-          },
-          {
-            "description": "The Team identifier to perform the request on behalf of.",
-            "in": "query",
-            "name": "teamId",
-            "schema": {
-              "type": "string",
-              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
-            }
-          },
-          {
-            "description": "The Team slug to perform the request on behalf of.",
-            "in": "query",
-            "name": "slug",
-            "schema": {
-              "type": "string",
-              "example": "my-team-url-slug"
-            }
-          }
-        ]
       }
     },
     "/v1/drives/{name}/fork": {
@@ -95473,102 +96533,6 @@
                                 "description": "Whether the request served by a canary deployment should return a header indicating a canary was served. Defaults to `false` when omitted.",
                                 "example": false
                               },
-                              "gate": {
-                                "properties": {
-                                  "action": {
-                                    "type": "string",
-                                    "enum": [
-                                      "pause",
-                                      "rollback"
-                                    ],
-                                    "description": "What to do when the gate trips: pause the rollout, or roll it back."
-                                  },
-                                  "checks": {
-                                    "items": {
-                                      "properties": {
-                                        "excludePaths": {
-                                          "items": {
-                                            "type": "string"
-                                          },
-                                          "type": "array",
-                                          "description": "Request paths to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Matched exactly against the request path with any query string removed; no prefix or glob matching. Defaults to `[]` when omitted.",
-                                          "example": [
-                                            "/api/health"
-                                          ]
-                                        },
-                                        "excludeStatusCodes": {
-                                          "items": {
-                                            "type": "number"
-                                          },
-                                          "type": "array",
-                                          "description": "Response status codes to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Defaults to `[]` when omitted.",
-                                          "example": [
-                                            503
-                                          ]
-                                        },
-                                        "ingestWatermarkSeconds": {
-                                          "type": "number",
-                                          "description": "Seconds of ingest lag to allow for: the query's upper bound is `now() - this value`, so the check never reads a window that is still filling. Defaults to `30` when omitted.",
-                                          "example": 30
-                                        },
-                                        "significanceLevel": {
-                                          "type": "number",
-                                          "description": "A run fails only when the canary's error rate is higher and its one-sided Fisher p-value is below this significance level. Defaults to `0.05`; lower values require stronger evidence.",
-                                          "example": 0.05
-                                        },
-                                        "type": {
-                                          "type": "string",
-                                          "enum": [
-                                            "error-rate-5xx"
-                                          ],
-                                          "description": "The metric this check evaluates."
-                                        }
-                                      },
-                                      "required": [
-                                        "type"
-                                      ],
-                                      "type": "object",
-                                      "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                                    },
-                                    "type": "array",
-                                    "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                                  },
-                                  "dryRun": {
-                                    "type": "boolean",
-                                    "enum": [
-                                      false,
-                                      true
-                                    ],
-                                    "description": "When true, a tripped gate is only reported — {@link action} is not taken."
-                                  },
-                                  "enabled": {
-                                    "type": "boolean",
-                                    "enum": [
-                                      false,
-                                      true
-                                    ],
-                                    "description": "Whether automated gating is enabled for this project's rollouts."
-                                  },
-                                  "failureThreshold": {
-                                    "type": "number",
-                                    "description": "How many failing evaluations within {@link windowSize} trip the gate. Defaults to `3` when omitted.",
-                                    "example": 3
-                                  },
-                                  "windowSize": {
-                                    "type": "number",
-                                    "description": "How many of the most recent evaluations {@link failureThreshold} is counted against. Defaults to `5` when omitted.",
-                                    "example": 5
-                                  }
-                                },
-                                "required": [
-                                  "action",
-                                  "checks",
-                                  "dryRun",
-                                  "enabled"
-                                ],
-                                "type": "object",
-                                "description": "Automated gating configuration. Omitted (the default) means no gating is configured, which is equivalent to `enabled: false`."
-                              },
                               "stages": {
                                 "nullable": true,
                                 "items": {
@@ -96602,6 +97566,7 @@
                           "tier": {
                             "type": "string",
                             "enum": [
+                              "critical",
                               "priority"
                             ]
                           },
@@ -107709,102 +108674,6 @@
                                 "description": "Whether the request served by a canary deployment should return a header indicating a canary was served. Defaults to `false` when omitted.",
                                 "example": false
                               },
-                              "gate": {
-                                "properties": {
-                                  "action": {
-                                    "type": "string",
-                                    "enum": [
-                                      "pause",
-                                      "rollback"
-                                    ],
-                                    "description": "What to do when the gate trips: pause the rollout, or roll it back."
-                                  },
-                                  "checks": {
-                                    "items": {
-                                      "properties": {
-                                        "excludePaths": {
-                                          "items": {
-                                            "type": "string"
-                                          },
-                                          "type": "array",
-                                          "description": "Request paths to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Matched exactly against the request path with any query string removed; no prefix or glob matching. Defaults to `[]` when omitted.",
-                                          "example": [
-                                            "/api/health"
-                                          ]
-                                        },
-                                        "excludeStatusCodes": {
-                                          "items": {
-                                            "type": "number"
-                                          },
-                                          "type": "array",
-                                          "description": "Response status codes to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Defaults to `[]` when omitted.",
-                                          "example": [
-                                            503
-                                          ]
-                                        },
-                                        "ingestWatermarkSeconds": {
-                                          "type": "number",
-                                          "description": "Seconds of ingest lag to allow for: the query's upper bound is `now() - this value`, so the check never reads a window that is still filling. Defaults to `30` when omitted.",
-                                          "example": 30
-                                        },
-                                        "significanceLevel": {
-                                          "type": "number",
-                                          "description": "A run fails only when the canary's error rate is higher and its one-sided Fisher p-value is below this significance level. Defaults to `0.05`; lower values require stronger evidence.",
-                                          "example": 0.05
-                                        },
-                                        "type": {
-                                          "type": "string",
-                                          "enum": [
-                                            "error-rate-5xx"
-                                          ],
-                                          "description": "The metric this check evaluates."
-                                        }
-                                      },
-                                      "required": [
-                                        "type"
-                                      ],
-                                      "type": "object",
-                                      "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                                    },
-                                    "type": "array",
-                                    "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                                  },
-                                  "dryRun": {
-                                    "type": "boolean",
-                                    "enum": [
-                                      false,
-                                      true
-                                    ],
-                                    "description": "When true, a tripped gate is only reported — {@link action} is not taken."
-                                  },
-                                  "enabled": {
-                                    "type": "boolean",
-                                    "enum": [
-                                      false,
-                                      true
-                                    ],
-                                    "description": "Whether automated gating is enabled for this project's rollouts."
-                                  },
-                                  "failureThreshold": {
-                                    "type": "number",
-                                    "description": "How many failing evaluations within {@link windowSize} trip the gate. Defaults to `3` when omitted.",
-                                    "example": 3
-                                  },
-                                  "windowSize": {
-                                    "type": "number",
-                                    "description": "How many of the most recent evaluations {@link failureThreshold} is counted against. Defaults to `5` when omitted.",
-                                    "example": 5
-                                  }
-                                },
-                                "required": [
-                                  "action",
-                                  "checks",
-                                  "dryRun",
-                                  "enabled"
-                                ],
-                                "type": "object",
-                                "description": "Automated gating configuration. Omitted (the default) means no gating is configured, which is equivalent to `enabled: false`."
-                              },
                               "stages": {
                                 "nullable": true,
                                 "items": {
@@ -109159,6 +110028,7 @@
                           "tier": {
                             "type": "string",
                             "enum": [
+                              "critical",
                               "priority"
                             ]
                           },
@@ -112357,102 +113227,6 @@
                                     "description": "Whether the request served by a canary deployment should return a header indicating a canary was served. Defaults to `false` when omitted.",
                                     "example": false
                                   },
-                                  "gate": {
-                                    "properties": {
-                                      "action": {
-                                        "type": "string",
-                                        "enum": [
-                                          "pause",
-                                          "rollback"
-                                        ],
-                                        "description": "What to do when the gate trips: pause the rollout, or roll it back."
-                                      },
-                                      "checks": {
-                                        "items": {
-                                          "properties": {
-                                            "excludePaths": {
-                                              "items": {
-                                                "type": "string"
-                                              },
-                                              "type": "array",
-                                              "description": "Request paths to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Matched exactly against the request path with any query string removed; no prefix or glob matching. Defaults to `[]` when omitted.",
-                                              "example": [
-                                                "/api/health"
-                                              ]
-                                            },
-                                            "excludeStatusCodes": {
-                                              "items": {
-                                                "type": "number"
-                                              },
-                                              "type": "array",
-                                              "description": "Response status codes to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Defaults to `[]` when omitted.",
-                                              "example": [
-                                                503
-                                              ]
-                                            },
-                                            "ingestWatermarkSeconds": {
-                                              "type": "number",
-                                              "description": "Seconds of ingest lag to allow for: the query's upper bound is `now() - this value`, so the check never reads a window that is still filling. Defaults to `30` when omitted.",
-                                              "example": 30
-                                            },
-                                            "significanceLevel": {
-                                              "type": "number",
-                                              "description": "A run fails only when the canary's error rate is higher and its one-sided Fisher p-value is below this significance level. Defaults to `0.05`; lower values require stronger evidence.",
-                                              "example": 0.05
-                                            },
-                                            "type": {
-                                              "type": "string",
-                                              "enum": [
-                                                "error-rate-5xx"
-                                              ],
-                                              "description": "The metric this check evaluates."
-                                            }
-                                          },
-                                          "required": [
-                                            "type"
-                                          ],
-                                          "type": "object",
-                                          "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                                        },
-                                        "type": "array",
-                                        "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                                      },
-                                      "dryRun": {
-                                        "type": "boolean",
-                                        "enum": [
-                                          false,
-                                          true
-                                        ],
-                                        "description": "When true, a tripped gate is only reported — {@link action} is not taken."
-                                      },
-                                      "enabled": {
-                                        "type": "boolean",
-                                        "enum": [
-                                          false,
-                                          true
-                                        ],
-                                        "description": "Whether automated gating is enabled for this project's rollouts."
-                                      },
-                                      "failureThreshold": {
-                                        "type": "number",
-                                        "description": "How many failing evaluations within {@link windowSize} trip the gate. Defaults to `3` when omitted.",
-                                        "example": 3
-                                      },
-                                      "windowSize": {
-                                        "type": "number",
-                                        "description": "How many of the most recent evaluations {@link failureThreshold} is counted against. Defaults to `5` when omitted.",
-                                        "example": 5
-                                      }
-                                    },
-                                    "required": [
-                                      "action",
-                                      "checks",
-                                      "dryRun",
-                                      "enabled"
-                                    ],
-                                    "type": "object",
-                                    "description": "Automated gating configuration. Omitted (the default) means no gating is configured, which is equivalent to `enabled: false`."
-                                  },
                                   "stages": {
                                     "nullable": true,
                                     "items": {
@@ -113807,6 +114581,7 @@
                               "tier": {
                                 "type": "string",
                                 "enum": [
+                                  "critical",
                                   "priority"
                                 ]
                               },
@@ -120786,102 +121561,6 @@
                                     "description": "Whether the request served by a canary deployment should return a header indicating a canary was served. Defaults to `false` when omitted.",
                                     "example": false
                                   },
-                                  "gate": {
-                                    "properties": {
-                                      "action": {
-                                        "type": "string",
-                                        "enum": [
-                                          "pause",
-                                          "rollback"
-                                        ],
-                                        "description": "What to do when the gate trips: pause the rollout, or roll it back."
-                                      },
-                                      "checks": {
-                                        "items": {
-                                          "properties": {
-                                            "excludePaths": {
-                                              "items": {
-                                                "type": "string"
-                                              },
-                                              "type": "array",
-                                              "description": "Request paths to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Matched exactly against the request path with any query string removed; no prefix or glob matching. Defaults to `[]` when omitted.",
-                                              "example": [
-                                                "/api/health"
-                                              ]
-                                            },
-                                            "excludeStatusCodes": {
-                                              "items": {
-                                                "type": "number"
-                                              },
-                                              "type": "array",
-                                              "description": "Response status codes to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Defaults to `[]` when omitted.",
-                                              "example": [
-                                                503
-                                              ]
-                                            },
-                                            "ingestWatermarkSeconds": {
-                                              "type": "number",
-                                              "description": "Seconds of ingest lag to allow for: the query's upper bound is `now() - this value`, so the check never reads a window that is still filling. Defaults to `30` when omitted.",
-                                              "example": 30
-                                            },
-                                            "significanceLevel": {
-                                              "type": "number",
-                                              "description": "A run fails only when the canary's error rate is higher and its one-sided Fisher p-value is below this significance level. Defaults to `0.05`; lower values require stronger evidence.",
-                                              "example": 0.05
-                                            },
-                                            "type": {
-                                              "type": "string",
-                                              "enum": [
-                                                "error-rate-5xx"
-                                              ],
-                                              "description": "The metric this check evaluates."
-                                            }
-                                          },
-                                          "required": [
-                                            "type"
-                                          ],
-                                          "type": "object",
-                                          "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                                        },
-                                        "type": "array",
-                                        "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                                      },
-                                      "dryRun": {
-                                        "type": "boolean",
-                                        "enum": [
-                                          false,
-                                          true
-                                        ],
-                                        "description": "When true, a tripped gate is only reported — {@link action} is not taken."
-                                      },
-                                      "enabled": {
-                                        "type": "boolean",
-                                        "enum": [
-                                          false,
-                                          true
-                                        ],
-                                        "description": "Whether automated gating is enabled for this project's rollouts."
-                                      },
-                                      "failureThreshold": {
-                                        "type": "number",
-                                        "description": "How many failing evaluations within {@link windowSize} trip the gate. Defaults to `3` when omitted.",
-                                        "example": 3
-                                      },
-                                      "windowSize": {
-                                        "type": "number",
-                                        "description": "How many of the most recent evaluations {@link failureThreshold} is counted against. Defaults to `5` when omitted.",
-                                        "example": 5
-                                      }
-                                    },
-                                    "required": [
-                                      "action",
-                                      "checks",
-                                      "dryRun",
-                                      "enabled"
-                                    ],
-                                    "type": "object",
-                                    "description": "Automated gating configuration. Omitted (the default) means no gating is configured, which is equivalent to `enabled: false`."
-                                  },
                                   "stages": {
                                     "nullable": true,
                                     "items": {
@@ -121915,6 +122594,7 @@
                               "tier": {
                                 "type": "string",
                                 "enum": [
+                                  "critical",
                                   "priority"
                                 ]
                               },
@@ -129545,102 +130225,6 @@
                           "description": "Whether the request served by a canary deployment should return a header indicating a canary was served. Defaults to `false` when omitted.",
                           "example": false
                         },
-                        "gate": {
-                          "properties": {
-                            "action": {
-                              "type": "string",
-                              "enum": [
-                                "pause",
-                                "rollback"
-                              ],
-                              "description": "What to do when the gate trips: pause the rollout, or roll it back."
-                            },
-                            "checks": {
-                              "items": {
-                                "properties": {
-                                  "excludePaths": {
-                                    "items": {
-                                      "type": "string"
-                                    },
-                                    "type": "array",
-                                    "description": "Request paths to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Matched exactly against the request path with any query string removed; no prefix or glob matching. Defaults to `[]` when omitted.",
-                                    "example": [
-                                      "/api/health"
-                                    ]
-                                  },
-                                  "excludeStatusCodes": {
-                                    "items": {
-                                      "type": "number"
-                                    },
-                                    "type": "array",
-                                    "description": "Response status codes to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Defaults to `[]` when omitted.",
-                                    "example": [
-                                      503
-                                    ]
-                                  },
-                                  "ingestWatermarkSeconds": {
-                                    "type": "number",
-                                    "description": "Seconds of ingest lag to allow for: the query's upper bound is `now() - this value`, so the check never reads a window that is still filling. Defaults to `30` when omitted.",
-                                    "example": 30
-                                  },
-                                  "significanceLevel": {
-                                    "type": "number",
-                                    "description": "A run fails only when the canary's error rate is higher and its one-sided Fisher p-value is below this significance level. Defaults to `0.05`; lower values require stronger evidence.",
-                                    "example": 0.05
-                                  },
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "error-rate-5xx"
-                                    ],
-                                    "description": "The metric this check evaluates."
-                                  }
-                                },
-                                "required": [
-                                  "type"
-                                ],
-                                "type": "object",
-                                "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                              },
-                              "type": "array",
-                              "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                            },
-                            "dryRun": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "When true, a tripped gate is only reported — {@link action} is not taken."
-                            },
-                            "enabled": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "Whether automated gating is enabled for this project's rollouts."
-                            },
-                            "failureThreshold": {
-                              "type": "number",
-                              "description": "How many failing evaluations within {@link windowSize} trip the gate. Defaults to `3` when omitted.",
-                              "example": 3
-                            },
-                            "windowSize": {
-                              "type": "number",
-                              "description": "How many of the most recent evaluations {@link failureThreshold} is counted against. Defaults to `5` when omitted.",
-                              "example": 5
-                            }
-                          },
-                          "required": [
-                            "action",
-                            "checks",
-                            "dryRun",
-                            "enabled"
-                          ],
-                          "type": "object",
-                          "description": "Automated gating configuration. Omitted (the default) means no gating is configured, which is equivalent to `enabled: false`."
-                        },
                         "stages": {
                           "nullable": true,
                           "items": {
@@ -130674,6 +131258,7 @@
                     "tier": {
                       "type": "string",
                       "enum": [
+                        "critical",
                         "priority"
                       ]
                     },
@@ -138611,102 +139196,6 @@
                           "description": "Whether the request served by a canary deployment should return a header indicating a canary was served. Defaults to `false` when omitted.",
                           "example": false
                         },
-                        "gate": {
-                          "properties": {
-                            "action": {
-                              "type": "string",
-                              "enum": [
-                                "pause",
-                                "rollback"
-                              ],
-                              "description": "What to do when the gate trips: pause the rollout, or roll it back."
-                            },
-                            "checks": {
-                              "items": {
-                                "properties": {
-                                  "excludePaths": {
-                                    "items": {
-                                      "type": "string"
-                                    },
-                                    "type": "array",
-                                    "description": "Request paths to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Matched exactly against the request path with any query string removed; no prefix or glob matching. Defaults to `[]` when omitted.",
-                                    "example": [
-                                      "/api/health"
-                                    ]
-                                  },
-                                  "excludeStatusCodes": {
-                                    "items": {
-                                      "type": "number"
-                                    },
-                                    "type": "array",
-                                    "description": "Response status codes to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Defaults to `[]` when omitted.",
-                                    "example": [
-                                      503
-                                    ]
-                                  },
-                                  "ingestWatermarkSeconds": {
-                                    "type": "number",
-                                    "description": "Seconds of ingest lag to allow for: the query's upper bound is `now() - this value`, so the check never reads a window that is still filling. Defaults to `30` when omitted.",
-                                    "example": 30
-                                  },
-                                  "significanceLevel": {
-                                    "type": "number",
-                                    "description": "A run fails only when the canary's error rate is higher and its one-sided Fisher p-value is below this significance level. Defaults to `0.05`; lower values require stronger evidence.",
-                                    "example": 0.05
-                                  },
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "error-rate-5xx"
-                                    ],
-                                    "description": "The metric this check evaluates."
-                                  }
-                                },
-                                "required": [
-                                  "type"
-                                ],
-                                "type": "object",
-                                "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                              },
-                              "type": "array",
-                              "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                            },
-                            "dryRun": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "When true, a tripped gate is only reported — {@link action} is not taken."
-                            },
-                            "enabled": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "Whether automated gating is enabled for this project's rollouts."
-                            },
-                            "failureThreshold": {
-                              "type": "number",
-                              "description": "How many failing evaluations within {@link windowSize} trip the gate. Defaults to `3` when omitted.",
-                              "example": 3
-                            },
-                            "windowSize": {
-                              "type": "number",
-                              "description": "How many of the most recent evaluations {@link failureThreshold} is counted against. Defaults to `5` when omitted.",
-                              "example": 5
-                            }
-                          },
-                          "required": [
-                            "action",
-                            "checks",
-                            "dryRun",
-                            "enabled"
-                          ],
-                          "type": "object",
-                          "description": "Automated gating configuration. Omitted (the default) means no gating is configured, which is equivalent to `enabled: false`."
-                        },
                         "stages": {
                           "nullable": true,
                           "items": {
@@ -139740,6 +140229,7 @@
                     "tier": {
                       "type": "string",
                       "enum": [
+                        "critical",
                         "priority"
                       ]
                     },
@@ -146934,102 +147424,6 @@
                           "description": "Whether the request served by a canary deployment should return a header indicating a canary was served. Defaults to `false` when omitted.",
                           "example": false
                         },
-                        "gate": {
-                          "properties": {
-                            "action": {
-                              "type": "string",
-                              "enum": [
-                                "pause",
-                                "rollback"
-                              ],
-                              "description": "What to do when the gate trips: pause the rollout, or roll it back."
-                            },
-                            "checks": {
-                              "items": {
-                                "properties": {
-                                  "excludePaths": {
-                                    "items": {
-                                      "type": "string"
-                                    },
-                                    "type": "array",
-                                    "description": "Request paths to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Matched exactly against the request path with any query string removed; no prefix or glob matching. Defaults to `[]` when omitted.",
-                                    "example": [
-                                      "/api/health"
-                                    ]
-                                  },
-                                  "excludeStatusCodes": {
-                                    "items": {
-                                      "type": "number"
-                                    },
-                                    "type": "array",
-                                    "description": "Response status codes to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Defaults to `[]` when omitted.",
-                                    "example": [
-                                      503
-                                    ]
-                                  },
-                                  "ingestWatermarkSeconds": {
-                                    "type": "number",
-                                    "description": "Seconds of ingest lag to allow for: the query's upper bound is `now() - this value`, so the check never reads a window that is still filling. Defaults to `30` when omitted.",
-                                    "example": 30
-                                  },
-                                  "significanceLevel": {
-                                    "type": "number",
-                                    "description": "A run fails only when the canary's error rate is higher and its one-sided Fisher p-value is below this significance level. Defaults to `0.05`; lower values require stronger evidence.",
-                                    "example": 0.05
-                                  },
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "error-rate-5xx"
-                                    ],
-                                    "description": "The metric this check evaluates."
-                                  }
-                                },
-                                "required": [
-                                  "type"
-                                ],
-                                "type": "object",
-                                "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                              },
-                              "type": "array",
-                              "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                            },
-                            "dryRun": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "When true, a tripped gate is only reported — {@link action} is not taken."
-                            },
-                            "enabled": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "Whether automated gating is enabled for this project's rollouts."
-                            },
-                            "failureThreshold": {
-                              "type": "number",
-                              "description": "How many failing evaluations within {@link windowSize} trip the gate. Defaults to `3` when omitted.",
-                              "example": 3
-                            },
-                            "windowSize": {
-                              "type": "number",
-                              "description": "How many of the most recent evaluations {@link failureThreshold} is counted against. Defaults to `5` when omitted.",
-                              "example": 5
-                            }
-                          },
-                          "required": [
-                            "action",
-                            "checks",
-                            "dryRun",
-                            "enabled"
-                          ],
-                          "type": "object",
-                          "description": "Automated gating configuration. Omitted (the default) means no gating is configured, which is equivalent to `enabled: false`."
-                        },
                         "stages": {
                           "nullable": true,
                           "items": {
@@ -148063,6 +148457,7 @@
                     "tier": {
                       "type": "string",
                       "enum": [
+                        "critical",
                         "priority"
                       ]
                     },
@@ -156625,102 +157020,6 @@
                           "description": "Whether the request served by a canary deployment should return a header indicating a canary was served. Defaults to `false` when omitted.",
                           "example": false
                         },
-                        "gate": {
-                          "properties": {
-                            "action": {
-                              "type": "string",
-                              "enum": [
-                                "pause",
-                                "rollback"
-                              ],
-                              "description": "What to do when the gate trips: pause the rollout, or roll it back."
-                            },
-                            "checks": {
-                              "items": {
-                                "properties": {
-                                  "excludePaths": {
-                                    "items": {
-                                      "type": "string"
-                                    },
-                                    "type": "array",
-                                    "description": "Request paths to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Matched exactly against the request path with any query string removed; no prefix or glob matching. Defaults to `[]` when omitted.",
-                                    "example": [
-                                      "/api/health"
-                                    ]
-                                  },
-                                  "excludeStatusCodes": {
-                                    "items": {
-                                      "type": "number"
-                                    },
-                                    "type": "array",
-                                    "description": "Response status codes to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Defaults to `[]` when omitted.",
-                                    "example": [
-                                      503
-                                    ]
-                                  },
-                                  "ingestWatermarkSeconds": {
-                                    "type": "number",
-                                    "description": "Seconds of ingest lag to allow for: the query's upper bound is `now() - this value`, so the check never reads a window that is still filling. Defaults to `30` when omitted.",
-                                    "example": 30
-                                  },
-                                  "significanceLevel": {
-                                    "type": "number",
-                                    "description": "A run fails only when the canary's error rate is higher and its one-sided Fisher p-value is below this significance level. Defaults to `0.05`; lower values require stronger evidence.",
-                                    "example": 0.05
-                                  },
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "error-rate-5xx"
-                                    ],
-                                    "description": "The metric this check evaluates."
-                                  }
-                                },
-                                "required": [
-                                  "type"
-                                ],
-                                "type": "object",
-                                "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                              },
-                              "type": "array",
-                              "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                            },
-                            "dryRun": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "When true, a tripped gate is only reported — {@link action} is not taken."
-                            },
-                            "enabled": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "Whether automated gating is enabled for this project's rollouts."
-                            },
-                            "failureThreshold": {
-                              "type": "number",
-                              "description": "How many failing evaluations within {@link windowSize} trip the gate. Defaults to `3` when omitted.",
-                              "example": 3
-                            },
-                            "windowSize": {
-                              "type": "number",
-                              "description": "How many of the most recent evaluations {@link failureThreshold} is counted against. Defaults to `5` when omitted.",
-                              "example": 5
-                            }
-                          },
-                          "required": [
-                            "action",
-                            "checks",
-                            "dryRun",
-                            "enabled"
-                          ],
-                          "type": "object",
-                          "description": "Automated gating configuration. Omitted (the default) means no gating is configured, which is equivalent to `enabled: false`."
-                        },
                         "stages": {
                           "nullable": true,
                           "items": {
@@ -157754,6 +158053,7 @@
                     "tier": {
                       "type": "string",
                       "enum": [
+                        "critical",
                         "priority"
                       ]
                     },
@@ -164951,102 +165251,6 @@
                           "description": "Whether the request served by a canary deployment should return a header indicating a canary was served. Defaults to `false` when omitted.",
                           "example": false
                         },
-                        "gate": {
-                          "properties": {
-                            "action": {
-                              "type": "string",
-                              "enum": [
-                                "pause",
-                                "rollback"
-                              ],
-                              "description": "What to do when the gate trips: pause the rollout, or roll it back."
-                            },
-                            "checks": {
-                              "items": {
-                                "properties": {
-                                  "excludePaths": {
-                                    "items": {
-                                      "type": "string"
-                                    },
-                                    "type": "array",
-                                    "description": "Request paths to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Matched exactly against the request path with any query string removed; no prefix or glob matching. Defaults to `[]` when omitted.",
-                                    "example": [
-                                      "/api/health"
-                                    ]
-                                  },
-                                  "excludeStatusCodes": {
-                                    "items": {
-                                      "type": "number"
-                                    },
-                                    "type": "array",
-                                    "description": "Response status codes to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Defaults to `[]` when omitted.",
-                                    "example": [
-                                      503
-                                    ]
-                                  },
-                                  "ingestWatermarkSeconds": {
-                                    "type": "number",
-                                    "description": "Seconds of ingest lag to allow for: the query's upper bound is `now() - this value`, so the check never reads a window that is still filling. Defaults to `30` when omitted.",
-                                    "example": 30
-                                  },
-                                  "significanceLevel": {
-                                    "type": "number",
-                                    "description": "A run fails only when the canary's error rate is higher and its one-sided Fisher p-value is below this significance level. Defaults to `0.05`; lower values require stronger evidence.",
-                                    "example": 0.05
-                                  },
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "error-rate-5xx"
-                                    ],
-                                    "description": "The metric this check evaluates."
-                                  }
-                                },
-                                "required": [
-                                  "type"
-                                ],
-                                "type": "object",
-                                "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                              },
-                              "type": "array",
-                              "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                            },
-                            "dryRun": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "When true, a tripped gate is only reported — {@link action} is not taken."
-                            },
-                            "enabled": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "Whether automated gating is enabled for this project's rollouts."
-                            },
-                            "failureThreshold": {
-                              "type": "number",
-                              "description": "How many failing evaluations within {@link windowSize} trip the gate. Defaults to `3` when omitted.",
-                              "example": 3
-                            },
-                            "windowSize": {
-                              "type": "number",
-                              "description": "How many of the most recent evaluations {@link failureThreshold} is counted against. Defaults to `5` when omitted.",
-                              "example": 5
-                            }
-                          },
-                          "required": [
-                            "action",
-                            "checks",
-                            "dryRun",
-                            "enabled"
-                          ],
-                          "type": "object",
-                          "description": "Automated gating configuration. Omitted (the default) means no gating is configured, which is equivalent to `enabled: false`."
-                        },
                         "stages": {
                           "nullable": true,
                           "items": {
@@ -166080,6 +166284,7 @@
                     "tier": {
                       "type": "string",
                       "enum": [
+                        "critical",
                         "priority"
                       ]
                     },
@@ -176275,102 +176480,6 @@
                           "description": "Whether the request served by a canary deployment should return a header indicating a canary was served. Defaults to `false` when omitted.",
                           "example": false
                         },
-                        "gate": {
-                          "properties": {
-                            "action": {
-                              "type": "string",
-                              "enum": [
-                                "pause",
-                                "rollback"
-                              ],
-                              "description": "What to do when the gate trips: pause the rollout, or roll it back."
-                            },
-                            "checks": {
-                              "items": {
-                                "properties": {
-                                  "excludePaths": {
-                                    "items": {
-                                      "type": "string"
-                                    },
-                                    "type": "array",
-                                    "description": "Request paths to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Matched exactly against the request path with any query string removed; no prefix or glob matching. Defaults to `[]` when omitted.",
-                                    "example": [
-                                      "/api/health"
-                                    ]
-                                  },
-                                  "excludeStatusCodes": {
-                                    "items": {
-                                      "type": "number"
-                                    },
-                                    "type": "array",
-                                    "description": "Response status codes to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Defaults to `[]` when omitted.",
-                                    "example": [
-                                      503
-                                    ]
-                                  },
-                                  "ingestWatermarkSeconds": {
-                                    "type": "number",
-                                    "description": "Seconds of ingest lag to allow for: the query's upper bound is `now() - this value`, so the check never reads a window that is still filling. Defaults to `30` when omitted.",
-                                    "example": 30
-                                  },
-                                  "significanceLevel": {
-                                    "type": "number",
-                                    "description": "A run fails only when the canary's error rate is higher and its one-sided Fisher p-value is below this significance level. Defaults to `0.05`; lower values require stronger evidence.",
-                                    "example": 0.05
-                                  },
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "error-rate-5xx"
-                                    ],
-                                    "description": "The metric this check evaluates."
-                                  }
-                                },
-                                "required": [
-                                  "type"
-                                ],
-                                "type": "object",
-                                "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                              },
-                              "type": "array",
-                              "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                            },
-                            "dryRun": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "When true, a tripped gate is only reported — {@link action} is not taken."
-                            },
-                            "enabled": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "Whether automated gating is enabled for this project's rollouts."
-                            },
-                            "failureThreshold": {
-                              "type": "number",
-                              "description": "How many failing evaluations within {@link windowSize} trip the gate. Defaults to `3` when omitted.",
-                              "example": 3
-                            },
-                            "windowSize": {
-                              "type": "number",
-                              "description": "How many of the most recent evaluations {@link failureThreshold} is counted against. Defaults to `5` when omitted.",
-                              "example": 5
-                            }
-                          },
-                          "required": [
-                            "action",
-                            "checks",
-                            "dryRun",
-                            "enabled"
-                          ],
-                          "type": "object",
-                          "description": "Automated gating configuration. Omitted (the default) means no gating is configured, which is equivalent to `enabled: false`."
-                        },
                         "stages": {
                           "nullable": true,
                           "items": {
@@ -186430,102 +186539,6 @@
                           "description": "Whether the request served by a canary deployment should return a header indicating a canary was served. Defaults to `false` when omitted.",
                           "example": false
                         },
-                        "gate": {
-                          "properties": {
-                            "action": {
-                              "type": "string",
-                              "enum": [
-                                "pause",
-                                "rollback"
-                              ],
-                              "description": "What to do when the gate trips: pause the rollout, or roll it back."
-                            },
-                            "checks": {
-                              "items": {
-                                "properties": {
-                                  "excludePaths": {
-                                    "items": {
-                                      "type": "string"
-                                    },
-                                    "type": "array",
-                                    "description": "Request paths to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Matched exactly against the request path with any query string removed; no prefix or glob matching. Defaults to `[]` when omitted.",
-                                    "example": [
-                                      "/api/health"
-                                    ]
-                                  },
-                                  "excludeStatusCodes": {
-                                    "items": {
-                                      "type": "number"
-                                    },
-                                    "type": "array",
-                                    "description": "Response status codes to ignore entirely — dropped from both the numerator (errors) and the denominator (total requests). Defaults to `[]` when omitted.",
-                                    "example": [
-                                      503
-                                    ]
-                                  },
-                                  "ingestWatermarkSeconds": {
-                                    "type": "number",
-                                    "description": "Seconds of ingest lag to allow for: the query's upper bound is `now() - this value`, so the check never reads a window that is still filling. Defaults to `30` when omitted.",
-                                    "example": 30
-                                  },
-                                  "significanceLevel": {
-                                    "type": "number",
-                                    "description": "A run fails only when the canary's error rate is higher and its one-sided Fisher p-value is below this significance level. Defaults to `0.05`; lower values require stronger evidence.",
-                                    "example": 0.05
-                                  },
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "error-rate-5xx"
-                                    ],
-                                    "description": "The metric this check evaluates."
-                                  }
-                                },
-                                "required": [
-                                  "type"
-                                ],
-                                "type": "object",
-                                "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                              },
-                              "type": "array",
-                              "description": "The checks to evaluate. An empty array means nothing is evaluated."
-                            },
-                            "dryRun": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "When true, a tripped gate is only reported — {@link action} is not taken."
-                            },
-                            "enabled": {
-                              "type": "boolean",
-                              "enum": [
-                                false,
-                                true
-                              ],
-                              "description": "Whether automated gating is enabled for this project's rollouts."
-                            },
-                            "failureThreshold": {
-                              "type": "number",
-                              "description": "How many failing evaluations within {@link windowSize} trip the gate. Defaults to `3` when omitted.",
-                              "example": 3
-                            },
-                            "windowSize": {
-                              "type": "number",
-                              "description": "How many of the most recent evaluations {@link failureThreshold} is counted against. Defaults to `5` when omitted.",
-                              "example": 5
-                            }
-                          },
-                          "required": [
-                            "action",
-                            "checks",
-                            "dryRun",
-                            "enabled"
-                          ],
-                          "type": "object",
-                          "description": "Automated gating configuration. Omitted (the default) means no gating is configured, which is equivalent to `enabled: false`."
-                        },
                         "stages": {
                           "nullable": true,
                           "items": {
@@ -187559,6 +187572,7 @@
                     "tier": {
                       "type": "string",
                       "enum": [
+                        "critical",
                         "priority"
                       ]
                     },
@@ -189819,6 +189833,108 @@
             }
           }
         ]
+      },
+      "delete": {
+        "description": "Deletes a drive by project and name or drive ID. Attached drives cannot be deleted. Stop or replace the session currently using the drive before retrying deletion.",
+        "operationId": "deleteDrive",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Deprecated: Use DELETE /v1/drives/:nameOrId. Requires the read-write:drive app scope instead of read-write:sandbox, and drive:delete instead of vercelRun:delete.\nEmits drive-deleted activity events instead of sandbox-drive-deleted. Delete a drive",
+        "tags": [
+          "sandboxes"
+        ],
+        "deprecated": true,
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "drive": {
+                      "$ref": "#/components/schemas/Drive"
+                    }
+                  },
+                  "required": [
+                    "drive"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "409": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "422": {
+            "description": ""
+          },
+          "429": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "nameOrId",
+            "description": "The drive name or ID.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The drive name or ID.",
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "maxLength": 64,
+              "example": "workspace"
+            }
+          },
+          {
+            "name": "projectId",
+            "description": "The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+              "example": "prj_abc123"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
       }
     },
     "/v2/sandboxes/drives/{name}": {
@@ -189984,108 +190100,6 @@
             }
           }
         }
-      },
-      "delete": {
-        "description": "Deletes a drive by project and name. Attached drives cannot be deleted. Stop or replace the session currently using the drive before retrying deletion.",
-        "operationId": "deleteDrive",
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
-        "summary": "Deprecated: Use DELETE /v1/drives/:name. Requires the read-write:drive app scope instead of read-write:sandbox, and drive:delete instead of vercelRun:delete.\nEmits drive-deleted activity events instead of sandbox-drive-deleted. Delete a drive",
-        "tags": [
-          "sandboxes"
-        ],
-        "deprecated": true,
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "drive": {
-                      "$ref": "#/components/schemas/Drive"
-                    }
-                  },
-                  "required": [
-                    "drive"
-                  ],
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "One of the provided values in the request query is invalid."
-          },
-          "401": {
-            "description": "The request is not authorized."
-          },
-          "403": {
-            "description": "You do not have permission to access this resource."
-          },
-          "404": {
-            "description": ""
-          },
-          "409": {
-            "description": ""
-          },
-          "410": {
-            "description": ""
-          },
-          "422": {
-            "description": ""
-          },
-          "429": {
-            "description": ""
-          }
-        },
-        "parameters": [
-          {
-            "name": "name",
-            "description": "Name for the drive. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Name for the drive. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).",
-              "pattern": "^[a-zA-Z0-9_-]+$",
-              "maxLength": 64,
-              "example": "workspace"
-            }
-          },
-          {
-            "name": "projectId",
-            "description": "The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "description": "The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
-              "example": "prj_abc123"
-            }
-          },
-          {
-            "description": "The Team identifier to perform the request on behalf of.",
-            "in": "query",
-            "name": "teamId",
-            "schema": {
-              "type": "string",
-              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
-            }
-          },
-          {
-            "description": "The Team slug to perform the request on behalf of.",
-            "in": "query",
-            "name": "slug",
-            "schema": {
-              "type": "string",
-              "example": "my-team-url-slug"
-            }
-          }
-        ]
       }
     },
     "/v2/sandboxes/drives/{name}/fork": {
@@ -191977,7 +191991,7 @@
         ]
       },
       "post": {
-        "description": "Executes a shell command inside a running session. The command runs asynchronously and returns immediately with a command ID that can be used to track its progress and retrieve its output. Optionally, use the `wait` parameter to stream the command status until completion.",
+        "description": "Executes a shell command inside a running session. The command runs asynchronously and returns immediately with a command ID that can be used to track its progress and retrieve its output. Optionally, use the `wait` parameter to stream the command status until completion. When `wait` is true, send `Accept: application/vnd.vercel.sandbox.command-stream+cbor-seq` to receive the stream as a CBOR Sequence (RFC 8742) instead of ND-JSON. Each item is a two-element array `[TYPE, PAYLOAD]`. `TYPE` is `1` for stdout or `2` for stderr with the raw output as a byte string, `3` for a stream failure with a `{ code, message }` map, or `128` for the `SessionCommand` as a map, sent when the command starts and again when it finishes.",
         "operationId": "runSessionCommand",
         "security": [
           {
@@ -192005,9 +192019,41 @@
                   "type": "object"
                 }
               },
+              "application/vnd.vercel.sandbox.command-stream+cbor-seq": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
               "application/x-ndjson": {
                 "schema": {
                   "oneOf": [
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "string"
+                        },
+                        "stream": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "data",
+                        "stream"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "properties": {
+                        "command": {
+                          "$ref": "#/components/schemas/SessionCommand"
+                        }
+                      },
+                      "required": [
+                        "command"
+                      ],
+                      "type": "object"
+                    },
                     {
                       "properties": {
                         "data": {
@@ -192036,25 +192082,6 @@
                         }
                       },
                       "required": [
-                        "data",
-                        "stream"
-                      ],
-                      "type": "object"
-                    },
-                    {
-                      "properties": {
-                        "command": {
-                          "$ref": "#/components/schemas/SessionCommand"
-                        },
-                        "data": {
-                          "type": "string"
-                        },
-                        "stream": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "command",
                         "data",
                         "stream"
                       ],
@@ -192568,7 +192595,7 @@
     },
     "/v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}/logs": {
       "get": {
-        "description": "Streams the output of a command in real-time using newline-delimited JSON (ND-JSON). Each entry includes the output data and stream type. Stream types include `stdout`, `stderr`, and `error` (for stream failures).",
+        "description": "Streams the output of a command in real-time using newline-delimited JSON (ND-JSON). Each entry includes the output data and stream type. Stream types include `stdout`, `stderr`, and `error` (for stream failures). Send `Accept: application/vnd.vercel.sandbox.command-stream+cbor-seq` to receive the raw output bytes as a CBOR Sequence (RFC 8742) instead. Each item is a two-element array `[TYPE, PAYLOAD]`, where `TYPE` is `1` for stdout or `2` for stderr with the raw output as a byte string, or `3` for a stream failure with a `{ code, message }` map.",
         "operationId": "getSessionCommandLogs",
         "security": [
           {
@@ -192583,9 +192610,30 @@
           "200": {
             "description": "",
             "content": {
+              "application/vnd.vercel.sandbox.command-stream+cbor-seq": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
               "application/x-ndjson": {
                 "schema": {
                   "oneOf": [
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "string"
+                        },
+                        "stream": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "data",
+                        "stream"
+                      ],
+                      "type": "object"
+                    },
                     {
                       "properties": {
                         "data": {
@@ -192608,21 +192656,6 @@
                             "message"
                           ],
                           "type": "object"
-                        },
-                        "stream": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "data",
-                        "stream"
-                      ],
-                      "type": "object"
-                    },
-                    {
-                      "properties": {
-                        "data": {
-                          "type": "string"
                         },
                         "stream": {
                           "type": "string"
@@ -246100,6 +246133,79 @@
               },
               {
                 "properties": {
+                  "acceptedTokenCount": {
+                    "type": "number"
+                  },
+                  "clientId": {
+                    "type": "string"
+                  },
+                  "clientName": {
+                    "type": "string"
+                  },
+                  "clientUid": {
+                    "type": "string"
+                  },
+                  "environments": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "eventName": {
+                    "type": "string"
+                  },
+                  "fields": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "importedTokenCount": {
+                    "type": "number"
+                  },
+                  "installationId": {
+                    "type": "string"
+                  },
+                  "projectId": {
+                    "type": "string"
+                  },
+                  "projectName": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "requestName": {
+                    "type": "string"
+                  },
+                  "result": {
+                    "type": "string"
+                  },
+                  "subjectType": {
+                    "type": "string",
+                    "enum": [
+                      "app",
+                      "user"
+                    ]
+                  },
+                  "subscriptionId": {
+                    "type": "string"
+                  },
+                  "tokenCount": {
+                    "type": "number"
+                  },
+                  "tokensDeleted": {
+                    "type": "number"
+                  },
+                  "triggerDestinationCount": {
+                    "type": "number"
+                  }
+                },
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "action": {
                     "type": "string",
                     "enum": [
@@ -246943,6 +247049,7 @@
                       "kind": {
                         "type": "string",
                         "enum": [
+                          "iam-access-group",
                           "project",
                           "team",
                           "user"
@@ -247763,6 +247870,68 @@
                 "required": [
                   "countries"
                 ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "enum": [
+                      false,
+                      true
+                    ]
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "enforce",
+                      "shadow"
+                    ]
+                  }
+                },
+                "required": [
+                  "enabled",
+                  "mode"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "endpointOrigin": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "endpointOrigin"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "failureMode": {
+                    "type": "string",
+                    "enum": [
+                      "closed",
+                      "open"
+                    ]
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "enforce",
+                      "shadow"
+                    ]
+                  },
+                  "rolloutPercent": {
+                    "type": "number"
+                  },
+                  "timeoutMs": {
+                    "type": "number"
+                  }
+                },
                 "type": "object",
                 "description": "The payload of the event, if requested."
               },
@@ -250403,70 +250572,6 @@
                   "bitbucketAccountId",
                   "bitbucketLogin"
                 ],
-                "type": "object",
-                "description": "The payload of the event, if requested."
-              },
-              {
-                "properties": {
-                  "acceptedTokenCount": {
-                    "type": "number"
-                  },
-                  "clientId": {
-                    "type": "string"
-                  },
-                  "clientName": {
-                    "type": "string"
-                  },
-                  "clientUid": {
-                    "type": "string"
-                  },
-                  "environments": {
-                    "items": {
-                      "type": "string"
-                    },
-                    "type": "array"
-                  },
-                  "eventName": {
-                    "type": "string"
-                  },
-                  "fields": {
-                    "items": {
-                      "type": "string"
-                    },
-                    "type": "array"
-                  },
-                  "importedTokenCount": {
-                    "type": "number"
-                  },
-                  "installationId": {
-                    "type": "string"
-                  },
-                  "projectId": {
-                    "type": "string"
-                  },
-                  "projectName": {
-                    "type": "string"
-                  },
-                  "subjectType": {
-                    "type": "string",
-                    "enum": [
-                      "app",
-                      "user"
-                    ]
-                  },
-                  "subscriptionId": {
-                    "type": "string"
-                  },
-                  "tokenCount": {
-                    "type": "number"
-                  },
-                  "tokensDeleted": {
-                    "type": "number"
-                  },
-                  "triggerDestinationCount": {
-                    "type": "number"
-                  }
-                },
                 "type": "object",
                 "description": "The payload of the event, if requested."
               },
@@ -257059,6 +257164,7 @@
                       "apple",
                       "bitbucket",
                       "chatgpt",
+                      "claude",
                       "github",
                       "github-custom-host",
                       "github-limited",
@@ -257083,6 +257189,7 @@
                       "apple",
                       "bitbucket",
                       "chatgpt",
+                      "claude",
                       "github",
                       "github-custom-host",
                       "github-limited",
@@ -257121,6 +257228,7 @@
                                 "apple",
                                 "bitbucket",
                                 "chatgpt",
+                                "claude",
                                 "email",
                                 "emu-recovery",
                                 "github",
@@ -257171,6 +257279,7 @@
                                     "apple",
                                     "bitbucket",
                                     "chatgpt",
+                                    "claude",
                                     "email",
                                     "emu-recovery",
                                     "github",
@@ -264251,6 +264360,7 @@
                             "apple",
                             "bitbucket",
                             "chatgpt",
+                            "claude",
                             "email",
                             "github",
                             "gitlab",
@@ -266154,6 +266264,108 @@
                   "vulnerabilityClass": {
                     "type": "string"
                   },
+                  "closeReason": {
+                    "type": "string",
+                    "enum": [
+                      "accepted-risk",
+                      "false-positive",
+                      "resolved"
+                    ]
+                  }
+                },
+                "required": [
+                  "branchRef",
+                  "closeReason",
+                  "deploymentId",
+                  "environment",
+                  "eventId",
+                  "findingId",
+                  "findingNumber",
+                  "occurredAt",
+                  "sessionId",
+                  "sessionKind",
+                  "severity",
+                  "surface",
+                  "targetId",
+                  "targetKind",
+                  "targetName",
+                  "vulnerabilityClass"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "eventId": {
+                    "type": "string"
+                  },
+                  "occurredAt": {
+                    "type": "number"
+                  },
+                  "sessionId": {
+                    "type": "string"
+                  },
+                  "sessionKind": {
+                    "type": "string",
+                    "description": "Currently emitted session kinds: chat, investigation."
+                  },
+                  "surface": {
+                    "type": "string",
+                    "description": "Currently emitted surfaces: dashboard, internal, slack, automation, github."
+                  },
+                  "branchRef": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "commitSha": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "deploymentId": {
+                    "nullable": true,
+                    "type": "string",
+                    "description": "Null for a repository's findings and those of an undeployed commit."
+                  },
+                  "environment": {
+                    "nullable": true,
+                    "type": "string",
+                    "description": "Null for a repository's findings."
+                  },
+                  "findingId": {
+                    "type": "string"
+                  },
+                  "findingNumber": {
+                    "type": "number"
+                  },
+                  "pullRequestNumber": {
+                    "nullable": true,
+                    "type": "number"
+                  },
+                  "repository": {
+                    "nullable": true,
+                    "type": "string",
+                    "description": "The GitHub repository, such as `acme/app`, commit, and pull request the event's review read: the one that found the finding, or for a resolution, the one that fixed it. Null for uploaded files; absent from events recorded before they were sent."
+                  },
+                  "severity": {
+                    "type": "string"
+                  },
+                  "targetId": {
+                    "type": "string"
+                  },
+                  "targetKind": {
+                    "type": "string",
+                    "enum": [
+                      "project",
+                      "repository"
+                    ],
+                    "description": "A repository's findings are in code no project runs."
+                  },
+                  "targetName": {
+                    "type": "string"
+                  },
+                  "vulnerabilityClass": {
+                    "type": "string"
+                  },
                   "dismissalReason": {
                     "type": "string",
                     "enum": [
@@ -266179,6 +266391,30 @@
                   "targetKind",
                   "targetName",
                   "vulnerabilityClass"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "eventId": {
+                    "type": "string"
+                  },
+                  "occurredAt": {
+                    "type": "number"
+                  },
+                  "projectId": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "projectName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "eventId",
+                  "occurredAt",
+                  "projectId"
                 ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
@@ -268721,6 +268957,32 @@
               },
               {
                 "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "enum": [
+                      false,
+                      true
+                    ]
+                  },
+                  "organizationId": {
+                    "type": "string"
+                  },
+                  "repository": {
+                    "type": "string"
+                  },
+                  "repositoryId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "enabled",
+                  "repositoryId"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "ciEnabled": {
                     "type": "boolean",
                     "enum": [
@@ -269448,6 +269710,7 @@
                       "apple",
                       "bitbucket",
                       "chatgpt",
+                      "claude",
                       "email",
                       "emu",
                       "github",
@@ -270083,6 +270346,7 @@
                       "apple",
                       "bitbucket",
                       "chatgpt",
+                      "claude",
                       "email",
                       "emu",
                       "github",
@@ -270286,6 +270550,7 @@
                       "apple",
                       "bitbucket",
                       "chatgpt",
+                      "claude",
                       "email",
                       "emu",
                       "github",
@@ -270672,6 +270937,10 @@
               "ai-gateway-guardrails-updated",
               "ai-gateway-headquarters-updated",
               "ai-gateway-hipaa-compliance-toggled",
+              "ai-gateway-inference-hooks-endpoint-updated",
+              "ai-gateway-inference-hooks-removed",
+              "ai-gateway-inference-hooks-settings-updated",
+              "ai-gateway-inference-hooks-toggled",
               "ai-gateway-inference-regions-updated",
               "ai-gateway-member-budget-changes",
               "ai-gateway-model-allowlist-models-updated",
@@ -270748,6 +271017,7 @@
               "compliance-document-previewed",
               "compliance-documents-bulk-downloaded",
               "concurrent-builds-update",
+              "connect-approve-connector-request",
               "connect-attach-project",
               "connect-bitbucket",
               "connect-bitbucket-app",
@@ -270762,6 +271032,7 @@
               "connect-create-connector",
               "connect-create-mcp-event-subscription",
               "connect-delete-connector",
+              "connect-delete-connector-request",
               "connect-delete-installation",
               "connect-detach-project",
               "connect-github",
@@ -270770,10 +271041,15 @@
               "connect-gitlab",
               "connect-gitlab-app",
               "connect-import-tokens",
+              "connect-provision-connector-request",
+              "connect-reject-connector-request",
               "connect-revoke-all-tokens",
+              "connect-submit-connector-request",
               "connect-update-connector",
+              "connect-update-connector-request",
               "connect-update-trigger-destinations",
               "connect-upsert-installation",
+              "connect-withdraw-connector-request",
               "custom-alert-created",
               "custom-alert-deleted",
               "custom-alert-updated",
@@ -271386,10 +271662,13 @@
               "vcr-repository-visibility-changed",
               "vercel-agent-elevated-permissions-approved",
               "vercel-agent-elevated-permissions-requested",
+              "vercel-agent-security-finding-closed",
               "vercel-agent-security-finding-created",
               "vercel-agent-security-finding-dismissed",
               "vercel-agent-security-finding-reopened",
               "vercel-agent-security-finding-resolved",
+              "vercel-agent-security-review-policy-deleted",
+              "vercel-agent-security-review-policy-updated",
               "vercel-agent-session-created",
               "vercel-agent-team-trial-credits-applied",
               "vercel-app-installation-request-dismissed",
@@ -271398,6 +271677,7 @@
               "vercel-app-installed",
               "vercel-app-tokens-revoked",
               "vercel-app-uninstalled",
+              "vercel-ci-repository-github-runners-updated",
               "vercel-ci-repository-settings-updated",
               "vercel-toolbar",
               "vpc-peering-connection-accepted",
@@ -271711,6 +271991,10 @@
               "ai-gateway-guardrails-updated",
               "ai-gateway-headquarters-updated",
               "ai-gateway-hipaa-compliance-toggled",
+              "ai-gateway-inference-hooks-endpoint-updated",
+              "ai-gateway-inference-hooks-removed",
+              "ai-gateway-inference-hooks-settings-updated",
+              "ai-gateway-inference-hooks-toggled",
               "ai-gateway-inference-regions-updated",
               "ai-gateway-member-budget-changes",
               "ai-gateway-model-allowlist-models-updated",
@@ -271787,6 +272071,7 @@
               "compliance-document-previewed",
               "compliance-documents-bulk-downloaded",
               "concurrent-builds-update",
+              "connect-approve-connector-request",
               "connect-attach-project",
               "connect-bitbucket",
               "connect-bitbucket-app",
@@ -271801,6 +272086,7 @@
               "connect-create-connector",
               "connect-create-mcp-event-subscription",
               "connect-delete-connector",
+              "connect-delete-connector-request",
               "connect-delete-installation",
               "connect-detach-project",
               "connect-github",
@@ -271809,10 +272095,15 @@
               "connect-gitlab",
               "connect-gitlab-app",
               "connect-import-tokens",
+              "connect-provision-connector-request",
+              "connect-reject-connector-request",
               "connect-revoke-all-tokens",
+              "connect-submit-connector-request",
               "connect-update-connector",
+              "connect-update-connector-request",
               "connect-update-trigger-destinations",
               "connect-upsert-installation",
+              "connect-withdraw-connector-request",
               "custom-alert-created",
               "custom-alert-deleted",
               "custom-alert-updated",
@@ -272425,10 +272716,13 @@
               "vcr-repository-visibility-changed",
               "vercel-agent-elevated-permissions-approved",
               "vercel-agent-elevated-permissions-requested",
+              "vercel-agent-security-finding-closed",
               "vercel-agent-security-finding-created",
               "vercel-agent-security-finding-dismissed",
               "vercel-agent-security-finding-reopened",
               "vercel-agent-security-finding-resolved",
+              "vercel-agent-security-review-policy-deleted",
+              "vercel-agent-security-review-policy-updated",
               "vercel-agent-session-created",
               "vercel-agent-team-trial-credits-applied",
               "vercel-app-installation-request-dismissed",
@@ -272437,6 +272731,7 @@
               "vercel-app-installed",
               "vercel-app-tokens-revoked",
               "vercel-app-uninstalled",
+              "vercel-ci-repository-github-runners-updated",
               "vercel-ci-repository-settings-updated",
               "vercel-toolbar",
               "vpc-peering-connection-accepted",
@@ -272508,6 +272803,10 @@
                 "ai-gateway-guardrails-updated",
                 "ai-gateway-headquarters-updated",
                 "ai-gateway-hipaa-compliance-toggled",
+                "ai-gateway-inference-hooks-endpoint-updated",
+                "ai-gateway-inference-hooks-removed",
+                "ai-gateway-inference-hooks-settings-updated",
+                "ai-gateway-inference-hooks-toggled",
                 "ai-gateway-inference-regions-updated",
                 "ai-gateway-member-budget-changes",
                 "ai-gateway-model-allowlist-models-updated",
@@ -272584,6 +272883,7 @@
                 "compliance-document-previewed",
                 "compliance-documents-bulk-downloaded",
                 "concurrent-builds-update",
+                "connect-approve-connector-request",
                 "connect-attach-project",
                 "connect-bitbucket",
                 "connect-bitbucket-app",
@@ -272598,6 +272898,7 @@
                 "connect-create-connector",
                 "connect-create-mcp-event-subscription",
                 "connect-delete-connector",
+                "connect-delete-connector-request",
                 "connect-delete-installation",
                 "connect-detach-project",
                 "connect-github",
@@ -272606,10 +272907,15 @@
                 "connect-gitlab",
                 "connect-gitlab-app",
                 "connect-import-tokens",
+                "connect-provision-connector-request",
+                "connect-reject-connector-request",
                 "connect-revoke-all-tokens",
+                "connect-submit-connector-request",
                 "connect-update-connector",
+                "connect-update-connector-request",
                 "connect-update-trigger-destinations",
                 "connect-upsert-installation",
+                "connect-withdraw-connector-request",
                 "custom-alert-created",
                 "custom-alert-deleted",
                 "custom-alert-updated",
@@ -273222,10 +273528,13 @@
                 "vcr-repository-visibility-changed",
                 "vercel-agent-elevated-permissions-approved",
                 "vercel-agent-elevated-permissions-requested",
+                "vercel-agent-security-finding-closed",
                 "vercel-agent-security-finding-created",
                 "vercel-agent-security-finding-dismissed",
                 "vercel-agent-security-finding-reopened",
                 "vercel-agent-security-finding-resolved",
+                "vercel-agent-security-review-policy-deleted",
+                "vercel-agent-security-review-policy-updated",
                 "vercel-agent-session-created",
                 "vercel-agent-team-trial-credits-applied",
                 "vercel-app-installation-request-dismissed",
@@ -273234,6 +273543,7 @@
                 "vercel-app-installed",
                 "vercel-app-tokens-revoked",
                 "vercel-app-uninstalled",
+                "vercel-ci-repository-github-runners-updated",
                 "vercel-ci-repository-settings-updated",
                 "vercel-toolbar",
                 "vpc-peering-connection-accepted",
@@ -277690,6 +278000,7 @@
                         "apple",
                         "bitbucket",
                         "chatgpt",
+                        "claude",
                         "email",
                         "emu",
                         "github",
@@ -277760,6 +278071,7 @@
                         "apple",
                         "bitbucket",
                         "chatgpt",
+                        "claude",
                         "email",
                         "emu",
                         "github",
