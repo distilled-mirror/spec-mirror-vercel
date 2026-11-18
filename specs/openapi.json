@@ -26502,48 +26502,25 @@
                                           "rust": {
                                             "type": "string"
                                           },
-                                          "scheduleFunction": {
+                                          "schedulesEntrypoint": {
+                                            "type": "boolean",
+                                            "enum": [
+                                              false,
+                                              true
+                                            ],
+                                            "description": "Set when this build serves a JavaScript or TypeScript schedule: the entrypoint's default export runs each firing, and its `export const config` sets the schedule."
+                                          },
+                                          "schedulesModule": {
                                             "properties": {
-                                              "entrypoints": {
-                                                "type": "array",
-                                                "items": {
-                                                  "properties": {
-                                                    "entrypoint": {
-                                                      "type": "string",
-                                                      "description": "Runtime-specific entrypoint locator from `vercel.json`."
-                                                    },
-                                                    "scheduleNames": {
-                                                      "items": {
-                                                        "type": "string"
-                                                      },
-                                                      "type": "array",
-                                                      "description": "Names of the schedules that dispatch to this entrypoint, in config order."
-                                                    },
-                                                    "sourceFile": {
-                                                      "type": "string",
-                                                      "description": "Project-relative source file that contains the entrypoint."
-                                                    }
-                                                  },
-                                                  "required": [
-                                                    "entrypoint",
-                                                    "scheduleNames",
-                                                    "sourceFile"
-                                                  ],
-                                                  "type": "object"
-                                                },
-                                                "minItems": 1
-                                              },
-                                              "outputPath": {
-                                                "type": "string",
-                                                "description": "Function output path every schedule in this build targets."
+                                              "module": {
+                                                "type": "string"
                                               }
                                             },
                                             "required": [
-                                              "entrypoints",
-                                              "outputPath"
+                                              "module"
                                             ],
                                             "type": "object",
-                                            "description": "Set when this build produces a function for schedule entrypoints."
+                                            "description": "Set when this build serves a Python schedule's module: the `@schedule` handlers that importing `module` registers."
                                           },
                                           "serviceName": {
                                             "type": "string",
@@ -27306,48 +27283,25 @@
                                           "rust": {
                                             "type": "string"
                                           },
-                                          "scheduleFunction": {
+                                          "schedulesEntrypoint": {
+                                            "type": "boolean",
+                                            "enum": [
+                                              false,
+                                              true
+                                            ],
+                                            "description": "Set when this build serves a JavaScript or TypeScript schedule: the entrypoint's default export runs each firing, and its `export const config` sets the schedule."
+                                          },
+                                          "schedulesModule": {
                                             "properties": {
-                                              "entrypoints": {
-                                                "type": "array",
-                                                "items": {
-                                                  "properties": {
-                                                    "entrypoint": {
-                                                      "type": "string",
-                                                      "description": "Runtime-specific entrypoint locator from `vercel.json`."
-                                                    },
-                                                    "scheduleNames": {
-                                                      "items": {
-                                                        "type": "string"
-                                                      },
-                                                      "type": "array",
-                                                      "description": "Names of the schedules that dispatch to this entrypoint, in config order."
-                                                    },
-                                                    "sourceFile": {
-                                                      "type": "string",
-                                                      "description": "Project-relative source file that contains the entrypoint."
-                                                    }
-                                                  },
-                                                  "required": [
-                                                    "entrypoint",
-                                                    "scheduleNames",
-                                                    "sourceFile"
-                                                  ],
-                                                  "type": "object"
-                                                },
-                                                "minItems": 1
-                                              },
-                                              "outputPath": {
-                                                "type": "string",
-                                                "description": "Function output path every schedule in this build targets."
+                                              "module": {
+                                                "type": "string"
                                               }
                                             },
                                             "required": [
-                                              "entrypoints",
-                                              "outputPath"
+                                              "module"
                                             ],
                                             "type": "object",
-                                            "description": "Set when this build produces a function for schedule entrypoints."
+                                            "description": "Set when this build serves a Python schedule's module: the `@schedule` handlers that importing `module` registers."
                                           },
                                           "serviceName": {
                                             "type": "string",
@@ -35616,48 +35570,25 @@
                                           "rust": {
                                             "type": "string"
                                           },
-                                          "scheduleFunction": {
+                                          "schedulesEntrypoint": {
+                                            "type": "boolean",
+                                            "enum": [
+                                              false,
+                                              true
+                                            ],
+                                            "description": "Set when this build serves a JavaScript or TypeScript schedule: the entrypoint's default export runs each firing, and its `export const config` sets the schedule."
+                                          },
+                                          "schedulesModule": {
                                             "properties": {
-                                              "entrypoints": {
-                                                "type": "array",
-                                                "items": {
-                                                  "properties": {
-                                                    "entrypoint": {
-                                                      "type": "string",
-                                                      "description": "Runtime-specific entrypoint locator from `vercel.json`."
-                                                    },
-                                                    "scheduleNames": {
-                                                      "items": {
-                                                        "type": "string"
-                                                      },
-                                                      "type": "array",
-                                                      "description": "Names of the schedules that dispatch to this entrypoint, in config order."
-                                                    },
-                                                    "sourceFile": {
-                                                      "type": "string",
-                                                      "description": "Project-relative source file that contains the entrypoint."
-                                                    }
-                                                  },
-                                                  "required": [
-                                                    "entrypoint",
-                                                    "scheduleNames",
-                                                    "sourceFile"
-                                                  ],
-                                                  "type": "object"
-                                                },
-                                                "minItems": 1
-                                              },
-                                              "outputPath": {
-                                                "type": "string",
-                                                "description": "Function output path every schedule in this build targets."
+                                              "module": {
+                                                "type": "string"
                                               }
                                             },
                                             "required": [
-                                              "entrypoints",
-                                              "outputPath"
+                                              "module"
                                             ],
                                             "type": "object",
-                                            "description": "Set when this build produces a function for schedule entrypoints."
+                                            "description": "Set when this build serves a Python schedule's module: the `@schedule` handlers that importing `module` registers."
                                           },
                                           "serviceName": {
                                             "type": "string",
@@ -36420,48 +36351,25 @@
                                           "rust": {
                                             "type": "string"
                                           },
-                                          "scheduleFunction": {
+                                          "schedulesEntrypoint": {
+                                            "type": "boolean",
+                                            "enum": [
+                                              false,
+                                              true
+                                            ],
+                                            "description": "Set when this build serves a JavaScript or TypeScript schedule: the entrypoint's default export runs each firing, and its `export const config` sets the schedule."
+                                          },
+                                          "schedulesModule": {
                                             "properties": {
-                                              "entrypoints": {
-                                                "type": "array",
-                                                "items": {
-                                                  "properties": {
-                                                    "entrypoint": {
-                                                      "type": "string",
-                                                      "description": "Runtime-specific entrypoint locator from `vercel.json`."
-                                                    },
-                                                    "scheduleNames": {
-                                                      "items": {
-                                                        "type": "string"
-                                                      },
-                                                      "type": "array",
-                                                      "description": "Names of the schedules that dispatch to this entrypoint, in config order."
-                                                    },
-                                                    "sourceFile": {
-                                                      "type": "string",
-                                                      "description": "Project-relative source file that contains the entrypoint."
-                                                    }
-                                                  },
-                                                  "required": [
-                                                    "entrypoint",
-                                                    "scheduleNames",
-                                                    "sourceFile"
-                                                  ],
-                                                  "type": "object"
-                                                },
-                                                "minItems": 1
-                                              },
-                                              "outputPath": {
-                                                "type": "string",
-                                                "description": "Function output path every schedule in this build targets."
+                                              "module": {
+                                                "type": "string"
                                               }
                                             },
                                             "required": [
-                                              "entrypoints",
-                                              "outputPath"
+                                              "module"
                                             ],
                                             "type": "object",
-                                            "description": "Set when this build produces a function for schedule entrypoints."
+                                            "description": "Set when this build serves a Python schedule's module: the `@schedule` handlers that importing `module` registers."
                                           },
                                           "serviceName": {
                                             "type": "string",
@@ -43711,48 +43619,25 @@
                                       "rust": {
                                         "type": "string"
                                       },
-                                      "scheduleFunction": {
+                                      "schedulesEntrypoint": {
+                                        "type": "boolean",
+                                        "enum": [
+                                          false,
+                                          true
+                                        ],
+                                        "description": "Set when this build serves a JavaScript or TypeScript schedule: the entrypoint's default export runs each firing, and its `export const config` sets the schedule."
+                                      },
+                                      "schedulesModule": {
                                         "properties": {
-                                          "entrypoints": {
-                                            "type": "array",
-                                            "items": {
-                                              "properties": {
-                                                "entrypoint": {
-                                                  "type": "string",
-                                                  "description": "Runtime-specific entrypoint locator from `vercel.json`."
-                                                },
-                                                "scheduleNames": {
-                                                  "items": {
-                                                    "type": "string"
-                                                  },
-                                                  "type": "array",
-                                                  "description": "Names of the schedules that dispatch to this entrypoint, in config order."
-                                                },
-                                                "sourceFile": {
-                                                  "type": "string",
-                                                  "description": "Project-relative source file that contains the entrypoint."
-                                                }
-                                              },
-                                              "required": [
-                                                "entrypoint",
-                                                "scheduleNames",
-                                                "sourceFile"
-                                              ],
-                                              "type": "object"
-                                            },
-                                            "minItems": 1
-                                          },
-                                          "outputPath": {
-                                            "type": "string",
-                                            "description": "Function output path every schedule in this build targets."
+                                          "module": {
+                                            "type": "string"
                                           }
                                         },
                                         "required": [
-                                          "entrypoints",
-                                          "outputPath"
+                                          "module"
                                         ],
                                         "type": "object",
-                                        "description": "Set when this build produces a function for schedule entrypoints."
+                                        "description": "Set when this build serves a Python schedule's module: the `@schedule` handlers that importing `module` registers."
                                       },
                                       "serviceName": {
                                         "type": "string",
@@ -44515,48 +44400,25 @@
                                       "rust": {
                                         "type": "string"
                                       },
-                                      "scheduleFunction": {
+                                      "schedulesEntrypoint": {
+                                        "type": "boolean",
+                                        "enum": [
+                                          false,
+                                          true
+                                        ],
+                                        "description": "Set when this build serves a JavaScript or TypeScript schedule: the entrypoint's default export runs each firing, and its `export const config` sets the schedule."
+                                      },
+                                      "schedulesModule": {
                                         "properties": {
-                                          "entrypoints": {
-                                            "type": "array",
-                                            "items": {
-                                              "properties": {
-                                                "entrypoint": {
-                                                  "type": "string",
-                                                  "description": "Runtime-specific entrypoint locator from `vercel.json`."
-                                                },
-                                                "scheduleNames": {
-                                                  "items": {
-                                                    "type": "string"
-                                                  },
-                                                  "type": "array",
-                                                  "description": "Names of the schedules that dispatch to this entrypoint, in config order."
-                                                },
-                                                "sourceFile": {
-                                                  "type": "string",
-                                                  "description": "Project-relative source file that contains the entrypoint."
-                                                }
-                                              },
-                                              "required": [
-                                                "entrypoint",
-                                                "scheduleNames",
-                                                "sourceFile"
-                                              ],
-                                              "type": "object"
-                                            },
-                                            "minItems": 1
-                                          },
-                                          "outputPath": {
-                                            "type": "string",
-                                            "description": "Function output path every schedule in this build targets."
+                                          "module": {
+                                            "type": "string"
                                           }
                                         },
                                         "required": [
-                                          "entrypoints",
-                                          "outputPath"
+                                          "module"
                                         ],
                                         "type": "object",
-                                        "description": "Set when this build produces a function for schedule entrypoints."
+                                        "description": "Set when this build serves a Python schedule's module: the `@schedule` handlers that importing `module` registers."
                                       },
                                       "serviceName": {
                                         "type": "string",
@@ -76655,6 +76517,9 @@
                               true
                             ]
                           },
+                          "disabledReason": {
+                            "type": "string"
+                          },
                           "effectiveDate": {
                             "type": "string"
                           },
@@ -86157,6 +86022,7 @@
                             "type": "string",
                             "enum": [
                               "connect",
+                              "integrations",
                               "kms"
                             ]
                           },
@@ -86538,6 +86404,7 @@
                       "type": "string",
                       "enum": [
                         "connect",
+                        "integrations",
                         "kms"
                       ]
                     },
@@ -87433,6 +87300,7 @@
                       "type": "string",
                       "enum": [
                         "connect",
+                        "integrations",
                         "kms"
                       ]
                     },
@@ -87792,6 +87660,7 @@
                       "type": "string",
                       "enum": [
                         "connect",
+                        "integrations",
                         "kms"
                       ]
                     },
@@ -88136,6 +88005,7 @@
                       "type": "string",
                       "enum": [
                         "connect",
+                        "integrations",
                         "kms"
                       ]
                     },
@@ -95101,6 +94971,20 @@
                                 "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                               },
                               "paymentMethod": {
+                                "items": {
+                                  "$ref": "#/components/schemas/ACLAction"
+                                },
+                                "type": "array",
+                                "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                              },
+                              "perimeter": {
+                                "items": {
+                                  "$ref": "#/components/schemas/ACLAction"
+                                },
+                                "type": "array",
+                                "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                              },
+                              "perimeterLink": {
                                 "items": {
                                   "$ref": "#/components/schemas/ACLAction"
                                 },
@@ -120135,6 +120019,20 @@
                                     "type": "array",
                                     "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                                   },
+                                  "perimeter": {
+                                    "items": {
+                                      "$ref": "#/components/schemas/ACLAction"
+                                    },
+                                    "type": "array",
+                                    "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                                  },
+                                  "perimeterLink": {
+                                    "items": {
+                                      "$ref": "#/components/schemas/ACLAction"
+                                    },
+                                    "type": "array",
+                                    "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                                  },
                                   "permissions": {
                                     "items": {
                                       "$ref": "#/components/schemas/ACLAction"
@@ -128793,6 +128691,20 @@
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
                         "paymentMethod": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "perimeter": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "perimeterLink": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -137770,6 +137682,20 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "perimeter": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "perimeterLink": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "permissions": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -145992,6 +145918,20 @@
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
                         "paymentMethod": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "perimeter": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "perimeterLink": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -155594,6 +155534,20 @@
                           "type": "array",
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
+                        "perimeter": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "perimeterLink": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
                         "permissions": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
@@ -163819,6 +163773,20 @@
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
                         "paymentMethod": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "perimeter": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "perimeterLink": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -185107,6 +185075,20 @@
                           "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
                         },
                         "paymentMethod": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "perimeter": {
+                          "items": {
+                            "$ref": "#/components/schemas/ACLAction"
+                          },
+                          "type": "array",
+                          "description": "Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary."
+                        },
+                        "perimeterLink": {
                           "items": {
                             "$ref": "#/components/schemas/ACLAction"
                           },
@@ -213929,6 +213911,9 @@
                                 true
                               ]
                             },
+                            "disabledReason": {
+                              "type": "string"
+                            },
                             "effectiveDate": {
                               "type": "string"
                             },
@@ -220482,7 +220467,7 @@
     },
     "/v2/teams": {
       "get": {
-        "description": "Get a paginated list of all the Teams the authenticated User is a member of.",
+        "description": "Get a paginated list of all the Teams the authenticated User is a member of. An app-principal token needs `read:team` and lists only the team it is bound to.",
         "operationId": "getTeams",
         "security": [
           {
@@ -220499,30 +220484,52 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "pagination": {
-                      "$ref": "#/components/schemas/Pagination"
-                    },
-                    "teams": {
-                      "items": {
-                        "oneOf": [
-                          {
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/Pagination"
+                        },
+                        "teams": {
+                          "items": {
                             "$ref": "#/components/schemas/Team"
                           },
-                          {
-                            "$ref": "#/components/schemas/TeamLimited"
-                          }
-                        ]
+                          "type": "array"
+                        }
                       },
-                      "type": "array"
+                      "required": [
+                        "pagination",
+                        "teams"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/Pagination"
+                        },
+                        "teams": {
+                          "items": {
+                            "oneOf": [
+                              {
+                                "$ref": "#/components/schemas/Team"
+                              },
+                              {
+                                "$ref": "#/components/schemas/TeamLimited"
+                              }
+                            ]
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "pagination",
+                        "teams"
+                      ],
+                      "type": "object",
+                      "description": "A paginated list of teams."
                     }
-                  },
-                  "required": [
-                    "pagination",
-                    "teams"
                   ],
-                  "type": "object",
-                  "description": "A paginated list of teams.",
                   "x-vercel-cli": {
                     "displayColumns": {
                       "name": "teams[].name",
@@ -220540,10 +220547,13 @@
             "description": "One of the provided values in the request query is invalid."
           },
           "401": {
-            "description": ""
+            "description": "The request is not authorized."
           },
           "403": {
             "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
           },
           "410": {
             "description": ""
@@ -222518,7 +222528,7 @@
                   },
                   "teamSlug": {
                     "type": "string",
-                    "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+                    "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
                     "maxLength": 64,
                     "description": "Slug of a team that is granted access to a repository.",
                     "example": "my-team"
@@ -222623,7 +222633,7 @@
                   },
                   "teamSlug": {
                     "type": "string",
-                    "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+                    "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
                     "maxLength": 64,
                     "description": "Slug of a team that is granted access to a repository.",
                     "example": "my-team"
@@ -223394,7 +223404,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -223480,7 +223490,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -223566,7 +223576,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -223661,7 +223671,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -223754,7 +223764,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -223853,7 +223863,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -223952,7 +223962,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -224060,7 +224070,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -224111,7 +224121,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\\\/[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\\\/[a-z0-9]+(?:(?:\\\\.|_|__|-+)[a-z0-9]+)*$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?\\\\/[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\\\/[a-z0-9]+(?:(?:\\\\.|_|__|-+)[a-z0-9]+)*$",
               "maxLength": 255,
               "description": "Source repository to mount the blob from."
             }
@@ -224169,7 +224179,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -224262,7 +224272,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -224345,7 +224355,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -224438,7 +224448,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -224548,7 +224558,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$",
+              "pattern": "^[a-z0-9](?:[a-z0-9_-]{0,46}[a-z0-9])?$",
               "maxLength": 255,
               "description": "Single Docker repository team slug component.",
               "example": "team-slug"
@@ -243045,6 +243055,14 @@
           "serviceSync": {
             "$ref": "#/components/schemas/ConnectServiceSync",
             "description": "Result of synchronizing the change with the external service."
+          },
+          "uninstallNeeded": {
+            "type": "boolean",
+            "enum": [
+              false,
+              true
+            ],
+            "description": "When true, scopes were removed. The provider keeps scopes it already granted, so remove the app from the provider workspace and install it again before the removal takes effect. Reinstalling alone does not remove scopes."
           }
         },
         "required": [
@@ -246565,7 +246583,8 @@
                     "type": "string"
                   },
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Left out when the board no longer lets the team in, though its log still shows the board."
                   },
                   "operationId": {
                     "type": "string"
@@ -246581,7 +246600,6 @@
                   "boardId",
                   "channelId",
                   "environment",
-                  "name",
                   "operationId",
                   "projectId"
                 ],
@@ -250075,6 +250093,50 @@
                     "type": "array"
                   }
                 },
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "actorAccountId": {
+                    "nullable": true,
+                    "type": "number",
+                    "description": "Stable GitHub user id."
+                  },
+                  "actorLogin": {
+                    "type": "string",
+                    "description": "Display name only. Logins are mutable; join on `actorAccountId`."
+                  },
+                  "gitOwnerName": {
+                    "type": "string"
+                  },
+                  "gitRepositoryName": {
+                    "type": "string"
+                  },
+                  "headSha": {
+                    "type": "string"
+                  },
+                  "prNumber": {
+                    "type": "number"
+                  },
+                  "reviewUrl": {
+                    "type": "string"
+                  },
+                  "team": {
+                    "type": "string",
+                    "description": "The `:must-assume` team the approval counted for, e.g. \"vercel/leads\"."
+                  }
+                },
+                "required": [
+                  "actorAccountId",
+                  "actorLogin",
+                  "gitOwnerName",
+                  "gitRepositoryName",
+                  "headSha",
+                  "prNumber",
+                  "reviewUrl",
+                  "team"
+                ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
               },
@@ -256186,6 +256248,18 @@
               },
               {
                 "properties": {
+                  "effectiveAt": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "effectiveAt"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "actorAccountId": {
                     "nullable": true,
                     "type": "string",
@@ -259378,6 +259452,66 @@
               },
               {
                 "properties": {
+                  "perimeter": {
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "version": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "version"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "perimeter"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "perimeter": {
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "version": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "version"
+                    ],
+                    "type": "object"
+                  },
+                  "sourceVersion": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "perimeter",
+                  "sourceVersion"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "next": {
                     "items": {
                       "properties": {
@@ -262512,6 +262646,30 @@
               },
               {
                 "properties": {
+                  "projectId": {
+                    "type": "string"
+                  },
+                  "projectName": {
+                    "type": "string"
+                  },
+                  "removeVercelRequestHeaders": {
+                    "type": "boolean",
+                    "enum": [
+                      false,
+                      true
+                    ]
+                  }
+                },
+                "required": [
+                  "projectId",
+                  "projectName",
+                  "removeVercelRequestHeaders"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "oldPasswordProtection": {
                     "nullable": true,
                     "oneOf": [
@@ -263925,6 +264083,12 @@
                     },
                     "type": "array"
                   },
+                  "attributeMappingChanged": {
+                    "type": "boolean",
+                    "enum": [
+                      true
+                    ]
+                  },
                   "created": {
                     "type": "boolean",
                     "enum": [
@@ -263941,6 +264105,45 @@
                 },
                 "required": [
                   "actorType",
+                  "certificateFingerprints",
+                  "connectionId",
+                  "created"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "attributeMappingChanged": {
+                    "type": "boolean",
+                    "enum": [
+                      true
+                    ]
+                  },
+                  "certificateFingerprints": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "connectionId": {
+                    "type": "string"
+                  },
+                  "created": {
+                    "type": "boolean",
+                    "enum": [
+                      false,
+                      true
+                    ]
+                  },
+                  "previousCertificateFingerprints": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
                   "certificateFingerprints",
                   "connectionId",
                   "created"
@@ -263969,6 +264172,25 @@
                     "type": "array"
                   }
                 },
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "certificateFingerprints": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "connectionId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "certificateFingerprints",
+                  "connectionId"
+                ],
                 "type": "object",
                 "description": "The payload of the event, if requested."
               },
@@ -269007,6 +269229,34 @@
               },
               {
                 "properties": {
+                  "commitSha": {
+                    "type": "string"
+                  },
+                  "invocationId": {
+                    "type": "string"
+                  },
+                  "organizationId": {
+                    "type": "string"
+                  },
+                  "pullRequestNumber": {
+                    "type": "number"
+                  },
+                  "repository": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "commitSha",
+                  "invocationId",
+                  "organizationId",
+                  "pullRequestNumber",
+                  "repository"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "protectedProjectCount": {
                     "type": "number"
                   },
@@ -270940,6 +271190,8 @@
               "ai-gateway-inference-hooks-endpoint-updated",
               "ai-gateway-inference-hooks-removed",
               "ai-gateway-inference-hooks-settings-updated",
+              "ai-gateway-inference-hooks-signing-secret-created",
+              "ai-gateway-inference-hooks-signing-secret-rotated",
               "ai-gateway-inference-hooks-toggled",
               "ai-gateway-inference-regions-updated",
               "ai-gateway-member-budget-changes",
@@ -271012,6 +271264,7 @@
               "cert-renew",
               "cert-replace",
               "cert-system-create",
+              "code-owners-assume-owners",
               "code-owners-config-updated",
               "compliance-document-downloaded",
               "compliance-document-previewed",
@@ -271185,6 +271438,7 @@
               "flags-settings",
               "flags-transferred",
               "flat-rate-cdn-auto-upgrade-consent",
+              "flat-rate-cdn-migration-opt-out",
               "git-integration-repo-push",
               "git_account_integration_link_added",
               "global-config-backup-restored",
@@ -271334,6 +271588,11 @@
               "payment-method-added",
               "payment-method-default-updated",
               "payment-method-removed",
+              "perimeter-created",
+              "perimeter-deleted",
+              "perimeter-renamed",
+              "perimeter-rolled-back",
+              "perimeter-updated",
               "plan",
               "preview-deployment-suffix-disabled",
               "preview-deployment-suffix-enabled",
@@ -271438,6 +271697,7 @@
               "project-prioritize-production-builds-updated",
               "project-program-enrollment-changed",
               "project-protected-sourcemaps-updated",
+              "project-remove-vercel-request-headers-updated",
               "project-rollback-description-updated",
               "project-rolling-release-aborted",
               "project-rolling-release-approved",
@@ -271477,6 +271737,10 @@
               "runtime-cache-purge-all",
               "saml-connection-created",
               "saml-connection-deleted",
+              "saml-idp-material-deleted",
+              "saml-idp-material-set",
+              "saml-idp-material-system-deleted",
+              "saml-idp-material-system-set",
               "sandbox-alias-assigned",
               "sandbox-alias-delete",
               "sandbox-drive-created",
@@ -271679,6 +271943,7 @@
               "vercel-app-uninstalled",
               "vercel-ci-repository-github-runners-updated",
               "vercel-ci-repository-settings-updated",
+              "vercel-ci-run-approved",
               "vercel-toolbar",
               "vpc-peering-connection-accepted",
               "vpc-peering-connection-deleted",
@@ -271994,6 +272259,8 @@
               "ai-gateway-inference-hooks-endpoint-updated",
               "ai-gateway-inference-hooks-removed",
               "ai-gateway-inference-hooks-settings-updated",
+              "ai-gateway-inference-hooks-signing-secret-created",
+              "ai-gateway-inference-hooks-signing-secret-rotated",
               "ai-gateway-inference-hooks-toggled",
               "ai-gateway-inference-regions-updated",
               "ai-gateway-member-budget-changes",
@@ -272066,6 +272333,7 @@
               "cert-renew",
               "cert-replace",
               "cert-system-create",
+              "code-owners-assume-owners",
               "code-owners-config-updated",
               "compliance-document-downloaded",
               "compliance-document-previewed",
@@ -272239,6 +272507,7 @@
               "flags-settings",
               "flags-transferred",
               "flat-rate-cdn-auto-upgrade-consent",
+              "flat-rate-cdn-migration-opt-out",
               "git-integration-repo-push",
               "git_account_integration_link_added",
               "global-config-backup-restored",
@@ -272388,6 +272657,11 @@
               "payment-method-added",
               "payment-method-default-updated",
               "payment-method-removed",
+              "perimeter-created",
+              "perimeter-deleted",
+              "perimeter-renamed",
+              "perimeter-rolled-back",
+              "perimeter-updated",
               "plan",
               "preview-deployment-suffix-disabled",
               "preview-deployment-suffix-enabled",
@@ -272492,6 +272766,7 @@
               "project-prioritize-production-builds-updated",
               "project-program-enrollment-changed",
               "project-protected-sourcemaps-updated",
+              "project-remove-vercel-request-headers-updated",
               "project-rollback-description-updated",
               "project-rolling-release-aborted",
               "project-rolling-release-approved",
@@ -272531,6 +272806,10 @@
               "runtime-cache-purge-all",
               "saml-connection-created",
               "saml-connection-deleted",
+              "saml-idp-material-deleted",
+              "saml-idp-material-set",
+              "saml-idp-material-system-deleted",
+              "saml-idp-material-system-set",
               "sandbox-alias-assigned",
               "sandbox-alias-delete",
               "sandbox-drive-created",
@@ -272733,6 +273012,7 @@
               "vercel-app-uninstalled",
               "vercel-ci-repository-github-runners-updated",
               "vercel-ci-repository-settings-updated",
+              "vercel-ci-run-approved",
               "vercel-toolbar",
               "vpc-peering-connection-accepted",
               "vpc-peering-connection-deleted",
@@ -272806,6 +273086,8 @@
                 "ai-gateway-inference-hooks-endpoint-updated",
                 "ai-gateway-inference-hooks-removed",
                 "ai-gateway-inference-hooks-settings-updated",
+                "ai-gateway-inference-hooks-signing-secret-created",
+                "ai-gateway-inference-hooks-signing-secret-rotated",
                 "ai-gateway-inference-hooks-toggled",
                 "ai-gateway-inference-regions-updated",
                 "ai-gateway-member-budget-changes",
@@ -272878,6 +273160,7 @@
                 "cert-renew",
                 "cert-replace",
                 "cert-system-create",
+                "code-owners-assume-owners",
                 "code-owners-config-updated",
                 "compliance-document-downloaded",
                 "compliance-document-previewed",
@@ -273051,6 +273334,7 @@
                 "flags-settings",
                 "flags-transferred",
                 "flat-rate-cdn-auto-upgrade-consent",
+                "flat-rate-cdn-migration-opt-out",
                 "git-integration-repo-push",
                 "git_account_integration_link_added",
                 "global-config-backup-restored",
@@ -273200,6 +273484,11 @@
                 "payment-method-added",
                 "payment-method-default-updated",
                 "payment-method-removed",
+                "perimeter-created",
+                "perimeter-deleted",
+                "perimeter-renamed",
+                "perimeter-rolled-back",
+                "perimeter-updated",
                 "plan",
                 "preview-deployment-suffix-disabled",
                 "preview-deployment-suffix-enabled",
@@ -273304,6 +273593,7 @@
                 "project-prioritize-production-builds-updated",
                 "project-program-enrollment-changed",
                 "project-protected-sourcemaps-updated",
+                "project-remove-vercel-request-headers-updated",
                 "project-rollback-description-updated",
                 "project-rolling-release-aborted",
                 "project-rolling-release-approved",
@@ -273343,6 +273633,10 @@
                 "runtime-cache-purge-all",
                 "saml-connection-created",
                 "saml-connection-deleted",
+                "saml-idp-material-deleted",
+                "saml-idp-material-set",
+                "saml-idp-material-system-deleted",
+                "saml-idp-material-system-set",
                 "sandbox-alias-assigned",
                 "sandbox-alias-delete",
                 "sandbox-drive-created",
@@ -273545,6 +273839,7 @@
                 "vercel-app-uninstalled",
                 "vercel-ci-repository-github-runners-updated",
                 "vercel-ci-repository-settings-updated",
+                "vercel-ci-run-approved",
                 "vercel-toolbar",
                 "vpc-peering-connection-accepted",
                 "vpc-peering-connection-deleted",
@@ -278627,6 +278922,14 @@
                 ],
                 "description": "An object containing infomation related to the amount of platform resources may be allocated to the User account."
               },
+              "enableMessageboardPrivateBoards": {
+                "type": "boolean",
+                "enum": [
+                  false,
+                  true
+                ],
+                "description": "An object containing infomation related to the amount of platform resources may be allocated to the User account."
+              },
               "flagsExplorerOverridesThreshold": {
                 "type": "number",
                 "description": "An object containing infomation related to the amount of platform resources may be allocated to the User account."
@@ -278648,6 +278951,10 @@
                 "description": "An object containing infomation related to the amount of platform resources may be allocated to the User account."
               },
               "kvDatabases": {
+                "type": "number",
+                "description": "An object containing infomation related to the amount of platform resources may be allocated to the User account."
+              },
+              "messageboardBoards": {
                 "type": "number",
                 "description": "An object containing infomation related to the amount of platform resources may be allocated to the User account."
               },
@@ -278985,6 +279292,7 @@
           "kind": {
             "type": "string",
             "enum": [
+              "artifact",
               "attestation",
               "index",
               "manifest"
@@ -279118,6 +279426,7 @@
           "kind": {
             "type": "string",
             "enum": [
+              "artifact",
               "attestation",
               "index",
               "manifest"
@@ -279463,6 +279772,7 @@
           "kind": {
             "type": "string",
             "enum": [
+              "artifact",
               "attestation",
               "index",
               "manifest"
