@@ -23229,6 +23229,9 @@
                               "memory": {
                                 "type": "number"
                               },
+                              "perimeter": {
+                                "type": "string"
+                              },
                               "regions": {
                                 "items": {
                                   "type": "string"
@@ -26330,6 +26333,9 @@
                                                 "memory": {
                                                   "type": "number"
                                                 },
+                                                "perimeter": {
+                                                  "type": "string"
+                                                },
                                                 "regions": {
                                                   "items": {
                                                     "type": "string"
@@ -27111,6 +27117,9 @@
                                                 "memory": {
                                                   "type": "number"
                                                 },
+                                                "perimeter": {
+                                                  "type": "string"
+                                                },
                                                 "regions": {
                                                   "items": {
                                                     "type": "string"
@@ -27513,6 +27522,9 @@
                                         },
                                         "memory": {
                                           "type": "number"
+                                        },
+                                        "perimeter": {
+                                          "type": "string"
                                         },
                                         "regions": {
                                           "items": {
@@ -32297,6 +32309,9 @@
                               "memory": {
                                 "type": "number"
                               },
+                              "perimeter": {
+                                "type": "string"
+                              },
                               "regions": {
                                 "items": {
                                   "type": "string"
@@ -35398,6 +35413,9 @@
                                                 "memory": {
                                                   "type": "number"
                                                 },
+                                                "perimeter": {
+                                                  "type": "string"
+                                                },
                                                 "regions": {
                                                   "items": {
                                                     "type": "string"
@@ -36179,6 +36197,9 @@
                                                 "memory": {
                                                   "type": "number"
                                                 },
+                                                "perimeter": {
+                                                  "type": "string"
+                                                },
                                                 "regions": {
                                                   "items": {
                                                     "type": "string"
@@ -36581,6 +36602,9 @@
                                         },
                                         "memory": {
                                           "type": "number"
+                                        },
+                                        "perimeter": {
+                                          "type": "string"
                                         },
                                         "regions": {
                                           "items": {
@@ -40346,6 +40370,9 @@
                           "memory": {
                             "type": "number"
                           },
+                          "perimeter": {
+                            "type": "string"
+                          },
                           "regions": {
                             "items": {
                               "type": "string"
@@ -43447,6 +43474,9 @@
                                             "memory": {
                                               "type": "number"
                                             },
+                                            "perimeter": {
+                                              "type": "string"
+                                            },
                                             "regions": {
                                               "items": {
                                                 "type": "string"
@@ -44228,6 +44258,9 @@
                                             "memory": {
                                               "type": "number"
                                             },
+                                            "perimeter": {
+                                              "type": "string"
+                                            },
                                             "regions": {
                                               "items": {
                                                 "type": "string"
@@ -44630,6 +44663,9 @@
                                     },
                                     "memory": {
                                       "type": "number"
+                                    },
+                                    "perimeter": {
+                                      "type": "string"
                                     },
                                     "regions": {
                                       "items": {
@@ -72029,9 +72065,6 @@
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
-                  "enabled": {
-                    "type": "boolean"
-                  },
                   "entities": {
                     "type": "array",
                     "maxItems": 32,
@@ -99693,6 +99726,572 @@
             "schema": {
               "type": "string",
               "description": "The ID of the team to remove."
+            }
+          }
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/teams/{targetTeamId}/dsync": {
+      "put": {
+        "description": "Select whether one Organization team's memberships are governed by the Organization's Directory Sync or by the team's own directory. The team's own directory connection is kept either way.",
+        "operationId": "putOrganizationTeamDsync",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Update Organization Team Directory Sync Mode",
+        "tags": [
+          "organizations"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "dsyncMode": {
+                      "type": "string",
+                      "enum": [
+                        "organization",
+                        "team"
+                      ]
+                    },
+                    "organizationId": {
+                      "type": "string"
+                    },
+                    "teamId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "dsyncMode",
+                    "organizationId",
+                    "teamId"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetTeamId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slug",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "dsyncMode"
+                ],
+                "properties": {
+                  "dsyncMode": {
+                    "type": "string",
+                    "enum": [
+                      "organization",
+                      "team"
+                    ],
+                    "description": "Whether the Organization's Directory Sync or the team's own directory governs the team's memberships."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations/{organizationId}/dsync/groups": {
+      "get": {
+        "description": "List the groups in an organization's Identity Provider directory, along with their Directory Sync group configuration when one exists.",
+        "operationId": "listOrganizationDsyncGroups",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "List Organization Directory Sync Groups",
+        "tags": [
+          "organizations"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cursor": {
+                      "type": "string"
+                    },
+                    "groups": {
+                      "items": {
+                        "$ref": "#/components/schemas/OrganizationDirectorySyncGroup"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "groups"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "description": "The ID of the organization.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The ID of the organization."
+            }
+          },
+          {
+            "name": "cursor",
+            "description": "Pagination cursor.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Pagination cursor."
+            }
+          },
+          {
+            "name": "limit",
+            "description": "Number of groups to return.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 100,
+              "description": "Number of groups to return."
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/dsync/groups/{groupId}": {
+      "put": {
+        "description": "Create or replace one organization's Directory Sync group configuration. The directory starts syncing when at least one group grants OrgAdmin.",
+        "operationId": "putOrganizationDsyncGroup",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Create or Replace Organization Directory Sync Group Configuration",
+        "tags": [
+          "organizations"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationDirectorySyncGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.\nOne of the provided values in the headers is invalid"
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "412": {
+            "description": ""
+          },
+          "428": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "pattern": "^\"\\d+\"$"
+            },
+            "name": "If-Match"
+          },
+          {
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "const": "*"
+            },
+            "name": "If-None-Match"
+          },
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "assignments"
+                ],
+                "properties": {
+                  "assignments": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "organizationPermissions": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "OrgAdmin"
+                          ]
+                        },
+                        "uniqueItems": true
+                      },
+                      "teamRoles": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "OWNER",
+                            "MEMBER",
+                            "DEVELOPER",
+                            "SECURITY",
+                            "BILLING",
+                            "VIEWER",
+                            "VIEWER_FOR_PLUS",
+                            "CONTRIBUTOR"
+                          ]
+                        },
+                        "uniqueItems": true
+                      },
+                      "teams": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "teamRoles"
+                          ],
+                          "properties": {
+                            "teamRoles": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "enum": [
+                                  "OWNER",
+                                  "MEMBER",
+                                  "DEVELOPER",
+                                  "SECURITY",
+                                  "BILLING",
+                                  "VIEWER",
+                                  "VIEWER_FOR_PLUS",
+                                  "CONTRIBUTOR"
+                                ]
+                              },
+                              "minItems": 1,
+                              "uniqueItems": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete one organization's Directory Sync group configuration. The last group granting OrgAdmin cannot be removed.",
+        "operationId": "deleteOrganizationDsyncGroup",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Delete Organization Directory Sync Group Configuration",
+        "tags": [
+          "organizations"
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid.\nOne of the provided values in the headers is invalid"
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          },
+          "412": {
+            "description": ""
+          },
+          "428": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "pattern": "^\"\\d+\"$"
+            },
+            "name": "If-Match"
+          },
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
+            }
+          }
+        ]
+      },
+      "get": {
+        "description": "Get one group from the organization's Identity Provider directory, joined with its Directory Sync group configuration when one exists.",
+        "operationId": "getOrganizationDsyncGroup",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Get Organization Directory Sync Group",
+        "tags": [
+          "organizations"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationDirectorySyncGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One of the provided values in the request query is invalid."
+          },
+          "401": {
+            "description": "The request is not authorized."
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": ""
+          },
+          "410": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The Team identifier to perform the request on behalf of.",
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "example": "team_1a2b3c4d5e6f7g8h9i0j1k2l"
+            }
+          },
+          {
+            "description": "The Team slug to perform the request on behalf of.",
+            "in": "query",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "example": "my-team-url-slug"
             }
           }
         ]
@@ -231797,20 +232396,20 @@
     },
     "/v1/vercel-ci/log-search": {
       "get": {
-        "description": "Searches the task logs of up to 50 invocation attempts at once, for example the most recent runs of a branch from `GET /v2/vercel-ci/invocations`. Only invocations and tasks with matching lines are returned. When more than 1000 lines match, the newest are kept.",
+        "description": "Searches the setup and task logs of up to 50 invocation attempts at once, for example the most recent runs of a branch from `GET /v2/vercel-ci/invocations`. Only invocations and tasks with matching lines are returned, and `setup` is present only when a setup line matches. When more than 1000 lines match across setup and task logs, the newest are kept.",
         "operationId": "searchVercelCiLogs",
         "security": [
           {
             "bearerToken": []
           }
         ],
-        "summary": "Search the task logs of several invocation attempts",
+        "summary": "Search the setup and task logs of several invocation attempts",
         "tags": [
           "vercel-ci"
         ],
         "responses": {
           "200": {
-            "description": "Successfully searched task logs.",
+            "description": "Successfully searched setup and task logs.",
             "content": {
               "application/json": {
                 "schema": {
@@ -231942,6 +232541,37 @@
                                 "lines"
                               ]
                             }
+                          },
+                          "setup": {
+                            "description": "Matching lines from the setup logs. Present only when a setup line matches.",
+                            "type": "object",
+                            "properties": {
+                              "lines": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "level": {
+                                      "type": "string"
+                                    },
+                                    "timestamp": {
+                                      "type": "number"
+                                    },
+                                    "message": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "level",
+                                    "timestamp",
+                                    "message"
+                                  ]
+                                }
+                              }
+                            },
+                            "required": [
+                              "lines"
+                            ]
                           }
                         },
                         "required": [
@@ -234376,6 +235006,11 @@
                           "observability.anomaly-error",
                           "observability.error-anomaly",
                           "observability.usage-anomaly",
+                          "page-integrity.connect-src.detected",
+                          "page-integrity.header.changed",
+                          "page-integrity.runtime-warning.detected",
+                          "page-integrity.script.changed",
+                          "page-integrity.script.detected",
                           "project-created",
                           "project-removed",
                           "project.created",
@@ -234669,6 +235304,11 @@
                         "ai-gateway.balance-depleted",
                         "ai-gateway.auto-reload.limit-reached",
                         "ai-gateway.budget.updated",
+                        "page-integrity.script.detected",
+                        "page-integrity.script.changed",
+                        "page-integrity.connect-src.detected",
+                        "page-integrity.header.changed",
+                        "page-integrity.runtime-warning.detected",
                         "observability.anomaly",
                         "observability.anomaly-error",
                         "observability.usage-anomaly",
@@ -234917,6 +235557,11 @@
                                 "observability.anomaly-error",
                                 "observability.error-anomaly",
                                 "observability.usage-anomaly",
+                                "page-integrity.connect-src.detected",
+                                "page-integrity.header.changed",
+                                "page-integrity.runtime-warning.detected",
+                                "page-integrity.script.changed",
+                                "page-integrity.script.detected",
                                 "project-created",
                                 "project-removed",
                                 "project.created",
@@ -235275,6 +235920,11 @@
                                 "observability.anomaly-error",
                                 "observability.error-anomaly",
                                 "observability.usage-anomaly",
+                                "page-integrity.connect-src.detected",
+                                "page-integrity.header.changed",
+                                "page-integrity.runtime-warning.detected",
+                                "page-integrity.script.changed",
+                                "page-integrity.script.detected",
                                 "project-created",
                                 "project-removed",
                                 "project.created",
@@ -235597,6 +236247,11 @@
                           "observability.anomaly-error",
                           "observability.error-anomaly",
                           "observability.usage-anomaly",
+                          "page-integrity.connect-src.detected",
+                          "page-integrity.header.changed",
+                          "page-integrity.runtime-warning.detected",
+                          "page-integrity.script.changed",
+                          "page-integrity.script.detected",
                           "project-created",
                           "project-removed",
                           "project.created",
@@ -247955,6 +248610,21 @@
               },
               {
                 "properties": {
+                  "headerNames": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "headerNames"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "retention": {
                     "properties": {
                       "ceilingDays": {
@@ -248798,6 +249468,7 @@
                         "read-write:schedule",
                         "read-write:team-members",
                         "read-write:vcr",
+                        "read-write:vercel-ci",
                         "read-write:webhooks",
                         "read:access-group",
                         "read:ai-gateway-budgets",
@@ -248937,6 +249608,7 @@
                         "read-write:schedule",
                         "read-write:team-members",
                         "read-write:vcr",
+                        "read-write:vercel-ci",
                         "read-write:webhooks",
                         "read:access-group",
                         "read:ai-gateway-budgets",
@@ -249055,6 +249727,7 @@
                             "read-write:schedule",
                             "read-write:team-members",
                             "read-write:vcr",
+                            "read-write:vercel-ci",
                             "read-write:webhooks",
                             "read:access-group",
                             "read:ai-gateway-budgets",
@@ -249203,6 +249876,7 @@
                             "read-write:schedule",
                             "read-write:team-members",
                             "read-write:vcr",
+                            "read-write:vercel-ci",
                             "read-write:webhooks",
                             "read:access-group",
                             "read:ai-gateway-budgets",
@@ -249367,6 +250041,7 @@
                         "read-write:schedule",
                         "read-write:team-members",
                         "read-write:vcr",
+                        "read-write:vercel-ci",
                         "read-write:webhooks",
                         "read:access-group",
                         "read:ai-gateway-budgets",
@@ -265835,6 +266510,25 @@
               },
               {
                 "properties": {
+                  "billingConsent": {
+                    "type": "string",
+                    "enum": [
+                      "security-review-usage-billing-v1"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "billingConsent",
+                  "source"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "action": {
                     "type": "string",
                     "enum": [
@@ -266176,6 +266870,62 @@
                     ],
                     "type": "object",
                     "description": "Mirrors the `security-review` setting value in `@api/api-settings`."
+                  }
+                },
+                "required": [
+                  "next",
+                  "previous"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "next": {
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ]
+                      },
+                      "repositoryScope": {
+                        "type": "string",
+                        "enum": [
+                          "all",
+                          "none",
+                          "selected"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "enabled"
+                    ],
+                    "type": "object"
+                  },
+                  "previous": {
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "enum": [
+                          false,
+                          true
+                        ]
+                      },
+                      "repositoryScope": {
+                        "type": "string",
+                        "enum": [
+                          "all",
+                          "none",
+                          "selected"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "enabled"
+                    ],
+                    "type": "object"
                   }
                 },
                 "required": [
@@ -269179,6 +269929,287 @@
               },
               {
                 "properties": {
+                  "alertType": {
+                    "type": "string"
+                  },
+                  "groupId": {
+                    "type": "string"
+                  },
+                  "projectId": {
+                    "type": "string"
+                  },
+                  "severity": {
+                    "type": "string"
+                  },
+                  "detectionCount": {
+                    "type": "number"
+                  },
+                  "detections": {
+                    "items": {
+                      "properties": {
+                        "alertId": {
+                          "type": "string"
+                        },
+                        "startedAt": {
+                          "type": "number"
+                        },
+                        "title": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "alertId",
+                        "startedAt",
+                        "title"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "alertType",
+                  "detectionCount",
+                  "detections",
+                  "groupId",
+                  "projectId"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "alertType": {
+                    "type": "string"
+                  },
+                  "groupId": {
+                    "type": "string"
+                  },
+                  "projectId": {
+                    "type": "string"
+                  },
+                  "severity": {
+                    "type": "string"
+                  },
+                  "destinations": {
+                    "properties": {
+                      "email": {
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ]
+                      },
+                      "inApp": {
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ]
+                      },
+                      "push": {
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ]
+                      },
+                      "slack": {
+                        "items": {
+                          "properties": {
+                            "channelId": {
+                              "type": "string"
+                            },
+                            "configurationId": {
+                              "type": "string"
+                            },
+                            "slackWorkspaceId": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "channelId",
+                            "slackWorkspaceId"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "unavailable": {
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "slack",
+                            "webhooks"
+                          ]
+                        },
+                        "type": "array"
+                      },
+                      "webhooks": {
+                        "items": {
+                          "properties": {
+                            "integration": {
+                              "type": "string"
+                            },
+                            "webhookId": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "webhookId"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "alertType",
+                  "destinations",
+                  "groupId",
+                  "projectId"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "alertType": {
+                    "type": "string"
+                  },
+                  "groupId": {
+                    "type": "string"
+                  },
+                  "projectId": {
+                    "type": "string"
+                  },
+                  "severity": {
+                    "type": "string"
+                  },
+                  "destinations": {
+                    "properties": {
+                      "email": {
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ]
+                      },
+                      "inApp": {
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ]
+                      },
+                      "push": {
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ]
+                      },
+                      "slack": {
+                        "items": {
+                          "properties": {
+                            "channelId": {
+                              "type": "string"
+                            },
+                            "configurationId": {
+                              "type": "string"
+                            },
+                            "slackWorkspaceId": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "channelId",
+                            "slackWorkspaceId"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "unavailable": {
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "slack",
+                            "webhooks"
+                          ]
+                        },
+                        "type": "array"
+                      },
+                      "webhooks": {
+                        "items": {
+                          "properties": {
+                            "integration": {
+                              "type": "string"
+                            },
+                            "webhookId": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "webhookId"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "alertType",
+                  "destinations",
+                  "groupId",
+                  "projectId"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
+                  "alertType": {
+                    "type": "string"
+                  },
+                  "groupId": {
+                    "type": "string"
+                  },
+                  "projectId": {
+                    "type": "string"
+                  },
+                  "severity": {
+                    "type": "string"
+                  },
+                  "alertId": {
+                    "type": "string"
+                  },
+                  "resolvedAt": {
+                    "type": "number"
+                  },
+                  "startedAt": {
+                    "type": "number"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "alertId",
+                  "alertType",
+                  "groupId",
+                  "projectId",
+                  "startedAt",
+                  "title"
+                ],
+                "type": "object",
+                "description": "The payload of the event, if requested."
+              },
+              {
+                "properties": {
                   "enabled": {
                     "type": "boolean",
                     "enum": [
@@ -271167,6 +272198,7 @@
               "agentic-provisioning-plan-changed",
               "agentic-provisioning-team-created",
               "ai-agent-usage-billing",
+              "ai-agent-usage-billing-consent",
               "ai-alert-investigation",
               "ai-code-review",
               "ai-gateway-access-policy-created",
@@ -271188,6 +272220,8 @@
               "ai-gateway-headquarters-updated",
               "ai-gateway-hipaa-compliance-toggled",
               "ai-gateway-inference-hooks-endpoint-updated",
+              "ai-gateway-inference-hooks-headers-cleared",
+              "ai-gateway-inference-hooks-headers-updated",
               "ai-gateway-inference-hooks-removed",
               "ai-gateway-inference-hooks-settings-updated",
               "ai-gateway-inference-hooks-signing-secret-created",
@@ -271225,7 +272259,12 @@
               "ai-gateway-zero-data-retention-toggled",
               "ai-omniagent",
               "ai-security-review",
+              "ai-verification",
+              "alert-group-detected",
+              "alert-group-investigation-completed",
+              "alert-group-published",
               "alert-investigation-project-allowlist-updated",
+              "alert-resolved",
               "alert-rule-created",
               "alert-rule-deleted",
               "alert-rule-updated",
@@ -272236,6 +273275,7 @@
               "agentic-provisioning-plan-changed",
               "agentic-provisioning-team-created",
               "ai-agent-usage-billing",
+              "ai-agent-usage-billing-consent",
               "ai-alert-investigation",
               "ai-code-review",
               "ai-gateway-access-policy-created",
@@ -272257,6 +273297,8 @@
               "ai-gateway-headquarters-updated",
               "ai-gateway-hipaa-compliance-toggled",
               "ai-gateway-inference-hooks-endpoint-updated",
+              "ai-gateway-inference-hooks-headers-cleared",
+              "ai-gateway-inference-hooks-headers-updated",
               "ai-gateway-inference-hooks-removed",
               "ai-gateway-inference-hooks-settings-updated",
               "ai-gateway-inference-hooks-signing-secret-created",
@@ -272294,7 +273336,12 @@
               "ai-gateway-zero-data-retention-toggled",
               "ai-omniagent",
               "ai-security-review",
+              "ai-verification",
+              "alert-group-detected",
+              "alert-group-investigation-completed",
+              "alert-group-published",
               "alert-investigation-project-allowlist-updated",
+              "alert-resolved",
               "alert-rule-created",
               "alert-rule-deleted",
               "alert-rule-updated",
@@ -273063,6 +274110,7 @@
                 "agentic-provisioning-plan-changed",
                 "agentic-provisioning-team-created",
                 "ai-agent-usage-billing",
+                "ai-agent-usage-billing-consent",
                 "ai-alert-investigation",
                 "ai-code-review",
                 "ai-gateway-access-policy-created",
@@ -273084,6 +274132,8 @@
                 "ai-gateway-headquarters-updated",
                 "ai-gateway-hipaa-compliance-toggled",
                 "ai-gateway-inference-hooks-endpoint-updated",
+                "ai-gateway-inference-hooks-headers-cleared",
+                "ai-gateway-inference-hooks-headers-updated",
                 "ai-gateway-inference-hooks-removed",
                 "ai-gateway-inference-hooks-settings-updated",
                 "ai-gateway-inference-hooks-signing-secret-created",
@@ -273121,7 +274171,12 @@
                 "ai-gateway-zero-data-retention-toggled",
                 "ai-omniagent",
                 "ai-security-review",
+                "ai-verification",
+                "alert-group-detected",
+                "alert-group-investigation-completed",
+                "alert-group-published",
                 "alert-investigation-project-allowlist-updated",
+                "alert-resolved",
                 "alert-rule-created",
                 "alert-rule-deleted",
                 "alert-rule-updated",
@@ -275587,6 +276642,113 @@
           "updatedAt"
         ],
         "type": "object"
+      },
+      "OrganizationDirectorySyncGroup": {
+        "properties": {
+          "assignments": {
+            "nullable": true,
+            "properties": {
+              "organizationPermissions": {
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "OrgAdmin"
+                  ]
+                },
+                "type": "array",
+                "description": "Organization-level permissions assigned to the directory group."
+              },
+              "teamRoles": {
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "BILLING",
+                    "CONTRIBUTOR",
+                    "DEVELOPER",
+                    "MEMBER",
+                    "OWNER",
+                    "SECURITY",
+                    "VIEWER",
+                    "VIEWER_FOR_PLUS"
+                  ],
+                  "description": "Roles for linked child teams without an explicit team assignment."
+                },
+                "type": "array",
+                "description": "Roles for linked child teams without an explicit team assignment."
+              },
+              "teams": {
+                "additionalProperties": {
+                  "properties": {
+                    "teamRoles": {
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "BILLING",
+                          "CONTRIBUTOR",
+                          "DEVELOPER",
+                          "MEMBER",
+                          "OWNER",
+                          "SECURITY",
+                          "VIEWER",
+                          "VIEWER_FOR_PLUS"
+                        ]
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "teamRoles"
+                  ],
+                  "type": "object",
+                  "description": "Replaces the default team roles for each specified child team."
+                },
+                "type": "object",
+                "description": "Replaces the default team roles for each specified child team."
+              }
+            },
+            "required": [
+              "organizationPermissions",
+              "teamRoles",
+              "teams"
+            ],
+            "type": "object",
+            "description": "`null` when the group has no Directory Sync group configuration."
+          },
+          "createdAt": {
+            "nullable": true,
+            "type": "string",
+            "description": "`null` when the group has no Directory Sync group configuration."
+          },
+          "directoryGroupId": {
+            "type": "string"
+          },
+          "directoryId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "description": "The group's name in the Identity Provider directory."
+          },
+          "organizationId": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "nullable": true,
+            "type": "string",
+            "description": "`null` when the group has no Directory Sync group configuration."
+          }
+        },
+        "required": [
+          "assignments",
+          "createdAt",
+          "directoryGroupId",
+          "directoryId",
+          "name",
+          "organizationId",
+          "updatedAt"
+        ],
+        "type": "object",
+        "description": "A group from the organization's Identity Provider directory, joined with its Directory Sync group configuration when one exists."
       },
       "NamedSandbox": {
         "properties": {
