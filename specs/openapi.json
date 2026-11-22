@@ -4696,7 +4696,7 @@
     },
     "/ai-gateway/budgets/list": {
       "get": {
-        "description": "List the team's AI Gateway budgets (team/project/user scopes, plus default-covered api-key spend) as a flat list, optionally filtered by scope. Without `limit` or `cursor`, returns every budget. With either, returns one page ordered by `quotaEntityId` plus `nextCursor` (null on the last page) and `defaultCoveredCounts`. Paging still reads the full merge server-side: the gateway meter list it joins has no cursor.",
+        "description": "List the team's AI Gateway budgets (team/project/user/app scopes, plus default-covered api-key spend) as a flat list, optionally filtered by scope. Without `limit` or `cursor`, returns every budget. With either, returns one page ordered by `quotaEntityId` plus `nextCursor` (null on the last page) and `defaultCoveredCounts`. Paging still reads the full merge server-side: the gateway meter list it joins has no cursor.",
         "operationId": "listAiGatewayBudgets",
         "security": [
           {
@@ -4748,6 +4748,7 @@
                 "team",
                 "project",
                 "user",
+                "app",
                 "api-key"
               ],
               "description": "Restrict the list to a single budget scope."
@@ -4808,7 +4809,7 @@
     },
     "/ai-gateway/budgets": {
       "put": {
-        "description": "Create or update a team-, project-, or user-scope AI Gateway budget. Set a total with `limitAmount`, or raise the current budget with `increaseBy`.",
+        "description": "Create or update a team-, project-, user-, or app-scope AI Gateway budget. Set a total with `limitAmount`, or raise the current budget with `increaseBy`.",
         "operationId": "upsertAiGatewayBudget",
         "security": [
           {
@@ -4884,7 +4885,8 @@
                     "enum": [
                       "team",
                       "project",
-                      "user"
+                      "user",
+                      "app"
                     ]
                   },
                   "projectId": {
@@ -4894,6 +4896,10 @@
                   "userId": {
                     "type": "string",
                     "description": "Required when scopeType is \\\"user\\\"."
+                  },
+                  "appId": {
+                    "type": "string",
+                    "description": "Required when scopeType is \\\"app\\\". The id of a Vercel App (`cl_…`)."
                   },
                   "limitAmount": {
                     "type": "number",
@@ -4941,7 +4947,7 @@
         }
       },
       "delete": {
-        "description": "Archive a team-, project-, or user-scope AI Gateway budget.",
+        "description": "Archive a team-, project-, user-, or app-scope AI Gateway budget.",
         "operationId": "archiveAiGatewayBudget",
         "security": [
           {
@@ -4993,7 +4999,8 @@
               "enum": [
                 "team",
                 "project",
-                "user"
+                "user",
+                "app"
               ],
               "description": "The budget scope to archive."
             }
@@ -5016,6 +5023,16 @@
             "schema": {
               "type": "string",
               "description": "Required when scopeType is \\\"user\\\"."
+            }
+          },
+          {
+            "name": "appId",
+            "description": "Required when scopeType is \\\"app\\\". The id of a Vercel App (`cl_…`).",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Required when scopeType is \\\"app\\\". The id of a Vercel App (`cl_…`)."
             }
           },
           {
@@ -5051,7 +5068,7 @@
     },
     "/ai-gateway/budgets/defaults/list": {
       "get": {
-        "description": "List the team's AI Gateway budget defaults as a flat per-scope list (one row per team/project/api-key/user scope with a default set). An empty list is a normal state for the dashboard.",
+        "description": "List the team's AI Gateway budget defaults as a flat per-scope list (one row per team/project/api-key/user/app scope with a default set). An empty list is a normal state for the dashboard.",
         "operationId": "listAiGatewayBudgetDefaults",
         "security": [
           {
@@ -5194,7 +5211,8 @@
                       "team",
                       "project",
                       "api-key",
-                      "user"
+                      "user",
+                      "app"
                     ]
                   },
                   "limitAmount": {
@@ -5279,7 +5297,8 @@
                 "team",
                 "project",
                 "api-key",
-                "user"
+                "user",
+                "app"
               ],
               "description": "The budget default scope to delete."
             }
@@ -240812,12 +240831,13 @@
           },
           "scopeId": {
             "type": "string",
-            "description": "The native Vercel id of the scoped entity. Team/project ids already carry their prefix, so this equals `quotaEntityId` (`team_…` / `prj_…`); for the api-key scope it is the api key id (the `api_key_id_` prefix stripped)."
+            "description": "The native Vercel id of the scoped entity. Team/project ids already carry their prefix, so this equals `quotaEntityId` (`team_…` / `prj_…`); user and app scopes also use the quota entity id (`usr_<userId>` / `app_<appId>`); for the api-key scope it is the api key id (the `api_key_id_` prefix stripped)."
           },
           "scopeType": {
             "type": "string",
             "enum": [
               "api-key",
+              "app",
               "project",
               "team",
               "user"
@@ -240862,6 +240882,10 @@
             "properties": {
               "api-key": {
                 "type": "number"
+              },
+              "app": {
+                "type": "number",
+                "description": "Omitted when no app row is default-covered."
               },
               "project": {
                 "type": "number"
@@ -240927,6 +240951,7 @@
             "type": "string",
             "enum": [
               "api-key",
+              "app",
               "project",
               "team",
               "user"
