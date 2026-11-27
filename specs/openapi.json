@@ -62793,7 +62793,7 @@
                       },
                       "createdBy": {
                         "type": "string",
-                        "description": "The ID of the user who created the Global Config, optional because it is not always set."
+                        "description": "The ID of the principal who created the Global Config, optional because it is not always set."
                       },
                       "digest": {
                         "type": "string"
@@ -62897,7 +62897,7 @@
                     },
                     "createdBy": {
                       "type": "string",
-                      "description": "The ID of the user who created the Global Config, optional because it is not always set."
+                      "description": "The ID of the principal who created the Global Config, optional because it is not always set."
                     },
                     "digest": {
                       "type": "string"
@@ -63028,7 +63028,7 @@
                     },
                     "createdBy": {
                       "type": "string",
-                      "description": "The ID of the user who created the Global Config, optional because it is not always set."
+                      "description": "The ID of the principal who created the Global Config, optional because it is not always set."
                     },
                     "digest": {
                       "type": "string"
@@ -63138,7 +63138,7 @@
                     },
                     "createdBy": {
                       "type": "string",
-                      "description": "The ID of the user who created the Global Config, optional because it is not always set."
+                      "description": "The ID of the principal who created the Global Config, optional because it is not always set."
                     },
                     "digest": {
                       "type": "string"
@@ -67666,20 +67666,6 @@
                                   "type"
                                 ],
                                 "type": "object"
-                              },
-                              {
-                                "properties": {
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "experiment"
-                                    ]
-                                  }
-                                },
-                                "required": [
-                                  "type"
-                                ],
-                                "type": "object"
                               }
                             ]
                           },
@@ -68056,20 +68042,6 @@
                                         "rollToVariantId",
                                         "slots",
                                         "startTimestamp",
-                                        "type"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    {
-                                      "properties": {
-                                        "type": {
-                                          "type": "string",
-                                          "enum": [
-                                            "experiment"
-                                          ]
-                                        }
-                                      },
-                                      "required": [
                                         "type"
                                       ],
                                       "type": "object"
@@ -70407,20 +70379,6 @@
                                   "type"
                                 ],
                                 "type": "object"
-                              },
-                              {
-                                "properties": {
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "experiment"
-                                    ]
-                                  }
-                                },
-                                "required": [
-                                  "type"
-                                ],
-                                "type": "object"
                               }
                             ]
                           },
@@ -70797,20 +70755,6 @@
                                         "rollToVariantId",
                                         "slots",
                                         "startTimestamp",
-                                        "type"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    {
-                                      "properties": {
-                                        "type": {
-                                          "type": "string",
-                                          "enum": [
-                                            "experiment"
-                                          ]
-                                        }
-                                      },
-                                      "required": [
                                         "type"
                                       ],
                                       "type": "object"
@@ -72072,20 +72016,6 @@
                                             "type"
                                           ],
                                           "type": "object"
-                                        },
-                                        {
-                                          "properties": {
-                                            "type": {
-                                              "type": "string",
-                                              "enum": [
-                                                "experiment"
-                                              ]
-                                            }
-                                          },
-                                          "required": [
-                                            "type"
-                                          ],
-                                          "type": "object"
                                         }
                                       ]
                                     },
@@ -72462,20 +72392,6 @@
                                                   "rollToVariantId",
                                                   "slots",
                                                   "startTimestamp",
-                                                  "type"
-                                                ],
-                                                "type": "object"
-                                              },
-                                              {
-                                                "properties": {
-                                                  "type": {
-                                                    "type": "string",
-                                                    "enum": [
-                                                      "experiment"
-                                                    ]
-                                                  }
-                                                },
-                                                "required": [
                                                   "type"
                                                 ],
                                                 "type": "object"
@@ -94746,6 +94662,14 @@
                                   "defaultRoute": {
                                     "type": "string",
                                     "description": "A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`"
+                                  },
+                                  "doNotInheritDefaultAppManagedRules": {
+                                    "type": "boolean",
+                                    "enum": [
+                                      false,
+                                      true
+                                    ],
+                                    "description": "Whether requests routed to this microfrontend skip the default app's managed rulesets (OWASP Core Ruleset, Bot Protection, AI Bots), so only this project's own managed rulesets apply to its routes. The default app's custom firewall rules apply either way."
                                   },
                                   "doNotRouteWithMicrofrontendsRouting": {
                                     "type": "boolean",
@@ -120391,6 +120315,14 @@
                                         "type": "string",
                                         "description": "A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`"
                                       },
+                                      "doNotInheritDefaultAppManagedRules": {
+                                        "type": "boolean",
+                                        "enum": [
+                                          false,
+                                          true
+                                        ],
+                                        "description": "Whether requests routed to this microfrontend skip the default app's managed rulesets (OWASP Core Ruleset, Bot Protection, AI Bots), so only this project's own managed rulesets apply to its routes. The default app's custom firewall rules apply either way."
+                                      },
                                       "doNotRouteWithMicrofrontendsRouting": {
                                         "type": "boolean",
                                         "enum": [
@@ -129070,6 +129002,14 @@
                             "defaultRoute": {
                               "type": "string",
                               "description": "A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`"
+                            },
+                            "doNotInheritDefaultAppManagedRules": {
+                              "type": "boolean",
+                              "enum": [
+                                false,
+                                true
+                              ],
+                              "description": "Whether requests routed to this microfrontend skip the default app's managed rulesets (OWASP Core Ruleset, Bot Protection, AI Bots), so only this project's own managed rulesets apply to its routes. The default app's custom firewall rules apply either way."
                             },
                             "doNotRouteWithMicrofrontendsRouting": {
                               "type": "boolean",
@@ -138058,6 +137998,14 @@
                               "type": "string",
                               "description": "A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`"
                             },
+                            "doNotInheritDefaultAppManagedRules": {
+                              "type": "boolean",
+                              "enum": [
+                                false,
+                                true
+                              ],
+                              "description": "Whether requests routed to this microfrontend skip the default app's managed rulesets (OWASP Core Ruleset, Bot Protection, AI Bots), so only this project's own managed rulesets apply to its routes. The default app's custom firewall rules apply either way."
+                            },
                             "doNotRouteWithMicrofrontendsRouting": {
                               "type": "boolean",
                               "enum": [
@@ -146301,6 +146249,14 @@
                             "defaultRoute": {
                               "type": "string",
                               "description": "A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`"
+                            },
+                            "doNotInheritDefaultAppManagedRules": {
+                              "type": "boolean",
+                              "enum": [
+                                false,
+                                true
+                              ],
+                              "description": "Whether requests routed to this microfrontend skip the default app's managed rulesets (OWASP Core Ruleset, Bot Protection, AI Bots), so only this project's own managed rulesets apply to its routes. The default app's custom firewall rules apply either way."
                             },
                             "doNotRouteWithMicrofrontendsRouting": {
                               "type": "boolean",
@@ -155914,6 +155870,14 @@
                               "type": "string",
                               "description": "A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`"
                             },
+                            "doNotInheritDefaultAppManagedRules": {
+                              "type": "boolean",
+                              "enum": [
+                                false,
+                                true
+                              ],
+                              "description": "Whether requests routed to this microfrontend skip the default app's managed rulesets (OWASP Core Ruleset, Bot Protection, AI Bots), so only this project's own managed rulesets apply to its routes. The default app's custom firewall rules apply either way."
+                            },
                             "doNotRouteWithMicrofrontendsRouting": {
                               "type": "boolean",
                               "enum": [
@@ -164160,6 +164124,14 @@
                             "defaultRoute": {
                               "type": "string",
                               "description": "A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`"
+                            },
+                            "doNotInheritDefaultAppManagedRules": {
+                              "type": "boolean",
+                              "enum": [
+                                false,
+                                true
+                              ],
+                              "description": "Whether requests routed to this microfrontend skip the default app's managed rulesets (OWASP Core Ruleset, Bot Protection, AI Bots), so only this project's own managed rulesets apply to its routes. The default app's custom firewall rules apply either way."
                             },
                             "doNotRouteWithMicrofrontendsRouting": {
                               "type": "boolean",
@@ -185468,6 +185440,14 @@
                               "type": "string",
                               "description": "A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`"
                             },
+                            "doNotInheritDefaultAppManagedRules": {
+                              "type": "boolean",
+                              "enum": [
+                                false,
+                                true
+                              ],
+                              "description": "Whether requests routed to this microfrontend skip the default app's managed rulesets (OWASP Core Ruleset, Bot Protection, AI Bots), so only this project's own managed rulesets apply to its routes. The default app's custom firewall rules apply either way."
+                            },
                             "doNotRouteWithMicrofrontendsRouting": {
                               "type": "boolean",
                               "enum": [
@@ -189995,6 +189975,10 @@
                   "doNotRouteWithMicrofrontendsRouting": {
                     "type": "boolean",
                     "description": "Whether domains in this project should route as a microfrontend. Can only be set for child applications."
+                  },
+                  "doNotInheritDefaultAppManagedRules": {
+                    "type": "boolean",
+                    "description": "Whether requests routed to this project skip the default application's managed rulesets, so only this project's own managed rulesets apply. Can only be set for child applications."
                   }
                 }
               }
@@ -192208,6 +192192,9 @@
             "description": ""
           },
           "429": {
+            "description": ""
+          },
+          "503": {
             "description": ""
           }
         },
@@ -214682,6 +214669,13 @@
               "application/json": {
                 "schema": {
                   "properties": {
+                    "changed": {
+                      "type": "boolean",
+                      "enum": [
+                        false,
+                        true
+                      ]
+                    },
                     "value": {
                       "type": "boolean",
                       "enum": [
@@ -214691,6 +214685,7 @@
                     }
                   },
                   "required": [
+                    "changed",
                     "value"
                   ],
                   "type": "object"
@@ -260210,6 +260205,14 @@
                                     "type": "string",
                                     "description": "A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`"
                                   },
+                                  "doNotInheritDefaultAppManagedRules": {
+                                    "type": "boolean",
+                                    "enum": [
+                                      false,
+                                      true
+                                    ],
+                                    "description": "Whether requests routed to this microfrontend skip the default app's managed rulesets (OWASP Core Ruleset, Bot Protection, AI Bots), so only this project's own managed rulesets apply to its routes. The default app's custom firewall rules apply either way."
+                                  },
                                   "doNotRouteWithMicrofrontendsRouting": {
                                     "type": "boolean",
                                     "enum": [
@@ -260370,6 +260373,14 @@
                               "defaultRoute": {
                                 "type": "string",
                                 "description": "A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`"
+                              },
+                              "doNotInheritDefaultAppManagedRules": {
+                                "type": "boolean",
+                                "enum": [
+                                  false,
+                                  true
+                                ],
+                                "description": "Whether requests routed to this microfrontend skip the default app's managed rulesets (OWASP Core Ruleset, Bot Protection, AI Bots), so only this project's own managed rulesets apply to its routes. The default app's custom firewall rules apply either way."
                               },
                               "doNotRouteWithMicrofrontendsRouting": {
                                 "type": "boolean",
@@ -276937,20 +276948,6 @@
                         "type"
                       ],
                       "type": "object"
-                    },
-                    {
-                      "properties": {
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "experiment"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "type"
-                      ],
-                      "type": "object"
                     }
                   ]
                 },
@@ -277327,20 +277324,6 @@
                               "rollToVariantId",
                               "slots",
                               "startTimestamp",
-                              "type"
-                            ],
-                            "type": "object"
-                          },
-                          {
-                            "properties": {
-                              "type": {
-                                "type": "string",
-                                "enum": [
-                                  "experiment"
-                                ]
-                              }
-                            },
-                            "required": [
                               "type"
                             ],
                             "type": "object"
